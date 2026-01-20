@@ -12,7 +12,10 @@ platforms = ["linux-64"]
 version = "0.1.0"
 
 [activation]
-scripts = ["install/setup.sh"]
+scripts = [
+    "../rclrs_install_ws/install/setup.bash",
+    "install/setup.sh"    
+]
 
 [tasks]
 build = "colcon build --symlink-install"
