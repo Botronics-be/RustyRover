@@ -1,0 +1,30 @@
+[workspace]
+authors = [
+    "avanmalleghem <antoine.vanmalleghem@botronics.be>",
+    "csimon-be <christophe.simon@botronics.be",
+    "davidmoli-botronics <david.moli@botronics.be>",
+    "EnzoGhisoni <enzo.ghisoni@botronics.be",
+    "Nicodaube <nicolas.daube@botronics.be>"    
+]
+channels = ["robostack-kilted", "conda-forge"]
+name = "RustyRover_rclrs_install"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[activation]
+scripts = ["install/setup.sh"]
+
+[tasks]
+build = "colcon build --symlink-install"
+clean = "rm -rf build/ install/ log/"
+
+[dependencies]
+ros-kilted-desktop = ">=0.12.0,<0.13"
+python = ">=3.12.12,<3.13"
+compilers = ">=1.11.0,<2"
+rust = ">=1.92.0,<1.93"
+
+
+[pypi-dependencies]
+colcon-cargo = { git = "https://github.com/colcon/colcon-cargo.git" }
+colcon-ros-cargo = { git = "https://github.com/colcon/colcon-ros-cargo.git" }
