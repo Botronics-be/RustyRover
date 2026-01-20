@@ -25,6 +25,7 @@ rust-src = ">=1.92.0,<2"
 setuptools = ">=80.9.0,<81"
 rust = ">=1.92.0,<1.93"
 vcstool = ">=0.3.0,<0.4"
+python = ">=3.12.12,<3.13"
 
 
 [pypi-dependencies]
