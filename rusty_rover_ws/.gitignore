@@ -1,0 +1,6 @@
+build/*
+log/*
+.pixi/*
+!.pixi/config.toml
+install/*
+.cargo/*
