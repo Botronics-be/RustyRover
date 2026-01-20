@@ -1,5 +1,11 @@
 [workspace]
-authors = ["Nicodaube <nicolas.daube@botronics.be>"]
+authors = [
+    "avanmalleghem <antoine.vanmalleghem@botronics.be>",
+    "csimon-be <christophe.simon@botronics.be",
+    "davidmoli-botronics <david.moli@botronics.be>",
+    "EnzoGhisoni <enzo.ghisoni@botronics.be",
+    "Nicodaube <nicolas.daube@botronics.be>"    
+]
 channels = ["robostack-kilted", "conda-forge"]
 name = "RustyRover"
 platforms = ["linux-64"]
