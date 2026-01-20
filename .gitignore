@@ -1,0 +1,12 @@
+rclrs_install_ws/build/*
+rclrs_install_ws/.pixi/*
+!rclrs_install_ws/.pixi/config.toml
+rclrs_install_ws/install/*
+rclrs_install_ws/log/*
+rclrs_install_ws/.cargo/*
+
+rusty_rover_ws/build/*
+rusty_rover_ws/.pixi/*
+!rusty_rover_ws/.pixi/config.toml
+rusty_rover_ws/install/*
+rusty_rover_ws/.cargo/*

@@ -7,7 +7,7 @@ authors = [
     "Nicodaube <nicolas.daube@botronics.be>"    
 ]
 channels = ["robostack-kilted", "conda-forge"]
-name = "RustyRover_rclrs_install"
+name = "rclrs_install_ws"
 platforms = ["linux-64"]
 version = "0.1.0"
 
@@ -15,14 +15,16 @@ version = "0.1.0"
 scripts = ["install/setup.sh"]
 
 [tasks]
-build = "colcon build --symlink-install"
-clean = "rm -rf build/ install/ log/"
+build = "colcon build --packages-up-to examples_rclrs_minimal_pub_sub"
+clean = "rm -rf build/ install/ log/ .cargo/"
 
 [dependencies]
 ros-kilted-desktop = ">=0.12.0,<0.13"
-python = ">=3.12.12,<3.13"
-compilers = ">=1.11.0,<2"
+colcon-common-extensions = ">=0.3.0,<0.4"
+rust-src = ">=1.92.0,<2"
+setuptools = ">=80.9.0,<81"
 rust = ">=1.92.0,<1.93"
+vcstool = ">=0.3.0,<0.4"
 
 
 [pypi-dependencies]
