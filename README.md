@@ -1,7 +1,7 @@
 <img src="./.wiki/img/banner.png" width="800" />
 
 
-# Introduction
+# Introduction :crab:
 
 :wave: _Hello to our RustyRover diff drive robot repository !!_
 
