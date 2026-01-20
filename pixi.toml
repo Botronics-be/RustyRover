@@ -1,0 +1,19 @@
+[workspace]
+authors = ["Nicodaube <nicolas.daube@botronics.be>"]
+channels = ["robostack-kilted", "conda-forge"]
+name = "RustyRover"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[activation]
+scripts = ["install/setup.sh"]
+
+[tasks]
+build = "colcon build --symlink-install"
+clean = "rm -rf build/ install/ log/"
+
+[dependencies]
+ros-kilted-desktop = ">=0.12.0,<0.13"
+python = ">=3.12.12,<3.13"
+compilers = ">=1.11.0,<2"
+
