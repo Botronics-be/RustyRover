@@ -1,0 +1,8 @@
+[package]
+name = "rusty_ble_server"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rclrs = "*"
+std_msgs = "*"
