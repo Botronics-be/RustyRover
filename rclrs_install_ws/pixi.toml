@@ -8,14 +8,14 @@ authors = [
 ]
 channels = ["robostack-kilted", "conda-forge"]
 name = "rclrs_install_ws"
-platforms = ["linux-64"]
+platforms = ["linux-64", "linux-aarch64"]
 version = "0.1.0"
 
 [activation]
 scripts = ["install/setup.sh"]
 
 [tasks]
-build = "colcon build --packages-up-to examples_rclrs_minimal_pub_sub"
+build = "colcon build"
 clean = "rm -rf build/ install/ log/ .cargo/"
 
 [dependencies]
@@ -26,6 +26,12 @@ setuptools = ">=80.9.0,<81"
 rust = ">=1.92.0,<1.93"
 vcstool = ">=0.3.0,<0.4"
 python = ">=3.12.12,<3.13"
+cmake = ">=4.2.2,<5"
+compilers = ">=1.11.0,<2"
+ninja = ">=1.13.2,<2"
+pkg-config = ">=0.29.2,<0.30"
+libcurl = ">=8.18.0,<9"
+filelock = ">=3.20.3,<4"
 
 
 [pypi-dependencies]
