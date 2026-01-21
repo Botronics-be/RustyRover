@@ -3,6 +3,6 @@ radius: 0.06    # Wheel radius in m
 length: 0.0725     # Wheel length in m, considering is as a cylinder
 mesh: '../wheel.stl'  # Leave it empty ('') to have a red wheel
 scale: ''
-x_offset: 0.079 # "3.5 CM OF THE MIDDLE"
+x_offset: 0.033 # "3.5 CM OF THE MIDDLE"
 y_offset: 0.015
 z_offset: -0.015
