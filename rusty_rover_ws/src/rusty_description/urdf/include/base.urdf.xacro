@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+<!-- ===================== Base xacro ==========================================
+
+  params:
+  - link_name [string]: link name;
+  - base_props [dictionary]: base link properties;
+  - mesh [string]: file name of the link mesh;
+    - DEFAULT Value -> Empty string
+  - origin [block]: origin, position and orientation of the link;
+-->
+  <xacro:macro name="base"
+               params="link_name:='base_link' base_prop mesh:='' scale:='' *origin ">
+    <link name="${link_name}">
+    <xacro:box_inertia m="${base_prop['base']['mass']}"
+                       x="${base_prop['base']['x_size']}"
+                       y="${base_prop['base']['y_size']}"
+                       z="${base_prop['base']['z_size']}"> 
+    </xacro:box_inertia>
+    <xacro:if value="${mesh != '' }" >
+      <visual>
+        <xacro:insert_block name="origin" />
+        <geometry>
+          <!-- The folder path get a folder_name global parameter -->
+          <xacro:if value="${scale != '' }" >
+            <mesh filename="package://rusty_description/meshes/${mesh}" scale="${scale}"/>
+          </xacro:if>
+          <xacro:if value="${scale == '' }" >
+            <mesh filename="package://rusty_description/meshes/${robot_name}/${mesh}" />
+          </xacro:if>
+        </geometry>
+        <material name="blue" />
+      </visual>
+    </xacro:if>
+    <xacro:if value="${mesh == '' }" >
+      <visual>
+        <xacro:insert_block name="origin" />
+        <geometry>
+          <box size="${base_prop['base']['x_size']} ${base_prop['base']['y_size']} ${base_prop['base']['z_size']}"/>
+        </geometry>
+        <material name="blue" />
+      </visual>
+    </xacro:if>
+    <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <box size="${base_prop['base']['x_size']} ${base_prop['base']['y_size']} ${base_prop['base']['z_size']}"/>
+      </geometry>
+    </collision>
+    </link>
+  </xacro:macro>
+
+  <!-- ===================== Footprint xacro ==========================================
+
+  params:
+  - base_props [dictionary]: base link properties;
+  - mesh [string]: file name of the link mesh;
+    - DEFAULT Value -> Empty string
+  - origin [block]: origin, position and orientation of the link;
+-->
+  <xacro:macro name="footprint"
+               params="wheel_props">
+    <!-- Base-Footprint -->
+    <!-- base_footprint is a fictitious link(frame) that is on the ground right below base_link origin -->
+    <link name="base_footprint" />
+
+    <!-- Joint to connect base_footprint with base_link -->
+    <joint name="base_footprint_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="base_footprint" />
+      <origin xyz="0 0 ${-(wheel_props['radius'] - wheel_props['z_offset'])}" rpy="0 0 0" />
+    </joint>
+  </xacro:macro>
+  </robot>
