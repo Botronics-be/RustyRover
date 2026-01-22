@@ -1,5 +1,6 @@
 use rclrs::*;
 use std::{thread, time::Duration};
+use std::sync::Arc;
 
 use bluer::{
     adv::Advertisement,
@@ -23,7 +24,6 @@ struct Message {
 }
 
 pub struct BleServerNode {
-    node: Arc<Node>,
 }
 
 impl BleServerNode {
@@ -31,23 +31,21 @@ impl BleServerNode {
         let node = executor.create_node("bluetooth_server_node")?;
         log_info!(node.logger(), "Bluetooth_server_node Startup");
 
-        let node_clone = node.clone()
-
         // Create a separate thread to hold the async bluer Server logic
         thread::spawn(move || {
             let rt = tokio::runtime::Runtime::new().unwrap();
             
             rt.block_on(async {
-                if let Err(e) = Self::run_bluetooth_server(node_clone).await {
-                    eprintln!("Bluetooth error: {}", e);
+                if let Err(e) = Self::run_bluetooth_server(node.clone()).await {
+                    log_error!(node.logger(),"Bluetooth error: {}", e);
                 }
             });
         });
 
-        Ok(Self { node })
+        Ok(Self {  })
     }
 
-    asynvc fn run_bluetooth_server(node: Arc<Node>) -> bluer::Result<()> {
+    async fn run_bluetooth_server(node: Node) -> bluer::Result<()> {
         log_info!(node.logger(), "Initializing Bluetooth Session...");
 
         // Creating session and powering the adapter on
