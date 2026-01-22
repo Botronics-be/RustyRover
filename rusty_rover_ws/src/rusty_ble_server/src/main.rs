@@ -1,12 +1,11 @@
 use rclrs::*;
-use std::{thread, time::Duration};
-use std::sync::Arc;
+use std::{thread, sync::Arc};
 use std_msgs::msg::String as StringMsg;
 
 use bluer::{
     adv::Advertisement,
     gatt::local::{
-        Application, Characteristic, CharacteristicRead,
+        Application, Characteristic,
         CharacteristicWrite, Service,
     }, Uuid,
 };
@@ -49,7 +48,7 @@ impl BleServerNode {
             let rt = tokio::runtime::Runtime::new().unwrap();
             
             rt.block_on(async {
-                if let Err(e) = server_clone.run_bluetooth_server().await {
+                if let Err(_e) = server_clone.run_bluetooth_server().await {
                     eprintln!("Error")
                 }
             });
@@ -123,7 +122,7 @@ impl BleServerNode {
             services: vec![service_handle],
             ..Default::default()
         };
-        let app_handle = adapter.serve_gatt_application(app).await?;
+        let _app_handle = adapter.serve_gatt_application(app).await?;
         log_info!(self.node.logger(), "BLE Server available !!!");
 
         std::future::pending::<()>().await;
@@ -139,7 +138,7 @@ impl BleServerNode {
 
 fn main() -> Result<(), RclrsError> {
     let mut executor = Context::default_from_env()?.create_basic_executor();
-    let node = BleServerNode::new(&executor)?;
+    let _node = BleServerNode::new(&executor)?;
 
     executor.spin(SpinOptions::default()).first_error()
 }
