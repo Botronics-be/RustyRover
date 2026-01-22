@@ -1,6 +1,7 @@
 use rclrs::*;
 use std::{thread, time::Duration};
 use std::sync::Arc;
+use std_msgs::msg::String as StringMsg;
 
 use bluer::{
     adv::Advertisement,
@@ -25,12 +26,15 @@ struct Message {
 }
 
 pub struct BleServerNode {
+    hello_publisher: Publisher<StringMsg>,
 }
 
 impl BleServerNode {
     fn new(executor: &Executor) -> Result<Self, RclrsError> {        
         let node = executor.create_node("bluetooth_server_node")?;
         log_info!(node.logger(), "Bluetooth_server_node Startup");
+
+        let hello_publisher = node.create_publisher::<StringMsg>("from_ble_topic")?;
 
         // Create a separate thread to hold the async bluer Server logic
         thread::spawn(move || {
@@ -43,7 +47,7 @@ impl BleServerNode {
             });
         });
 
-        Ok(Self {  })
+        Ok(Self { hello_publisher })
     }
 
     async fn run_bluetooth_server(node: Node) -> bluer::Result<()> {
@@ -80,7 +84,7 @@ impl BleServerNode {
                         match serde_json::from_str::<Message>(s) {
                             Ok(msg) => {
                                 match msg.msg_type.as_str() {
-                                    "HELLO" => log_info!(node_clone.logger(),"Received hello msg with data: {}", msg.data),
+                                    "HELLO" => Self::hello_cmd_callback(node_clone.clone(), msg.data),
                                     _ =>  log_warn!(node_clone.logger(),"Unknown command"),
                                 }
                             }
@@ -112,6 +116,10 @@ impl BleServerNode {
         Ok(())
     }
 
+    fn hello_cmd_callback(node: Node, msg_data: String) {
+        log_info!(node.logger(),"Received hello msg with data: {}", msg_data);
+        hello_publisher.publish(StringMsg {data: msg_data.clone(),})
+    }
 }
 
 fn main() -> Result<(), RclrsError> {
