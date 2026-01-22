@@ -863,6 +863,7 @@ name = "rusty_ble_server"
 version = "0.1.0"
 dependencies = [
  "bluer",
+ "builtin_interfaces",
  "futures",
  "geometry_msgs",
  "rclrs",

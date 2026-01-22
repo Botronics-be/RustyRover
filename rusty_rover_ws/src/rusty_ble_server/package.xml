@@ -34,6 +34,7 @@
   <depend>rclrs</depend>
   <depend>std_msgs</depend>
   <depend>geometry_msgs</depend>
+  <depend>builtin_interfaces</depend>
 
   <export>
     <build_type>ament_cargo</build_type>

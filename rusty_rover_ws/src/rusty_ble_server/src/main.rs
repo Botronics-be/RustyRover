@@ -1,6 +1,11 @@
 use rclrs::*;
 use std::{thread, sync::Arc};
 use std_msgs::msg::String as StringMsg;
+use geometry_msgs::msg::TwistStamped as TwistStamped;
+use std_msgs::msg::Header;
+use geometry_msgs::msg::Twist;
+use geometry_msgs::msg::Vector3;
+use builtin_interfaces::msg::Time;
 use bluer::{
     adv::Advertisement,
     gatt::local::{
@@ -20,11 +25,13 @@ const CHARACTERISTIC_UUID: Uuid = Uuid::from_u128(0x9dd2899d_f3c9_47ee_992a_aad1
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 enum BleCommand {
     Hello(String),
+    CmdVel { linear_x: f64, angular_z: f64 },
 }
 
 struct RosBridge {
     node: Node,
     hello_publisher: Publisher<StringMsg>,
+    cmd_vel_publisher: Publisher<TwistStamped>,
 }
 
 impl RosBridge {
@@ -32,19 +39,53 @@ impl RosBridge {
         Ok(Self {
             node: node.clone(),
             hello_publisher: node.create_publisher::<StringMsg>("from_ble_topic")?,
+            cmd_vel_publisher: node.create_publisher::<TwistStamped>("cmd_vel")?,
         })
     }
 
     fn dispatch(&self, cmd: BleCommand) {
         match cmd {
             BleCommand::Hello(data) => {Self::handle_hello_cmd(&self, data);}
+            BleCommand::CmdVel { linear_x, angular_z } => {Self::handle_cmd_vel(&self, linear_x, angular_z);}
         }
     }
 
     fn handle_hello_cmd(&self, data: String){
-        println!("DEBUG: Processing Hello: {}", data);
         log_info!(self.node.logger(), "Processing Hello: {}", data);
         let _ = self.hello_publisher.publish(StringMsg { data });
+    }
+
+    fn handle_cmd_vel(&self, linear_x: f64, angular_z:f64){
+        log_info!(self.node.logger(), "Processing Cmd_vel: x:{}, z:{}", linear_x, angular_z);
+
+        let now = self.node.get_clock().now();
+
+        let nanoseconds = now.nsec;
+        let seconds = nanoseconds / 1_000_000_000;
+
+        let msg: TwistStamped = TwistStamped {
+            header: Header {
+                frame_id: "base_link".to_string(),
+                stamp: Time {
+                    sec: seconds as i32,
+                    nanosec: nanoseconds as u32,
+                },
+            },
+            twist: Twist {
+                linear: Vector3 {
+                    x: linear_x,
+                    y: 0.0,
+                    z: 0.0,
+                },
+                angular: Vector3 {
+                    x: 0.0,
+                    y: 0.0,
+                    z: angular_z,
+                },
+            },
+        };
+
+        let _ = self.cmd_vel_publisher.publish(msg);
     }
 }
 
