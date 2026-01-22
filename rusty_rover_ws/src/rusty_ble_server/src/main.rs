@@ -25,33 +25,41 @@ struct Message {
     data: String,
 }
 
-pub struct BleServerNode {
+struct BleServerNode {
+    node: Arc<Node>,
     hello_publisher: Publisher<StringMsg>,
 }
 
 impl BleServerNode {
-    fn new(executor: &Executor) -> Result<Self, RclrsError> {        
+    fn new(executor: &Executor) -> Result<Arc<Self>, RclrsError> {        
         let node = executor.create_node("bluetooth_server_node")?;
         log_info!(node.logger(), "Bluetooth_server_node Startup");
 
         let hello_publisher = node.create_publisher::<StringMsg>("from_ble_topic")?;
+
+        let server = Arc::new(Self {
+            node: node.into(),
+            hello_publisher,
+        });
+
+        let server_clone = server.clone();
 
         // Create a separate thread to hold the async bluer Server logic
         thread::spawn(move || {
             let rt = tokio::runtime::Runtime::new().unwrap();
             
             rt.block_on(async {
-                if let Err(e) = Self::run_bluetooth_server(node.clone()).await {
-                    log_error!(node.logger(),"Bluetooth error: {}", e);
+                if let Err(e) = server_clone.run_bluetooth_server().await {
+                    eprintln!("Error")
                 }
             });
         });
 
-        Ok(Self { hello_publisher })
+        Ok(server)
     }
 
-    async fn run_bluetooth_server(node: Node) -> bluer::Result<()> {
-        log_info!(node.logger(), "Initializing Bluetooth Session...");
+    async fn run_bluetooth_server(&self) -> bluer::Result<()> {
+        log_info!(self.node.logger(), "Initializing Bluetooth Session...");
 
         // Creating session and powering the adapter on
         let session = bluer::Session::new().await?;
@@ -67,7 +75,8 @@ impl BleServerNode {
         
         let _adv_handle = adapter.advertise(le_advertisement).await?;
 
-        log_info!(node.logger(), "BLE Server available !!!");
+        let node_clone = self.node.clone();
+        let pub_clone = self.hello_publisher.clone();
 
         let char_handle = Characteristic {
             uuid: CHARACTERISTIC_UUID,
@@ -76,19 +85,24 @@ impl BleServerNode {
                 write_without_response: true,
                 method: CharacteristicWriteMethod::Fun(Box::new(move |new_value, _req| {
 
-                    let node_clone = node.clone();
+                    let inner_node = node_clone.clone();
+                    let inner_pub = pub_clone.clone();
 
                     Box::pin(async move {
-                        let s = std::str::from_utf8(&new_value).unwrap_or("");;
+                        let s = std::str::from_utf8(&new_value).unwrap_or("");
 
                         match serde_json::from_str::<Message>(s) {
                             Ok(msg) => {
                                 match msg.msg_type.as_str() {
-                                    "HELLO" => Self::hello_cmd_callback(node_clone.clone(), msg.data),
-                                    _ =>  log_warn!(node_clone.logger(),"Unknown command"),
+                                    "HELLO" => {
+                                        log_info!(inner_node.logger(), "Received hello: {}", msg.data);
+                                        // Use the captured publisher directly
+                                        let _ = inner_pub.publish(StringMsg { data: msg.data });
+                                    },
+                                    _ =>  log_warn!(inner_node.logger(),"Unknown command"),
                                 }
                             }
-                            Err(e) => log_error!(node_clone.logger(),"Failed to parse JSON: {}", e),
+                            Err(e) => log_error!(inner_node.logger(),"Failed to parse JSON: {}", e),
                         }
                         Ok(())
                     })
@@ -110,16 +124,17 @@ impl BleServerNode {
             ..Default::default()
         };
         let app_handle = adapter.serve_gatt_application(app).await?;
+        log_info!(self.node.logger(), "BLE Server available !!!");
 
         std::future::pending::<()>().await;
 
         Ok(())
     }
 
-    fn hello_cmd_callback(node: Node, msg_data: String) {
-        log_info!(node.logger(),"Received hello msg with data: {}", msg_data);
-        hello_publisher.publish(StringMsg {data: msg_data.clone(),})
-    }
+    // fn hello_cmd_callback(node: Node, msg_data: String) {
+    //     log_info!(node.logger(),"Received hello msg with data: {}", msg_data);
+    //     hello_publisher.publish(StringMsg {data: msg_data.clone(),})
+    // }
 }
 
 fn main() -> Result<(), RclrsError> {
