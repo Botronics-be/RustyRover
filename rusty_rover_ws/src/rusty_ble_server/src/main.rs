@@ -37,11 +37,13 @@ impl RosBridge {
 
     fn dispatch(&self, cmd: BleCommand) {
         match cmd {
-            BleCommand::Hello(data) => {
-                log_info!(&self.logger, "Processing Hello: {}", data);
-                let _ = self.hello_publisher.publish(StringMsg { data });
-            }
+            BleCommand::Hello(data) => {Self::handle_hello_cmd(&self, data);}
         }
+    }
+
+    fn handle_hello_cmd(&self, data: String){
+        log_info!(&self.logger, "Processing Hello: {}", data);
+        let _ = self.hello_publisher.publish(StringMsg { data });
     }
 }
 
