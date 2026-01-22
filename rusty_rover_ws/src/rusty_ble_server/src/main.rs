@@ -38,7 +38,7 @@ impl RosBridge {
     fn new(node: &Node) -> Result<Self, RclrsError> {
         Ok(Self {
             node: node.clone(),
-            hello_publisher: node.create_publisher::<StringMsg>("from_ble_topic")?,
+            hello_publisher: node.create_publisher::<StringMsg>("hello")?,
             cmd_vel_publisher: node.create_publisher::<TwistStamped>("cmd_vel")?,
         })
     }
