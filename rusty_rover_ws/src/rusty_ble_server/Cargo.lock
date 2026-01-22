@@ -3,6 +3,16 @@
 version = 4
 
 [[package]]
+name = "ament_rs"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b901da946b7b1620d44563e10c7634681af855a7f5fb59bd09b6eb801dcf6e49"
+dependencies = [
+ "itertools",
+ "walkdir",
+]
+
+[[package]]
 name = "async-channel"
 version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -345,6 +355,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "either"
+version = "1.15.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719"
+
+[[package]]
 name = "errno"
 version = "0.3.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -553,6 +569,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b9e0384b61958566e926dc50660321d12159025e767c18e043daf26b70104c39"
 
 [[package]]
+name = "itertools"
+version = "0.8.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f56a2d0bc861f9165be4eb3442afd3c236d8a98afd426f65d92324ae1091a484"
+dependencies = [
+ "either",
+]
+
+[[package]]
 name = "itoa"
 version = "1.0.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -596,6 +621,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "328c4789d42200f1eeec05bd86c9c13c7f091d2ba9a6ea35acdf51f31bc0f043"
 dependencies = [
  "pkg-config",
+]
+
+[[package]]
+name = "libloading"
+version = "0.8.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d7c4b02199fee7c5d21a5ae7d8cfa79a6ef5bb2fc834d6e9058e89c825efdc55"
+dependencies = [
+ "cfg-if",
+ "windows-link",
 ]
 
 [[package]]
@@ -801,13 +836,15 @@ checksum = "69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f"
 
 [[package]]
 name = "rclrs"
-version = "0.6.0"
+version = "0.7.0"
 dependencies = [
+ "ament_rs",
  "async-std",
  "async-stream",
  "cfg-if",
  "futures",
  "futures-lite",
+ "libloading",
  "rosidl_runtime_rs",
  "rustflags",
  "tokio",
@@ -826,9 +863,7 @@ dependencies = [
 
 [[package]]
 name = "rosidl_runtime_rs"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b00ea2ee34606be89514fe2ba100b5fc6165e0f682824f1462f9b09105975566"
+version = "0.6.0"
 dependencies = [
  "cfg-if",
 ]
@@ -872,6 +907,15 @@ dependencies = [
  "std_msgs",
  "tokio",
  "uuid",
+]
+
+[[package]]
+name = "same-file"
+version = "1.0.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "93fc1dc3aaa9bfed95e02e6eadabb4baf7e3078b0bd1b4d7b6b0b68378900502"
+dependencies = [
+ "winapi-util",
 ]
 
 [[package]]
@@ -1076,6 +1120,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ba6f5989077681266825251a52748b8c1d8a4ad098cc37e440103d0ea717fc0"
 
 [[package]]
+name = "walkdir"
+version = "2.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "29790946404f91d9c5d06f9874efddea1dc06c5efe94541a7d6863108e3a5e4b"
+dependencies = [
+ "same-file",
+ "winapi-util",
+]
+
+[[package]]
 name = "wasi"
 version = "0.11.1+wasi-snapshot-preview1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1157,6 +1211,15 @@ checksum = "312e32e551d92129218ea9a2452120f4aabc03529ef03e4d0d82fb2780608598"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "winapi-util"
+version = "0.1.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22"
+dependencies = [
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1354,11 +1417,7 @@ name = "example_interfaces"
 version = "0.13.1"
 
 [[patch.unused]]
-name = "examples_logging_demo"
-version = "0.5.0"
-
-[[patch.unused]]
-name = "examples_parameter_demo"
+name = "examples_rclrs_logging_demo"
 version = "0.5.0"
 
 [[patch.unused]]
@@ -1374,7 +1433,11 @@ name = "examples_rclrs_minimal_pub_sub"
 version = "0.5.0"
 
 [[patch.unused]]
-name = "examples_worker_demo"
+name = "examples_rclrs_parameter_demo"
+version = "0.5.0"
+
+[[patch.unused]]
+name = "examples_rclrs_worker_demo"
 version = "0.5.0"
 
 [[patch.unused]]
@@ -1398,16 +1461,8 @@ name = "rosgraph_msgs"
 version = "2.3.0"
 
 [[patch.unused]]
-name = "rosidl_runtime_rs"
-version = "0.6.0"
-
-[[patch.unused]]
 name = "rust_pubsub"
 version = "0.5.0"
-
-[[patch.unused]]
-name = "rusty_ble_server"
-version = "0.1.0"
 
 [[patch.unused]]
 name = "sensor_msgs"

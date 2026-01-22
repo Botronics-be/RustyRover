@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-rclrs = "0.6"
+rclrs = "0.7"
 std_msgs = "*"
 geometry_msgs = "*"
 builtin_interfaces = "*"
