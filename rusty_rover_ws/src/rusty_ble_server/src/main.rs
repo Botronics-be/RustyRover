@@ -23,14 +23,14 @@ enum BleCommand {
 }
 
 struct RosBridge {
-    logger: Logger,
+    node: Node,
     hello_publisher: Publisher<StringMsg>,
 }
 
 impl RosBridge {
     fn new(node: &Node) -> Result<Self, RclrsError> {
         Ok(Self {
-            logger: node.logger().clone(),
+            node: node.clone(),
             hello_publisher: node.create_publisher::<StringMsg>("from_ble_topic")?,
         })
     }
@@ -42,7 +42,8 @@ impl RosBridge {
     }
 
     fn handle_hello_cmd(&self, data: String){
-        log_info!(&self.logger, "Processing Hello: {}", data);
+        println!("DEBUG: Processing Hello: {}", data);
+        log_info!(self.node.logger(), "Processing Hello: {}", data);
         let _ = self.hello_publisher.publish(StringMsg { data });
     }
 }

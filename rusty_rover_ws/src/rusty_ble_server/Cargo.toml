@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 rclrs = "0.6"
 std_msgs = "*"
+geometry_msgs = "*"
 bluer = { version = "0.17", features = ["bluetoothd"] }
 futures = "0.3.31"
 serde = {version = "1.0.228", features = ["derive"] }
