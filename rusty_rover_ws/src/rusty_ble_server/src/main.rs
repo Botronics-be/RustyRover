@@ -9,6 +9,7 @@ use bluer::{
         CharacteristicWrite, Service,
     }, Uuid,
 };
+use bluer::gatt::local::CharacteristicWriteMethod;
 use serde::Deserialize;
 
 // Service and characteristic UUID used to identify the ble server
@@ -64,30 +65,52 @@ impl BleServerNode {
 
         log_info!(node.logger(), "BLE Server available !!!");
 
+        let char_handle = Characteristic {
+            uuid: CHARACTERISTIC_UUID,
+            write: Some(CharacteristicWrite {
+                write: true,
+                write_without_response: true,
+                method: CharacteristicWriteMethod::Fun(Box::new(move |new_value, _req| {
+
+                    let node_clone = node.clone();
+
+                    Box::pin(async move {
+                        let s = std::str::from_utf8(&new_value).unwrap_or("");;
+
+                        match serde_json::from_str::<Message>(s) {
+                            Ok(msg) => {
+                                match msg.msg_type.as_str() {
+                                    "HELLO" => log_info!(node_clone.logger(),"Received hello msg with data: {}", msg.data),
+                                    _ =>  log_warn!(node_clone.logger(),"Unknown command"),
+                                }
+                            }
+                            Err(e) => log_error!(node_clone.logger(),"Failed to parse JSON: {}", e),
+                        }
+                        Ok(())
+                    })
+                })),
+                ..Default::default()
+            }),
+            ..Default::default()
+        };
+
+        let service_handle = Service {
+            uuid: SERVICE_UUID,
+            primary: true,
+            characteristics: vec![char_handle],
+            ..Default::default()
+        };
+
+        let app = Application {
+            services: vec![service_handle],
+            ..Default::default()
+        };
+        let app_handle = adapter.serve_gatt_application(app).await?;
+
         std::future::pending::<()>().await;
 
         Ok(())
     }
-
-    // fn advertise_server() {
-
-    //     // start the session and adapter
-    //     let session = bluer::Session::new().await?;
-    //     let adapter = session.default_adapter().await?;
-    //     adapter.set_powered(true).await?;
-
-    //     let ble_server_name = "RustyRover";
-
-    //     let le_advertisement = Advertisement {
-    //         service_uuids: vec![SERVICE_UUID].into_iter().collect(),
-    //         discoverable: Some(true),
-    //         local_name: Some("ble_server_name".to_string()),
-    //         ..Default::default()
-    //     };
-    //     let adv_handle = adapter.advertise(le_advertisement).await?;
-
-    //     log_info!(node.logger(), "Bluetooth server available");
-    // }
 
 }
 
