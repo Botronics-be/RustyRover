@@ -6,3 +6,9 @@ edition = "2024"
 [dependencies]
 rclrs = "0.6"
 std_msgs = "*"
+bluer = { version = "0.17", features = ["bluetoothd"] }
+futures = "0.3.31"
+serde = {version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.149"
+tokio = { version = "1", features = ["full"] }
+uuid = "1.0"
