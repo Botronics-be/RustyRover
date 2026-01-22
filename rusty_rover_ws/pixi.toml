@@ -17,6 +17,9 @@ scripts = [
     "install/setup.sh"    
 ]
 
+[activation.env]
+DBUS_SYSTEM_BUS_ADDRESS = "unix:path=/var/run/dbus/system_bus_socket" # Needed to access the dbus for ble
+
 [tasks]
 build = "colcon build --symlink-install"
 clean = "rm -rf build/ install/ log/"

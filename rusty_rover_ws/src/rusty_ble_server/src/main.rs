@@ -62,7 +62,7 @@ impl BleServerNode {
         
         let _adv_handle = adapter.advertise(le_advertisement).await?;
 
-        log_info!(node.logger(), "BLE Server available !");
+        log_info!(node.logger(), "BLE Server available !!!");
 
         std::future::pending::<()>().await;
 
