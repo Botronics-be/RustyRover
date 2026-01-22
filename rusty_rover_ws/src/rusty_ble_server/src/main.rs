@@ -14,8 +14,8 @@ use bluer::gatt::local::CharacteristicWriteMethod;
 use serde::Deserialize;
 
 // Service and characteristic UUID used to identify the ble server
-const SERVICE_UUID: Uuid = Uuid::from_u128(0x12345678_1234_5678_1234_567812345678);
-const CHARACTERISTIC_UUID: Uuid = Uuid::from_u128(0x87654321_4321_6789_4321_678943216789);
+const SERVICE_UUID: Uuid = Uuid::from_u128(0x1deaebe7_ce65_4d57_8933_1bdc2065f37b);
+const CHARACTERISTIC_UUID: Uuid = Uuid::from_u128(0x9dd2899d_f3c9_47ee_992a_aad14b2cdaaf);
 
 // Default BLE message structure
 #[derive(Deserialize, Debug)]
