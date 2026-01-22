@@ -28,7 +28,7 @@
             <mesh filename="package://rusty_description/meshes/${mesh}" scale="${scale}"/>
           </xacro:if>
           <xacro:if value="${scale == '' }" >
-            <mesh filename="package://rusty_description/meshes/${robot_name}/${mesh}" />
+            <mesh filename="package://rusty_description/meshes/${mesh}" />
           </xacro:if>
         </geometry>
         <material name="blue" />

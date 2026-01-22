@@ -10,7 +10,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://andino_description/meshes/sensors/${mesh}" />
+          <mesh filename="package://rusty_description/meshes/${mesh}" />
         </geometry>
         <material name="blue"/>
       </visual>

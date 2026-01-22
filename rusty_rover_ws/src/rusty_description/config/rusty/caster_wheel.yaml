@@ -1,0 +1,9 @@
+mass: 0.02
+size:
+  x: 0.04
+  y: 0.04
+  z: 0.04
+dx: -0.0
+dy: 0.0
+dz: 0.00
+mesh: 'caster_shroud.stl'

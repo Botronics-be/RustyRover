@@ -7,7 +7,6 @@
   Xacro to create caster links and the respective joints.
 
   params:
-  - reflect [1/-1]: value to set the side of the caster;
   - use_fixed [bool]: wheter to use a fixed model or not
   - wheel_props [dictionary]: wheel properties;
   - base_props [dictionary]: base link properties;
@@ -25,21 +24,21 @@
                           z="${wheel_props['size']['z']}"
                           o_xyz="0.0 0.0 ${-wheel_props['size']['z']/2.0}"
                           o_rpy="0.0 0.0 0.0" />
-      <xacro:if value="${wheel_props}['mesh'] != '' }" >
+      <xacro:if value="${wheel_props['mesh'] != ''}" >
         <visual>
-          <origin xyz="0 0 ${-wheel_props['size']['z']/2.0}" rpy="0 0 0" />
+          <origin xyz="0 0.004 0" rpy="${pi/2} 0 ${pi/2}" />
           <geometry>
             <xacro:if value="${scale != '' }" >
-              <mesh filename="package://rusty_description/meshes/${robot_name}/${wheel_props['mesh']}" scale="${scale}"/>
+              <mesh filename="package://rusty_description/meshes/${wheel_props['mesh']}" scale="${scale}"/>
             </xacro:if>
             <xacro:if value="${scale == '' }" >
-              <mesh filename="package://rusty_description/meshes/${robot_name}/${wheel_props['mesh']}" />
+              <mesh filename="package://rusty_description/meshes/${wheel_props['mesh']}" />
             </xacro:if>
           </geometry>
           <material name="silver"/>
         </visual>
       </xacro:if>
-      <xacro:if value="${wheel_props['mesh'] == '' }" >
+      <xacro:if value="${wheel_props['mesh'] == ''}" >
         <visual>
           <origin xyz="0 0 ${-wheel_props['size']['z']/2.0}" rpy="0 0 0" />
           <geometry>
@@ -49,9 +48,9 @@
         </visual>
       </xacro:if>
       <collision>
-        <origin xyz="0 0 ${-wheel_props['size']['z']/2.0}" rpy="0 0 0" />
+        <origin xyz="-0.048 0 ${-wheel_props['size']['z']/2.0}" rpy="0 0 0" />
         <geometry>
-          <box size="${wheel_props['size']['x']} ${wheel_props['size']['y']} ${wheel_props['size']['z']}" />
+          <sphere radius="${wheel_props['size']['x']/2}" />
         </geometry>
       </collision>
     </link>
@@ -63,4 +62,5 @@
       <axis xyz="0 0 1" />
       <dynamics damping="0.01" friction="0.0"/>
     </joint>
+  </xacro:macro>
 </robot>
