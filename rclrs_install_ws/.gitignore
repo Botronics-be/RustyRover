@@ -4,3 +4,4 @@ build/*
 install/*
 .cargo/*
 log/*
+pixi.lock
