@@ -186,7 +186,13 @@ impl Widget for &App {
             ])
             .split(area);
 
-        let raw_art = include_str!("../crab_1.txt"); 
+        let mut raw_art = "";
+        
+        if self.last_linear_cmd_stamp.elapsed().as_secs() % 2 == 0 {
+            raw_art = include_str!("../crab_1.txt"); 
+        } else {
+            raw_art = include_str!("../crab_base.txt"); 
+        };
         
         let art_lines: Vec<Line> = raw_art
             .lines()
@@ -265,4 +271,5 @@ impl Widget for &App {
             .block(block)
             .render(layout[0], buf);
     }
+
 }
