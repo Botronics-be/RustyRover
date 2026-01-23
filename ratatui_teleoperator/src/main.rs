@@ -3,10 +3,10 @@ use std::{ops::Div, time::{Duration, Instant}};
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
     buffer::Buffer,
-    layout::Rect,
-    style::Stylize,
+    layout::{Rect, Constraint, Direction, Layout},
+    style::{Color, Stylize, Style},
     symbols::border,
-    text::{Line, Text},
+    text::{Line, Text, Span},
     widgets::{Block, Paragraph, Widget},
     Frame,
 };
@@ -176,6 +176,61 @@ impl App {
 
 impl Widget for &App {
     fn render(self, area: Rect, buf: &mut Buffer) {
+        // 1. Define the Layout
+        // Split the screen: Top part for the Crab, bottom part (3 lines) for the status/controls
+        let layout = Layout::default()
+            .direction(Direction::Vertical)
+            .constraints(vec![
+                Constraint::Min(10),   // Give the crab at least 10 lines, or the rest of the screen
+                Constraint::Length(12), // Space for your instructions block
+            ])
+            .split(area);
+
+        // 2. Load and Style the ASCII Art
+        // include_str! compiles the file directly into your binary
+        let raw_art = include_str!("../crab_1.txt"); 
+        
+        let art_lines: Vec<Line> = raw_art
+            .lines()
+            .filter(|line| !line.trim().starts_with("[source")) // Remove metadata lines if present
+            .map(|line| {
+                let spans: Vec<Span> = line
+                    .chars()
+                    .map(|c| {
+                        if c.is_whitespace() {
+                            // Return 2 spaces to match the width of the double-block below
+                            // If you use single blocks, change this to " "
+                            return Span::raw(" "); 
+                        }
+
+                        // 2. Map characters to colors
+                        let color = match c {
+                            '%' => Color::LightRed,
+                            '#' => Color::DarkGray,
+                            '$' => Color::White,
+                            '@' => Color::Black,
+                            _ => Color::Reset,
+                        };
+
+                        // 3. Render "Squares"
+                        // We use two block characters "██" because terminal fonts are tall.
+                        // This makes the output look like square pixels.
+                        Span::styled("█", Style::default().fg(color))
+                    })
+                    .collect();
+                Line::from(spans)
+            })
+            .collect();
+
+        let art_widget = Paragraph::new(Text::from(art_lines))
+            .centered() // Center the crab in the top box
+            .block(Block::bordered().title(" Rusty Rover Camera Feed ").border_style(Style::default().fg(Color::DarkGray)));
+
+        // 3. Render the Art in the top chunk
+        art_widget.render(layout[0], buf);
+
+        // 4. Render Your Existing Controls in the bottom chunk
+        // (This is your original code, just pointing to layout[1] instead of area)
         let title = Line::from(" RustyRover Teleoperator ".bold());
         let instructions = Line::from(vec![
             " Stop ".into(),
@@ -191,21 +246,25 @@ impl Widget for &App {
             " Quit ".into(),
             "<Q> ".blue().bold(),
         ]);
+        
         let block = Block::bordered()
             .title(title.centered())
             .title_bottom(instructions.centered())
             .border_set(border::THICK);
 
-        let counter_text = Text::from(vec![Line::from(vec![
-            "Linear command: ".into(),
-            (self.linear_command as f32).div(10.0).to_string().yellow(),
-            "  Angular command: ".into(),
-            (self.angular_command as f32).div(10.0).to_string().yellow(),            
-        ])]);
+        let counter_text = Text::from(vec![
+            Line::from(""), // Add some padding
+            Line::from(vec![
+                "Linear command: ".into(),
+                (self.linear_command as f32).div(10.0).to_string().yellow(),
+                "  Angular command: ".into(),
+                (self.angular_command as f32).div(10.0).to_string().yellow(),            
+            ])
+        ]);
 
         Paragraph::new(counter_text)
             .centered()
             .block(block)
-            .render(area, buf);
+            .render(layout[1], buf);
     }
 }
