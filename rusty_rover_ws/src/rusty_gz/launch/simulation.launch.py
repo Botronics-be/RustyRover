@@ -10,6 +10,13 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
+
+    sim_mode_arg = DeclareLaunchArgument(
+        'sim_mode',
+        default_value='true',
+        description='Use simulation (Gazebo) if true'
+    )
+
     # Define the robot's name and package name
     robot_name = "rusty"
     package_name = "rusty_gz"
@@ -17,6 +24,7 @@ def generate_launch_description():
     # 1. Setup Resource Paths for Gazebo
     # We need to point Gazebo to the directory ABOVE our package share directory 
     # so that model://rusty_description/ meshes can be resolved.
+    sim_mode = LaunchConfiguration('sim_mode')
     description_pkg_share = get_package_share_directory('rusty_description')
     install_dir = os.path.join(description_pkg_share, '..')
 
@@ -97,6 +105,7 @@ def generate_launch_description():
         arguments=['--ros-args', '-p', f'config_file:={gz_bridge_params_path}'],
         output='screen'
     )
+    
 
     return LaunchDescription([
         resource_path_action, # Ensure environment is set first

@@ -25,11 +25,13 @@ clean = "rm -rf build/ install/ log/"
 ros-kilted-desktop = ">=0.12.0,<0.13"
 ros-kilted-ros-gz = ">=2.1.9,<3"
 ros-kilted-xacro = "*"
+ros-kilted-joint-state-publisher = ">=2.4.0,<3"
+ros-kilted-joint-state-publisher-gui = ">=2.4.0,<3"
+ros-kilted-gz-ros2-control = ">=2.0.9,<3"
 python = ">=3.12.12,<3.13"
 compilers = ">=1.11.0,<2"
 ffmpeg = "<8"
-ros-kilted-joint-state-publisher = ">=2.4.0,<3"
-ros-kilted-joint-state-publisher-gui = ">=2.4.0,<3"
+
 
 
 

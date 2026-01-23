@@ -1,0 +1,9 @@
+<library path="rusty_control">
+  <class name="rusty_control/RustySystemHardware"
+         type="rusty_control::RustySystemHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      RustyRover Hardware Interface
+    </description>
+  </class>
+</library>

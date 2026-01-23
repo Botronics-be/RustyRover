@@ -27,8 +27,8 @@
   direction: GZ_TO_ROS
 
 # gz topic subscribed to by DiffDrive plugin
-- ros_topic_name: "diff_cont/cmd_vel_unstamped"
-  gz_topic_name: "cmd_vel"
+- ros_topic_name: "/rusty_base_controller/cmd_vel_unstamped"
+  gz_topic_name: "/cmd_vel"
   ros_type_name: "geometry_msgs/msg/Twist"
   gz_type_name: "gz.msgs.Twist"
   direction: ROS_TO_GZ
