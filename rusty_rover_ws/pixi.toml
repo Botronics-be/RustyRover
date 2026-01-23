@@ -17,6 +17,9 @@ scripts = [
     "install/setup.sh"    
 ]
 
+[activation.env]
+DBUS_SYSTEM_BUS_ADDRESS = "unix:path=/var/run/dbus/system_bus_socket" # Needed to access the dbus for ble
+
 [tasks]
 build = "colcon build --symlink-install"
 clean = "rm -rf build/ install/ log/"
@@ -25,3 +28,17 @@ clean = "rm -rf build/ install/ log/"
 ros-kilted-desktop = ">=0.12.0,<0.13"
 python = ">=3.12.12,<3.13"
 compilers = ">=1.11.0,<2"
+colcon-common-extensions = ">=0.3.0,<0.4"
+rust-src = ">=1.92.0,<2"
+setuptools = ">=80.9.0,<81"
+rust = ">=1.92.0,<1.93"
+cmake = ">=4.2.2,<5"
+ninja = ">=1.13.2,<2"
+pkg-config = ">=0.29.2,<0.30"
+libcurl = ">=8.18.0,<9"
+filelock = ">=3.20.3,<4"
+
+
+[pypi-dependencies]
+colcon-cargo = { git = "https://github.com/colcon/colcon-cargo.git" }
+colcon-ros-cargo = { git = "https://github.com/colcon/colcon-ros-cargo.git" }
