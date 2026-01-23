@@ -21,6 +21,7 @@ pub struct App {
     angular_command: i8,
     last_linear_cmd_stamp: Instant,
     last_angular_cmd_stamp: Instant,
+    bluetooth_connected: bool,
     exit: bool,
 }
 
@@ -32,6 +33,7 @@ fn main() -> Result<()> {
         angular_command: 0,
         last_linear_cmd_stamp: Instant::now(),
         last_angular_cmd_stamp: Instant::now(),
+        bluetooth_connected: false,
         exit: false
     };
     let app_result = app.run(&mut terminal);
@@ -179,8 +181,8 @@ impl Widget for &App {
         let layout = Layout::default()
             .direction(Direction::Vertical)
             .constraints(vec![
-                Constraint::Min(50),   // Give the crab at least 10 lines, or the rest of the screen
-                Constraint::Length(48), // Space for your instructions block
+                Constraint::Min(50),
+                Constraint::Length(48),
             ])
             .split(area);
 
@@ -242,12 +244,20 @@ impl Widget for &App {
         let counter_text = Text::from(vec![
             Line::from(""),
             Line::from(vec![
-                "  Linear command:  ".into(),
+                "  Linear command:    ".into(),
                 (self.linear_command as f32).div(10.0).to_string().yellow(),            
             ]),
             Line::from(vec![
-                "  Angular command: ".into(),
+                "  Angular command:   ".into(),
                 (self.angular_command as f32).div(10.0).to_string().yellow(),            
+            ]),
+            Line::from(vec![
+                "  Bluetooth status: ".into(),
+                if self.bluetooth_connected {
+                    " Connected".green()
+                } else {
+                    " Disconnected".red()
+                },           
             ]),
         ]);
 
