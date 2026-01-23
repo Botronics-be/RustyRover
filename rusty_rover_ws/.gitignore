@@ -4,4 +4,3 @@ log/*
 !.pixi/config.toml
 install/*
 .cargo/*
-pixi.lock
