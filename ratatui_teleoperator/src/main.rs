@@ -54,11 +54,11 @@ impl App {
                 self.handle_events().wrap_err("handle events failed")?;
             }
 
-            if self.linear_command != 0 && self.last_linear_cmd_stamp.elapsed() > Duration::from_millis(500) {
+            if self.linear_command != 0 && self.last_linear_cmd_stamp.elapsed() > Duration::from_millis(300) {
                 self.reset_linear()?;
             }
 
-            if self.angular_command != 0 && self.last_angular_cmd_stamp.elapsed() > Duration::from_millis(500) {
+            if self.angular_command != 0 && self.last_angular_cmd_stamp.elapsed() > Duration::from_millis(300) {
                 self.reset_angular()?;
             }
         }
@@ -152,12 +152,20 @@ impl App {
     }
 
     fn reset_linear(&mut self) -> Result<()> {
-        self.linear_command = 0;
+        if self.linear_command > 0 {
+            self.linear_command = (self.linear_command - 5).clamp(-100, 100);
+        } else {
+            self.linear_command = (self.linear_command + 5).clamp(-100, 100);
+        }
         Ok(())
     }
 
     fn reset_angular(&mut self) -> Result<()> {
-        self.angular_command = 0;
+        if self.angular_command > 0 {
+            self.angular_command = (self.angular_command - 5).clamp(-100, 100);
+        } else {
+            self.angular_command = (self.angular_command + 5).clamp(-100, 100);
+        }
         Ok(())
     }
 
