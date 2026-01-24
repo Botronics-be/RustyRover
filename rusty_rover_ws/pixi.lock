@@ -88,6 +88,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/expat-2.7.3-hecca717_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/fcl-0.7.0-h543440a_8.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ffmpeg-7.1.1-gpl_h127656b_906.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/filelock-3.20.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/flake8-7.3.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/flake8-builtins-3.1.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/flake8-comprehensions-3.17.0-pyhd8ed1ab_0.conda
@@ -458,11 +459,14 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/re2-2025.06.26-h9925aae_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/readline-8.3-h853b02a_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/rhash-1.4.6-hb9d3cd8_1.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ackermann-msgs-2.0.2-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ackermann-steering-controller-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-action-msgs-2.3.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-action-tutorials-cpp-0.36.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-action-tutorials-py-0.36.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-actionlib-msgs-5.5.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-actuator-msgs-0.0.1-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-admittance-controller-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ament-cmake-2.7.3-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ament-cmake-auto-2.7.3-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ament-cmake-copyright-0.19.2-np126py312he556185_10.conda
@@ -509,6 +513,7 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ament-xmllint-0.19.2-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-angles-1.16.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-backward-ros-1.0.7-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-bicycle-steering-controller-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-builtin-interfaces-2.3.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-class-loader-2.8.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-common-interfaces-5.5.0-np126py312he556185_10.conda
@@ -518,6 +523,7 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-compressed-image-transport-5.0.2-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-console-bridge-vendor-1.8.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-control-msgs-6.3.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-control-toolbox-5.5.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-controller-interface-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-controller-manager-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-controller-manager-msgs-5.2.0-np126py312he556185_10.conda
@@ -530,9 +536,11 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-desktop-0.12.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-diagnostic-msgs-5.5.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-diagnostic-updater-4.3.6-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-diff-drive-controller-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-dummy-map-server-0.36.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-dummy-robot-bringup-0.36.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-dummy-sensors-0.36.1-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-effort-controllers-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-eigen3-cmake-module-0.4.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-example-interfaces-0.13.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-examples-rclcpp-minimal-action-client-0.20.5-np126py312he556185_10.conda
@@ -553,13 +561,18 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-examples-rclpy-minimal-subscriber-0.20.5-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-fastcdr-2.3.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-fastdds-3.2.2-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-filters-2.1.2-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-foonathan-memory-vendor-1.3.1-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-force-torque-sensor-broadcaster-5.2.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-forward-command-controller-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-generate-parameter-library-0.5.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-generate-parameter-library-py-0.5.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-geometry-msgs-5.5.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-geometry2-0.41.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gmock-vendor-1.15.1-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gpio-controllers-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gps-msgs-2.1.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gps-sensor-broadcaster-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gtest-vendor-1.15.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gz-cmake-vendor-0.2.2-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gz-common-vendor-0.2.3-np126py312he556185_10.conda
@@ -573,6 +586,7 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gz-plugin-vendor-0.2.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gz-rendering-vendor-0.2.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gz-ros2-control-2.0.9-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gz-ros2-control-demos-2.0.9-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gz-sensors-vendor-0.2.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gz-sim-vendor-0.2.1-np126py312hb168f6e_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gz-tools-vendor-0.1.2-np126py312he556185_10.conda
@@ -586,14 +600,18 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-image-tools-0.36.1-np126py312h1758b5b_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-image-transport-6.1.2-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-image-transport-plugins-5.0.2-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-imu-sensor-broadcaster-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-interactive-markers-2.7.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-intra-process-demo-0.36.1-np126py312h1758b5b_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-joint-limits-5.2.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-joint-state-broadcaster-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-joint-state-publisher-2.4.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-joint-state-publisher-gui-2.4.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-joint-trajectory-controller-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-joy-3.3.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-kdl-parser-2.12.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-keyboard-handler-0.4.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-kinematics-interface-2.1.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-laser-geometry-2.10.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-launch-3.8.2-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-launch-ros-0.28.2-np126py312he556185_10.conda
@@ -611,19 +629,24 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-logging-demo-0.36.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-map-msgs-2.5.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-mcap-vendor-0.32.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-mecanum-drive-controller-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-message-filters-7.1.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-nav-msgs-5.5.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-orocos-kdl-vendor-0.7.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-osrf-pycommon-2.1.6-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pal-statistics-2.6.2-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pal-statistics-msgs-2.6.2-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-parallel-gripper-controller-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-parameter-traits-0.5.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pcl-conversions-2.7.3-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pcl-msgs-1.0.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pendulum-control-0.36.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pendulum-msgs-0.36.1-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pid-controller-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pluginlib-5.6.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-point-cloud-transport-5.1.3-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pose-broadcaster-5.2.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-position-controllers-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pybind11-vendor-3.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-python-orocos-kdl-vendor-0.7.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-python-qt-binding-2.3.1-np126py312he556185_10.conda
@@ -633,6 +656,7 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-qt-gui-py-common-2.9.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-quality-of-service-demo-cpp-0.36.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-quality-of-service-demo-py-0.36.1-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-range-sensor-broadcaster-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-rcl-10.1.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-rcl-action-10.1.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-rcl-interfaces-2.3.0-np126py312he556185_10.conda
@@ -674,13 +698,16 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros-gz-sim-2.1.9-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros-gz-sim-demos-2.1.9-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros-workspace-1.0.3-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2-control-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2-control-cmake-0.2.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2-control-test-assets-5.2.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2-controllers-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2action-0.38.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2bag-0.32.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2cli-0.38.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2cli-common-extensions-0.4.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2component-0.38.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2controlcli-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2doctor-0.38.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2interface-0.38.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2launch-0.28.2-np126py312he556185_10.conda
@@ -775,6 +802,7 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-statistics-msgs-2.3.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-std-msgs-5.5.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-std-srvs-5.5.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-steering-controllers-library-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-stereo-msgs-5.5.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-tango-icons-vendor-0.4.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-tcb-span-1.0.2-np126py312he556185_10.conda
@@ -800,6 +828,9 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-topic-monitor-0.36.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-tracetools-8.6.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-trajectory-msgs-5.5.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-transmission-interface-5.2.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-tricycle-controller-5.2.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-tricycle-steering-controller-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-turtlesim-1.9.3-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-turtlesim-msgs-1.9.3-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-type-description-interfaces-2.3.0-np126py312he556185_10.conda
@@ -809,6 +840,7 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-urdf-parser-plugin-2.12.2-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-urdfdom-4.0.1-py312h24bf083_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-urdfdom-headers-1.1.2-py312h24bf083_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-velocity-controllers-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-vision-msgs-4.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-visualization-msgs-5.5.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-xacro-2.0.13-np126py312he556185_10.conda
@@ -1976,6 +2008,14 @@ packages:
   license_family: GPL
   size: 10377191
   timestamp: 1748704974937
+- conda: https://conda.anaconda.org/conda-forge/noarch/filelock-3.20.3-pyhd8ed1ab_0.conda
+  sha256: 8b90dc21f00167a7e58abb5141a140bdb31a7c5734fe1361b5f98f4a4183fd32
+  md5: 2cfaaccf085c133a477f0a7a8657afe9
+  depends:
+  - python >=3.10
+  license: Unlicense
+  size: 18661
+  timestamp: 1768022315929
 - conda: https://conda.anaconda.org/conda-forge/noarch/flake8-7.3.0-pyhd8ed1ab_0.conda
   sha256: a32e511ea71a9667666935fd9f497f00bcc6ed0099ef04b9416ac24606854d58
   md5: 04a55140685296b25b79ad942264c0ef
@@ -6911,6 +6951,49 @@ packages:
   license_family: MIT
   size: 193775
   timestamp: 1748644872902
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ackermann-msgs-2.0.2-np126py312he556185_10.conda
+  sha256: 80bb9b3224cbff2b188d7a04ae343d18477f54d4f23fbd825940242d77653eb3
+  md5: 1c1d1a712da9b36567d6773372951186
+  depends:
+  - python
+  - ros-kilted-ros-workspace
+  - ros-kilted-rosidl-default-runtime
+  - ros-kilted-std-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=13
+  - libgcc >=13
+  - python_abi 3.12.* *_cp312
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 87895
+  timestamp: 1751034331056
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ackermann-steering-controller-5.2.0-np126py312he556185_10.conda
+  sha256: 404841ea0eb3b4315c4ea345b9382b651c149cb991dcccdde15afef76b18180d
+  md5: 88c2b58e3572a16bf996147fce27efae
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-control-msgs
+  - ros-kilted-controller-interface
+  - ros-kilted-hardware-interface
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-ros-workspace
+  - ros-kilted-std-srvs
+  - ros-kilted-steering-controllers-library
+  - ros2-distro-mutex 0.10.* kilted_*
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=13
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - python_abi 3.12.* *_cp312
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 100557
+  timestamp: 1751040578136
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-action-msgs-2.3.0-np126py312he556185_10.conda
   sha256: 5d2b432ae1acdd226a6532b74dc49ac86429469c2ff0f7a2ff3f29a0c94970f9
   md5: 455908ba54fba3a3a4516da4ecbca04b
@@ -7008,6 +7091,42 @@ packages:
   license: BSD-3-Clause
   size: 159286
   timestamp: 1751034302414
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-admittance-controller-5.2.0-np126py312he556185_10.conda
+  sha256: 7fede6fd1a559236d2b341861f84037f049e1b764690b5e7202f1284f4659c4b
+  md5: bad4ba6509fd2ed927c81a60cc3ac7fc
+  depends:
+  - python
+  - ros-kilted-angles
+  - ros-kilted-backward-ros
+  - ros-kilted-control-msgs
+  - ros-kilted-control-toolbox
+  - ros-kilted-controller-interface
+  - ros-kilted-generate-parameter-library
+  - ros-kilted-geometry-msgs
+  - ros-kilted-hardware-interface
+  - ros-kilted-kinematics-interface
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-tf2
+  - ros-kilted-tf2-eigen
+  - ros-kilted-tf2-geometry-msgs
+  - ros-kilted-tf2-kdl
+  - ros-kilted-tf2-ros
+  - ros-kilted-trajectory-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - python_abi 3.12.* *_cp312
+  - numpy >=1.26.4,<2.0a0
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  license: BSD-3-Clause
+  size: 411660
+  timestamp: 1751040441842
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ament-cmake-2.7.3-np126py312he556185_10.conda
   sha256: f9960bb06bd6bb4f354809e6ce88c192d5560a1c4be654afffaddde3572b71d2
   md5: f92c325080266c0e208396e00be8a807
@@ -7879,6 +7998,32 @@ packages:
   license: BSD-3-Clause
   size: 338105
   timestamp: 1751031901950
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-bicycle-steering-controller-5.2.0-np126py312he556185_10.conda
+  sha256: 072e45600ce7c227b06869e830c027898f00eb5fb44896851807f7ef73992a4b
+  md5: 13400ecb1762e297fb5d16c213620a6f
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-control-msgs
+  - ros-kilted-controller-interface
+  - ros-kilted-hardware-interface
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-ros-workspace
+  - ros-kilted-std-srvs
+  - ros-kilted-steering-controllers-library
+  - ros2-distro-mutex 0.10.* kilted_*
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - libstdcxx >=13
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  license: BSD-3-Clause
+  size: 98294
+  timestamp: 1751040547202
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-builtin-interfaces-2.3.0-np126py312he556185_10.conda
   sha256: 92008a8ab6b27979a52d96d4c62cda04f989fef911134e178c93133ec9635347
   md5: ebd14d762cbd4370b67882222bb07777
@@ -8069,6 +8214,36 @@ packages:
   license: BSD-3-Clause
   size: 1055710
   timestamp: 1751034677503
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-control-toolbox-5.5.0-np126py312he556185_10.conda
+  sha256: 8e9edb613c97bd3fa7341e77885130edb12a4a9efcef67b2a27a296901156de6
+  md5: 578ac3e83b1a59a2fedae0a475a8b419
+  depends:
+  - eigen
+  - python
+  - ros-kilted-control-msgs
+  - ros-kilted-filters
+  - ros-kilted-generate-parameter-library
+  - ros-kilted-geometry-msgs
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rcutils
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-tf2
+  - ros-kilted-tf2-geometry-msgs
+  - ros-kilted-tf2-ros
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=13
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - fmt >=11.1.4,<11.2.0a0
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  license: BSD-3-Clause
+  size: 273286
+  timestamp: 1751039180904
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-controller-interface-5.2.0-np126py312he556185_10.conda
   sha256: 6a33fe389f819cb5c5861980b024a3a8528f614f548a8326ba52442b8c73bad5
   md5: adcdec569d4ff76e591da918f2a79478
@@ -8408,6 +8583,36 @@ packages:
   license: BSD-3-Clause
   size: 185321
   timestamp: 1751038655164
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-diff-drive-controller-5.2.0-np126py312he556185_10.conda
+  sha256: fd4ec6f5e2525c9988edbb28a58c8024fbe5dff1228de1cc0fd047f51615d0a5
+  md5: f190cc4613f5f60f8d51ae1a3e076c2e
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-control-toolbox
+  - ros-kilted-controller-interface
+  - ros-kilted-geometry-msgs
+  - ros-kilted-hardware-interface
+  - ros-kilted-nav-msgs
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-rcpputils
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-tf2
+  - ros-kilted-tf2-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  license: BSD-3-Clause
+  size: 313080
+  timestamp: 1751040409909
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-dummy-map-server-0.36.1-np126py312he556185_10.conda
   sha256: 71e25c90a58b08f97e3346e3a172f18f8c27eef7ae0e7a51824069ef6863e7b5
   md5: 3d46bfdaa9cbb5b5487903656af25e73
@@ -8469,6 +8674,27 @@ packages:
   license: BSD-3-Clause
   size: 119028
   timestamp: 1751036137922
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-effort-controllers-5.2.0-np126py312he556185_10.conda
+  sha256: 2b6f04fad8e4446a49ad60ba01bd68f5d51dd8a04a0614355a4a6fec3e7a505e
+  md5: 4c01cec1385e0398d9562aa7215fb0b3
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-forward-command-controller
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-ros-workspace
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=13
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - python_abi 3.12.* *_cp312
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 75554
+  timestamp: 1751040666253
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-eigen3-cmake-module-0.4.0-np126py312he556185_10.conda
   sha256: 9f16ac45dfdc95bbdff4761f4e1ad1e6e1be8c70985829c1f9b5123350ba937d
   md5: 757e9690aa19c58347471dbec655dd8f
@@ -8849,6 +9075,27 @@ packages:
   license: BSD-3-Clause
   size: 4835561
   timestamp: 1751033001882
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-filters-2.1.2-np126py312he556185_10.conda
+  sha256: 7ac4be096ceb7f395bfc47d5d4c8380a3a1cf30d058173472cf0559852e165d7
+  md5: 7c652cb2ffb1ad8766e1a8faa66d6913
+  depends:
+  - libboost-devel
+  - python
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-ros-workspace
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - libboost >=1.86.0,<1.87.0a0
+  - python_abi 3.12.* *_cp312
+  - numpy >=1.26.4,<2.0a0
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  license: BSD-3-Clause
+  size: 131811
+  timestamp: 1751036284472
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-foonathan-memory-vendor-1.3.1-np126py312he556185_10.conda
   sha256: 7be95651509477cc4d4f6ea27f374c2ebc2a6cecf3ab50ed207d9935efb5c035
   md5: 5b07841890d7cd1498f2e39bd55ba170
@@ -8868,6 +9115,57 @@ packages:
   license: BSD-3-Clause
   size: 19432
   timestamp: 1751032709481
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-force-torque-sensor-broadcaster-5.2.0-np126py312he556185_10.conda
+  sha256: 93577382cc23b7311488416a9f3cbd7e91f718dae53dfb62cf4419a6a49e62bc
+  md5: 7960592e1b32e361a4967384ede01ada
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-controller-interface
+  - ros-kilted-generate-parameter-library
+  - ros-kilted-geometry-msgs
+  - ros-kilted-hardware-interface
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - numpy >=1.26.4,<2.0a0
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - python_abi 3.12.* *_cp312
+  license: BSD-3-Clause
+  size: 168639
+  timestamp: 1751040461508
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-forward-command-controller-5.2.0-np126py312he556185_10.conda
+  sha256: 710a600cc4da665cc77828973d863b7ba27582713bea0e2e002fca156dbd44be
+  md5: ebd143a85b490151267cafbbf7d61818
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-controller-interface
+  - ros-kilted-generate-parameter-library
+  - ros-kilted-hardware-interface
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-std-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - libstdcxx >=13
+  - libgcc >=13
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  license: BSD-3-Clause
+  size: 221376
+  timestamp: 1751040339489
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-generate-parameter-library-0.5.0-np126py312he556185_10.conda
   sha256: b38fed0f5666c5bac8fcccddfffa520bd706b52a05d609d28799df2328daabed
   md5: 9edf2519cd221160403a8cb0c29a7554
@@ -8980,6 +9278,29 @@ packages:
   license: BSD-3-Clause
   size: 122420
   timestamp: 1751031851181
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gpio-controllers-5.2.0-np126py312he556185_10.conda
+  sha256: b41a079522b3a19cbe3d6064d37cbb4f649531acc5c6b0246690762b8b34d7a3
+  md5: 288de2323b2b7a10cd85cde11826af18
+  depends:
+  - python
+  - ros-kilted-control-msgs
+  - ros-kilted-controller-interface
+  - ros-kilted-generate-parameter-library
+  - ros-kilted-hardware-interface
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros2-distro-mutex 0.10.* kilted_*
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=13
+  - libgcc >=13
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  license: BSD-3-Clause
+  size: 243128
+  timestamp: 1751040418123
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gps-msgs-2.1.0-np126py312he556185_10.conda
   sha256: 065c5b4aa5f2a294616e8a33b69bdb59725625fd22d2fc1a95d74cbf32f5799a
   md5: 37acbcd4c46a46793cd5613b7fa6d2d7
@@ -8999,6 +9320,31 @@ packages:
   license: BSD-3-Clause
   size: 128606
   timestamp: 1751034280789
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gps-sensor-broadcaster-5.2.0-np126py312he556185_10.conda
+  sha256: 50643483a15d8cbc572c2232c309e3dfb4a85f68ccb7676b3e6447c3c0794f05
+  md5: d09b5e313a3d9d771de4cf3ad35e1ecb
+  depends:
+  - python
+  - ros-kilted-controller-interface
+  - ros-kilted-generate-parameter-library
+  - ros-kilted-hardware-interface
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-sensor-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  license: BSD-3-Clause
+  size: 152813
+  timestamp: 1751040400540
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gtest-vendor-1.15.1-np126py312he556185_10.conda
   sha256: 3126a5688e59d5af006cdebbdc40439ecfc1bdcadbbfd00293dbaddb7e5db75d
   md5: 450eb7a4406a2cf6bdfe6497725c1968
@@ -9410,6 +9756,53 @@ packages:
   license: BSD-3-Clause
   size: 368106
   timestamp: 1751040462410
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gz-ros2-control-demos-2.0.9-np126py312he556185_10.conda
+  sha256: 6ddf65010cd3ca11a0d3a72538e4fcb03f3dadbd1628b9331526a008d4d7c401
+  md5: 3bbbacb42b821d371da3dc9b228e04fc
+  depends:
+  - python
+  - ros-kilted-ackermann-steering-controller
+  - ros-kilted-ament-index-python
+  - ros-kilted-control-msgs
+  - ros-kilted-diff-drive-controller
+  - ros-kilted-effort-controllers
+  - ros-kilted-geometry-msgs
+  - ros-kilted-gz-ros2-control
+  - ros-kilted-hardware-interface
+  - ros-kilted-imu-sensor-broadcaster
+  - ros-kilted-joint-state-broadcaster
+  - ros-kilted-joint-trajectory-controller
+  - ros-kilted-launch
+  - ros-kilted-launch-ros
+  - ros-kilted-mecanum-drive-controller
+  - ros-kilted-rclcpp
+  - ros-kilted-robot-state-publisher
+  - ros-kilted-ros-gz-bridge
+  - ros-kilted-ros-gz-sim
+  - ros-kilted-ros-workspace
+  - ros-kilted-ros2-control-cmake
+  - ros-kilted-ros2controlcli
+  - ros-kilted-ros2launch
+  - ros-kilted-std-msgs
+  - ros-kilted-tricycle-steering-controller
+  - ros-kilted-velocity-controllers
+  - ros-kilted-xacro
+  - ros2-distro-mutex 0.10.* kilted_*
+  - xorg-libx11
+  - xorg-libxext
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=13
+  - libgcc >=13
+  - libgl >=1.7.0,<2.0a0
+  - xorg-libxext >=1.3.6,<2.0a0
+  - xorg-libx11 >=1.8.12,<2.0a0
+  - python_abi 3.12.* *_cp312
+  - numpy >=1.26.4,<2.0a0
+  - libopengl >=1.7.0,<2.0a0
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  license: BSD-3-Clause
+  size: 192014
+  timestamp: 1751040883238
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-gz-sensors-vendor-0.2.1-np126py312he556185_10.conda
   sha256: 72c9d093526b891794430090737632a49e15bcff746e76f5a0543509c0fde1af
   md5: 487fc74755dcb5fd6b341a1ca9d0a42b
@@ -9762,6 +10155,32 @@ packages:
   license: BSD-3-Clause
   size: 22455
   timestamp: 1751039237815
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-imu-sensor-broadcaster-5.2.0-np126py312he556185_10.conda
+  sha256: ca349cf4fe0638ff94a2044d201d35032e313ff48b3667169f78b310a60f4955
+  md5: a1a4d448f7b42d47fbe02fbaba3f48f3
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-controller-interface
+  - ros-kilted-generate-parameter-library
+  - ros-kilted-hardware-interface
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-sensor-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libgcc >=13
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - numpy >=1.26.4,<2.0a0
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - python_abi 3.12.* *_cp312
+  license: BSD-3-Clause
+  size: 150742
+  timestamp: 1751040382183
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-interactive-markers-2.7.0-np126py312he556185_10.conda
   sha256: ce4d644b7dc1944b267693be814fd9cdd1b9f1629f2f7e2dcdf6062170cb19ff
   md5: 2db4fe5073d130304de1af6ea62758ec
@@ -9843,6 +10262,34 @@ packages:
   license: BSD-3-Clause
   size: 144669
   timestamp: 1751038929131
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-joint-state-broadcaster-5.2.0-np126py312he556185_10.conda
+  sha256: e78205ff07d769a1ee3fd8879499ebcda09c7474da59d0c173adf1cd6a1cb5c4
+  md5: b82e2922d8628984143756aa2fd71fae
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-builtin-interfaces
+  - ros-kilted-control-msgs
+  - ros-kilted-controller-interface
+  - ros-kilted-generate-parameter-library
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-sensor-msgs
+  - ros-kilted-urdf
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=13
+  - libgcc >=13
+  - python_abi 3.12.* *_cp312
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 183019
+  timestamp: 1751040388816
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-joint-state-publisher-2.4.0-np126py312he556185_10.conda
   sha256: 4321c4f14703ffd098f2e5ae2ef9fc6095c53d1c5c0b0f44abecd320d290f398
   md5: 05a90723d57257268f934a3254a24e4d
@@ -9881,6 +10328,37 @@ packages:
   license: BSD-3-Clause
   size: 28898
   timestamp: 1751039255652
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-joint-trajectory-controller-5.2.0-np126py312he556185_10.conda
+  sha256: 709e94d3b3ada56ceeca28a1f3a38e612d86865c5eeb063a443174e945b05fce
+  md5: eec8a4ae7674981ea58175f43d5368b5
+  depends:
+  - python
+  - ros-kilted-angles
+  - ros-kilted-backward-ros
+  - ros-kilted-control-msgs
+  - ros-kilted-control-toolbox
+  - ros-kilted-controller-interface
+  - ros-kilted-generate-parameter-library
+  - ros-kilted-hardware-interface
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-rsl
+  - ros-kilted-tl-expected
+  - ros-kilted-trajectory-msgs
+  - ros-kilted-urdf
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - python_abi 3.12.* *_cp312
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 390791
+  timestamp: 1751040409717
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-joy-3.3.0-np126py312he556185_10.conda
   sha256: 9a0219f856d41da09c730b480016c5e74d047deec4f2f61f1bfd480d482007d5
   md5: 43a449682fea7172b8263b978ebe3043
@@ -9939,6 +10417,25 @@ packages:
   license: BSD-3-Clause
   size: 56828
   timestamp: 1751033036948
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-kinematics-interface-2.1.0-np126py312he556185_10.conda
+  sha256: f83c4a55ec79b1171e8b751ab4ad5018ad6663af9ef118bcf89d49f52f2ed890
+  md5: 495ef0ab8b1b1acab4a3522932af6c0a
+  depends:
+  - eigen
+  - python
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-ros-workspace
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=13
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  license: BSD-3-Clause
+  size: 46358
+  timestamp: 1751038610304
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-laser-geometry-2.10.1-np126py312he556185_10.conda
   sha256: 5a2a9213f6b5531d668aadc93cd2d524f1a0a24d90d0105d27c5e89790a09cec
   md5: 4f44eafda07da3e5742f1c6987883370
@@ -10287,6 +10784,37 @@ packages:
   license: BSD-3-Clause
   size: 174432
   timestamp: 1751032448101
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-mecanum-drive-controller-5.2.0-np126py312he556185_10.conda
+  sha256: 02da11caa26f33ea34f922d6a3bb28ccf0dd9574df23f06d33b0b60fcada4437
+  md5: 1bfd22385750a3b473b259202465d7f0
+  depends:
+  - python
+  - ros-kilted-control-msgs
+  - ros-kilted-controller-interface
+  - ros-kilted-geometry-msgs
+  - ros-kilted-hardware-interface
+  - ros-kilted-nav-msgs
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-rcpputils
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-std-srvs
+  - ros-kilted-tf2
+  - ros-kilted-tf2-geometry-msgs
+  - ros-kilted-tf2-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - python_abi 3.12.* *_cp312
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 289918
+  timestamp: 1751040338350
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-message-filters-7.1.1-np126py312he556185_10.conda
   sha256: 02b8344fa857e9bad9a377a7f111d4a39d628146cd0a543cd75d16ab79278086
   md5: 5c3e4c1482ddec148c9016a4d1cc6624
@@ -10411,6 +10939,33 @@ packages:
   license: BSD-3-Clause
   size: 125531
   timestamp: 1751034284940
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-parallel-gripper-controller-5.2.0-np126py312he556185_10.conda
+  sha256: a0dc327d8fda1317c2b02ee8323aed0d14909df44affe987fe6f6474b020fab3
+  md5: 989e7ee179f226088241073fc5bc4724
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-control-msgs
+  - ros-kilted-control-toolbox
+  - ros-kilted-controller-interface
+  - ros-kilted-generate-parameter-library
+  - ros-kilted-hardware-interface
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-action
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=13
+  - libgcc >=13
+  - python_abi 3.12.* *_cp312
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 153660
+  timestamp: 1751040454165
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-parameter-traits-0.5.0-np126py312he556185_10.conda
   sha256: 843b931da32cc782adec185d3510e1fc34a3540bb3f853981185e59175354b4c
   md5: fa7e8cc231ab7c390c61f98b043a8867
@@ -10527,6 +11082,35 @@ packages:
   license: BSD-3-Clause
   size: 96716
   timestamp: 1751034095924
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pid-controller-5.2.0-np126py312he556185_10.conda
+  sha256: 4183ea48fd888239e11d649970d16cc8991824b147638549870586b60a5ec754
+  md5: e816243d7e338e6d35946ceabb92f0ce
+  depends:
+  - python
+  - ros-kilted-angles
+  - ros-kilted-backward-ros
+  - ros-kilted-control-msgs
+  - ros-kilted-control-toolbox
+  - ros-kilted-controller-interface
+  - ros-kilted-hardware-interface
+  - ros-kilted-parameter-traits
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-std-srvs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  license: BSD-3-Clause
+  size: 289452
+  timestamp: 1751040423203
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pluginlib-5.6.0-np126py312he556185_10.conda
   sha256: b862c35580cf664a6a2a0a49e93dff6e63e56c479ee2e2fe2f00e4ff454aac57
   md5: 133c6fc18076a5d761f831926b0971aa
@@ -10572,6 +11156,53 @@ packages:
   license: BSD-3-Clause
   size: 455024
   timestamp: 1751038820849
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pose-broadcaster-5.2.0-np126py312he556185_10.conda
+  sha256: 011c6ce4a8e7afcbb820818b81d4deac933e6a8fcdcadac5fae6aac9952fdc9a
+  md5: 783fafc46791ec0271dc8872860d6ba0
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-controller-interface
+  - ros-kilted-generate-parameter-library
+  - ros-kilted-geometry-msgs
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-tf2-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - python_abi 3.12.* *_cp312
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 167349
+  timestamp: 1751040442018
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-position-controllers-5.2.0-np126py312he556185_10.conda
+  sha256: 4e91be9a3033ab73ead288fd51186cb5401e50fdc719b2f8143e8f0dd227806b
+  md5: 41742bcb122f0e12c3f8edea57827854
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-forward-command-controller
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-ros-workspace
+  - ros2-distro-mutex 0.10.* kilted_*
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - libstdcxx >=13
+  - libgcc >=13
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  license: BSD-3-Clause
+  size: 74735
+  timestamp: 1751040546953
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-pybind11-vendor-3.2.0-np126py312he556185_10.conda
   sha256: 094e2be68b737763a1e3cda1808ad40fe62861ddd8401714c36a6d024ffc111a
   md5: 5cfe8fb15880e4657f595ab697437c14
@@ -10776,6 +11407,32 @@ packages:
   license: BSD-3-Clause
   size: 35358
   timestamp: 1751036167382
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-range-sensor-broadcaster-5.2.0-np126py312he556185_10.conda
+  sha256: ea4d46455e6fd29a35347d4b7eae0761237d4c1dd55b54a7e16c0a08700134e9
+  md5: 969096523973f0c6f2bd3621274f8ff9
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-controller-interface
+  - ros-kilted-generate-parameter-library
+  - ros-kilted-hardware-interface
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-sensor-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - libstdcxx >=13
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - python_abi 3.12.* *_cp312
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 146837
+  timestamp: 1751040404877
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-rcl-10.1.1-np126py312he556185_10.conda
   sha256: fbaae68970ab1209ed8e5bef942e53ae0b163cb1a7c5f58e4af2c6a46ce8a042
   md5: a5660bd2e94f603869b69a9dc04196d0
@@ -11793,6 +12450,30 @@ packages:
   license: BSD-3-Clause
   size: 35280
   timestamp: 1751031701405
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2-control-5.2.0-np126py312he556185_10.conda
+  sha256: e9975c2bda3679ec51e4e5a9837c4ffd3a14c5f08f252b77342da67ebab30a6d
+  md5: 5b4e3bb30a52f6513b68410b26247e02
+  depends:
+  - python
+  - ros-kilted-controller-interface
+  - ros-kilted-controller-manager
+  - ros-kilted-controller-manager-msgs
+  - ros-kilted-hardware-interface
+  - ros-kilted-joint-limits
+  - ros-kilted-ros-workspace
+  - ros-kilted-ros2-control-test-assets
+  - ros-kilted-ros2controlcli
+  - ros-kilted-transmission-interface
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - python_abi 3.12.* *_cp312
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 22248
+  timestamp: 1751040665094
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2-control-cmake-0.2.1-np126py312he556185_10.conda
   sha256: f55a87a9248c1e05d20aaa40e99c5ea1b5cc86de52434e71e93c8fb583720f5c
   md5: 96a24e04b879ef3e6334e6f2e000f540
@@ -11827,6 +12508,45 @@ packages:
   license: BSD-3-Clause
   size: 31107
   timestamp: 1751032364616
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2-controllers-5.2.0-np126py312he556185_10.conda
+  sha256: 3533fc359fe3921410d5d008ac03e7c26923676d18f5c2dfb3270f2d09d7fef7
+  md5: 0e9d221ecbf0a654d6975b5747d5743b
+  depends:
+  - python
+  - ros-kilted-ackermann-steering-controller
+  - ros-kilted-admittance-controller
+  - ros-kilted-bicycle-steering-controller
+  - ros-kilted-diff-drive-controller
+  - ros-kilted-effort-controllers
+  - ros-kilted-force-torque-sensor-broadcaster
+  - ros-kilted-forward-command-controller
+  - ros-kilted-gpio-controllers
+  - ros-kilted-gps-sensor-broadcaster
+  - ros-kilted-imu-sensor-broadcaster
+  - ros-kilted-joint-state-broadcaster
+  - ros-kilted-joint-trajectory-controller
+  - ros-kilted-mecanum-drive-controller
+  - ros-kilted-parallel-gripper-controller
+  - ros-kilted-pid-controller
+  - ros-kilted-pose-broadcaster
+  - ros-kilted-position-controllers
+  - ros-kilted-range-sensor-broadcaster
+  - ros-kilted-ros-workspace
+  - ros-kilted-steering-controllers-library
+  - ros-kilted-tricycle-controller
+  - ros-kilted-tricycle-steering-controller
+  - ros-kilted-velocity-controllers
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=13
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  license: BSD-3-Clause
+  size: 22723
+  timestamp: 1751040818914
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2action-0.38.0-np126py312he556185_10.conda
   sha256: 0e04bb6ae90e016d3e67b2d23bf565d74c2ba7b6ce649e6d9149685a4b295270
   md5: 774d6a596d801efdd8ae431933381b4f
@@ -11951,6 +12671,32 @@ packages:
   license: BSD-3-Clause
   size: 38128
   timestamp: 1751039506588
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2controlcli-5.2.0-np126py312he556185_10.conda
+  sha256: 8e95306a8681c007281e8fcfe8c191aa25122a153c5eeb5273c45d24cc5e355c
+  md5: 93116ae3dd3c8fcd4e68bd9471427d23
+  depends:
+  - pygraphviz
+  - python
+  - ros-kilted-controller-manager
+  - ros-kilted-controller-manager-msgs
+  - ros-kilted-rcl-interfaces
+  - ros-kilted-rclpy
+  - ros-kilted-ros-workspace
+  - ros-kilted-ros2cli
+  - ros-kilted-ros2node
+  - ros-kilted-ros2param
+  - ros-kilted-rosidl-runtime-py
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libgcc >=13
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - python_abi 3.12.* *_cp312
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 76947
+  timestamp: 1751040338007
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-ros2doctor-0.38.0-np126py312he556185_10.conda
   sha256: 58ff45bd17cf1ed751f07c50ec61121b00f679184b3b1adc9a289a6c3712135c
   md5: ffe78178edf19bcb45740c4bae858977
@@ -14143,6 +14889,39 @@ packages:
   license: BSD-3-Clause
   size: 167788
   timestamp: 1751034101557
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-steering-controllers-library-5.2.0-np126py312he556185_10.conda
+  sha256: 3250551e0a3741c0a784656b4ab14363dbe706d4af2edd543f2b1cb70e627008
+  md5: 507cff810a9f17717eb6ee7fee45ee51
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-control-msgs
+  - ros-kilted-controller-interface
+  - ros-kilted-generate-parameter-library
+  - ros-kilted-geometry-msgs
+  - ros-kilted-hardware-interface
+  - ros-kilted-nav-msgs
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-rcpputils
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-std-srvs
+  - ros-kilted-tf2
+  - ros-kilted-tf2-geometry-msgs
+  - ros-kilted-tf2-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - python_abi 3.12.* *_cp312
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 290320
+  timestamp: 1751040343071
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-stereo-msgs-5.5.0-np126py312he556185_10.conda
   sha256: e41b0b30bee7fcab179e5f2639cc87526201f868aaa6d7db79440bc958a39848
   md5: 5abee6fec810453a072de3465653c283
@@ -14676,6 +15455,84 @@ packages:
   license: BSD-3-Clause
   size: 148216
   timestamp: 1751034562699
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-transmission-interface-5.2.0-np126py312he556185_10.conda
+  sha256: b010d3f3120fb80b43d8cccea8eaff6c4659108010280fe66c8b3f56f9c801c1
+  md5: b461e5c06c5ee34ccb7201bd7bcf0fb0
+  depends:
+  - fmt
+  - python
+  - ros-kilted-hardware-interface
+  - ros-kilted-pluginlib
+  - ros-kilted-ros-workspace
+  - ros2-distro-mutex 0.10.* kilted_*
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=13
+  - libgcc >=13
+  - python_abi 3.12.* *_cp312
+  - fmt >=11.1.4,<11.2.0a0
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 103595
+  timestamp: 1751039462520
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-tricycle-controller-5.2.0-np126py312he556185_10.conda
+  sha256: 7b541da56ac9644f5d0d0644485aa021c9024bf87e21958a4ee01e4d9199df0c
+  md5: 8cb6977f8765c49407d2c2d111c76122
+  depends:
+  - python
+  - ros-kilted-ackermann-msgs
+  - ros-kilted-backward-ros
+  - ros-kilted-builtin-interfaces
+  - ros-kilted-controller-interface
+  - ros-kilted-geometry-msgs
+  - ros-kilted-hardware-interface
+  - ros-kilted-nav-msgs
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-rcpputils
+  - ros-kilted-realtime-tools
+  - ros-kilted-ros-workspace
+  - ros-kilted-std-srvs
+  - ros-kilted-tf2
+  - ros-kilted-tf2-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  license: BSD-3-Clause
+  size: 313153
+  timestamp: 1751040362581
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-tricycle-steering-controller-5.2.0-np126py312he556185_10.conda
+  sha256: 40aadb9a96196acf7de784045deabf74da110162f1770584ca4449fa3f664717
+  md5: 276320968c7c9dd30a553aeed6acadfb
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-control-msgs
+  - ros-kilted-controller-interface
+  - ros-kilted-hardware-interface
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-ros-workspace
+  - ros-kilted-std-srvs
+  - ros-kilted-steering-controllers-library
+  - ros2-distro-mutex 0.10.* kilted_*
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - libstdcxx >=13
+  - libgcc >=13
+  - python_abi 3.12.* *_cp312
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  license: BSD-3-Clause
+  size: 99086
+  timestamp: 1751040649733
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-turtlesim-1.9.3-np126py312he556185_10.conda
   sha256: d93620a95d95cfccee8948e31a3c9aa041559ab30ab3fe828a7d58736b082a3c
   md5: a76794dcdba0fd77504ca9e163df7828
@@ -14855,6 +15712,26 @@ packages:
   license: BSD-3-Clause
   size: 7273
   timestamp: 1751031754594
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-velocity-controllers-5.2.0-np126py312he556185_10.conda
+  sha256: e220b21ef4cb06f996ddc6017b668d49c1ac9afb8a21253356f4b381eb840838
+  md5: c46f569d0d01c2c8b944258884165d36
+  depends:
+  - python
+  - ros-kilted-backward-ros
+  - ros-kilted-forward-command-controller
+  - ros-kilted-pluginlib
+  - ros-kilted-rclcpp
+  - ros-kilted-ros-workspace
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - numpy >=1.26.4,<2.0a0
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - python_abi 3.12.* *_cp312
+  license: BSD-3-Clause
+  size: 75628
+  timestamp: 1751040582049
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-vision-msgs-4.2.0-np126py312he556185_10.conda
   sha256: 13fef313f3bfa24272a8c0750ee9811ab0821916e304dc75af0b353a710ce04b
   md5: 52e4428de8171ec03e8e8116565d3b9a

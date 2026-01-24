@@ -1,119 +1,105 @@
 import os
-import xacro
 from ament_index_python.packages import get_package_share_directory
-
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, SetEnvironmentVariable
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, Command
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
+from launch.actions import RegisterEventHandler
+from launch.event_handlers import OnProcessExit
+
+# ... (inside your generate_launch_description)
 
 
 def generate_launch_description():
-
+    # 1. Arguments & Config
+    sim_mode = LaunchConfiguration('sim_mode')
+    
     sim_mode_arg = DeclareLaunchArgument(
         'sim_mode',
         default_value='true',
         description='Use simulation (Gazebo) if true'
     )
 
-    # Define the robot's name and package name
-    robot_name = "rusty"
     package_name = "rusty_gz"
-    
-    # 1. Setup Resource Paths for Gazebo
-    # We need to point Gazebo to the directory ABOVE our package share directory 
-    # so that model://rusty_description/ meshes can be resolved.
-    sim_mode = LaunchConfiguration('sim_mode')
     description_pkg_share = get_package_share_directory('rusty_description')
-    install_dir = os.path.join(description_pkg_share, '..')
+    
+    # 2. Process URDF with sim_mode argument
+    # This ensures the <hardware> block picks GazeboSimSystem
+    robot_description_content = Command([
+        'xacro ', os.path.join(description_pkg_share, 'urdf', 'rusty.urdf.xacro'),
+        ' sim_mode:=', sim_mode
+    ])
+    robot_description = {
+    'robot_description': ParameterValue(robot_description_content, value_type=str)
+    }
 
-    # Update GZ_SIM_RESOURCE_PATH (for Gazebo Sim / Harmonic / Ionic)
-    # and IGN_GAZEBO_RESOURCE_PATH (for older versions like Fortress)
-    # We use SetEnvironmentVariable so it is scoped to this launch process.
-    resource_path_action = SetEnvironmentVariable(
-        name='GZ_SIM_RESOURCE_PATH',
-        value=[install_dir]
-    )
-
-    # 2. Define launch arguments
-    world_arg = DeclareLaunchArgument(
-        'world',
-        default_value='empty.sdf',
-        description='Specify the world file for Gazebo (e.g., empty.sdf)'
-    )
-
-    x_arg = DeclareLaunchArgument('x', default_value='0.0')
-    y_arg = DeclareLaunchArgument('y', default_value='0.0')
-    z_arg = DeclareLaunchArgument('z', default_value='0.5')
-    roll_arg = DeclareLaunchArgument('R', default_value='0.0')
-    pitch_arg = DeclareLaunchArgument('P', default_value='0.0')
-    yaw_arg = DeclareLaunchArgument('Y', default_value='0.0')
-
-    # Retrieve launch configurations
-    world_file = LaunchConfiguration('world')
-    x, y, z = LaunchConfiguration('x'), LaunchConfiguration('y'), LaunchConfiguration('z')
-    roll, pitch, yaw = LaunchConfiguration('R'), LaunchConfiguration('P'), LaunchConfiguration('Y')
-
-    # 3. Process Xacro
-    robot_model_path = os.path.join(description_pkg_share, 'urdf', 'rusty.urdf.xacro')
-    robot_description = xacro.process_file(robot_model_path).toxml()
-
-    gz_bridge_params_path = os.path.join(
-        get_package_share_directory(package_name),
-        'config',
-        'gz_bridge.yaml'
-    )
-
-    # 4. Include Gazebo Launch
-    gazebo_pkg_launch = PythonLaunchDescriptionSource(
-        os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
-    )
+    # 3. Gazebo Setup
+    world_file = LaunchConfiguration('world', default='empty.sdf')
+    gz_bridge_params_path = os.path.join(get_package_share_directory(package_name), 'config', 'gz_bridge.yaml')
 
     gazebo_launch = IncludeLaunchDescription(
-        gazebo_pkg_launch,
-        launch_arguments={
-            'gz_args': [f'-r -v 4 ', world_file],
-            'on_exit_shutdown': 'true'
-        }.items()
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
+        ),
+        launch_arguments={'gz_args': [f'-r -v 4 ', world_file]}.items()
     )
 
-    # 5. Nodes
-    spawn_model_gazebo_node = Node(
+    # 4. Nodes
+    spawn_model = Node(
         package='ros_gz_sim',
         executable='create',
-        arguments=[
-            '-name', robot_name,
-            '-string', robot_description,
-            '-x', x, '-y', y, '-z', z,
-            '-R', roll, '-P', pitch, '-Y', yaw,
-            '-allow_renaming', 'false'
-        ],
+        arguments=['-name', 'rusty', '-topic', 'robot_description'],
         output='screen',
     )
 
-    robot_state_publisher_node = Node(
+    # Note: we pass use_sim_time: True via a parameter
+    robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        parameters=[{'robot_description': robot_description, 'use_sim_time': True}],
+        parameters=[robot_description, {'use_sim_time': True}],
         output='screen'
     )
 
-    gz_bridge_node = Node(
+    gz_bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=['--ros-args', '-p', f'config_file:={gz_bridge_params_path}'],
         output='screen'
     )
-    
 
+    # 5. Controllers Spawners
+    # These must wait for the Gazebo plugin to load the controller_manager
+    joint_state_broadcaster_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster"],
+        parameters=[{'use_sim_time': True}]
+    )
+
+    robot_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["diff_cont"],
+        parameters=[{'use_sim_time': True}]
+    )
+
+
+    # 6. Final Return with Event Handlers
     return LaunchDescription([
-        resource_path_action, # Ensure environment is set first
-        world_arg,
+        sim_mode_arg,
+        SetEnvironmentVariable(name='GZ_SIM_RESOURCE_PATH', value=[os.path.join(description_pkg_share, '..')]),
         gazebo_launch,
-        x_arg, y_arg, z_arg,
-        roll_arg, pitch_arg, yaw_arg,
-        spawn_model_gazebo_node,
-        robot_state_publisher_node,
-        gz_bridge_node,
+        spawn_model,
+        robot_state_publisher,
+        gz_bridge,
+
+        # This ensures the spawners only start AFTER the robot is created in Gazebo
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=spawn_model,
+                on_exit=[joint_state_broadcaster_spawner, robot_controller_spawner],
+            )
+        ),
     ])

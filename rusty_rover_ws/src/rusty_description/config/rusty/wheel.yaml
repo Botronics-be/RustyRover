@@ -1,4 +1,4 @@
-mass: 0.032        # Wheel mass in Kg
+mass: 0.01        # Wheel mass in Kg
 radius: 0.03    # Wheel radius in m
 length: 0.007     # Wheel length in m, considering is as a cylinder
 mesh: 'wheel.stl'  # Leave it empty ('') to have a red wheel

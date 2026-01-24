@@ -20,6 +20,7 @@ scripts = [
 [tasks]
 build = "colcon build --symlink-install"
 clean = "rm -rf build/ install/ log/"
+source = "source install/setup.bash"
 
 [dependencies]
 ros-kilted-desktop = ">=0.12.0,<0.13"
@@ -31,6 +32,11 @@ ros-kilted-gz-ros2-control = ">=2.0.9,<3"
 python = ">=3.12.12,<3.13"
 compilers = ">=1.11.0,<2"
 ffmpeg = "<8"
+ros-kilted-ros2-control = ">=5.2.0,<6"
+ros-kilted-ros2-controllers = ">=5.2.0,<6"
+filelock = ">=3.20.3,<4"
+ros-kilted-controller-manager = ">=5.2.0,<6"
+ros-kilted-gz-ros2-control-demos = ">=2.0.9,<3"
 
 
 

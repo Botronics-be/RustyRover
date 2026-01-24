@@ -1,4 +1,4 @@
-mass: 0.1          # mass in Kg
+mass: 0.005          # mass in Kg
 box_size: 0.02
 mesh: 'camera_mount.stl'  # If empty, it will be have a box as visual
 dx: 0.055

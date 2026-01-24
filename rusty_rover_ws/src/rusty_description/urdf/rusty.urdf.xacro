@@ -61,5 +61,15 @@
   <!-- ros2_control -->
   <xacro:rusty_ros2_control sim_mode="$(arg sim_mode)" />
 
+  <!-- Gazebo plugin for ros2 control -->
+  <gazebo>
+    <plugin name="gz_ros2_control::GazeboSimROS2ControlPlugin" filename="libgz_ros2_control-system.so">
+      <parameters>$(find rusty_control)/config/controller.yaml</parameters>
+      <ros>
+        <use_sim_time>true</use_sim_time>
+      </ros>
+    </plugin>
+  </gazebo>
+
 
 </robot>

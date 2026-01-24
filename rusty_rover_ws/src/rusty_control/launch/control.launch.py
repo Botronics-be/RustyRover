@@ -10,7 +10,7 @@ def generate_launch_description():
     declared_arguments = [
         DeclareLaunchArgument(
             "sim_mode",
-            default_value="false",
+            default_value="true",
             description="Use simulation (Gazebo) or real hardware",
         )
     ]
@@ -56,7 +56,7 @@ def generate_launch_description():
     robot_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["rusty_base_controller"],
+        arguments=["diff_cont"],
     )
 
     joint_state_broadcaster_spawner = Node(

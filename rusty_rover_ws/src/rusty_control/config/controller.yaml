@@ -1,54 +1,59 @@
 controller_manager:
   ros__parameters:
-    update_rate: 10  # Hz
+    update_rate: 100
+    # In simulation, the Gazebo plugin overrides this to True
+    use_sim_time: False 
 
-    rusty_base_controller:
+    # Declaration of controllers
+    diff_cont:
       type: diff_drive_controller/DiffDriveController
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
 
-rusty_base_controller:
+# Configuration for the Joint State Broadcaster
+joint_state_broadcaster:
   ros__parameters:
-    left_wheel_names: ["left_wheel_joint"]
-    right_wheel_names: ["right_wheel_joint"]
+    use_sim_time: False
 
-    wheel_separation: 0.104
-    #wheels_per_side: 1
-    wheel_radius: 0.032
-
-    wheel_separation_multiplier: 1.0
-    left_wheel_radius_multiplier: 1.0
-    right_wheel_radius_multiplier: 1.0
-
-    publish_rate: 50.0
+# Configuration for the Differential Drive Controller
+diff_cont:
+  ros__parameters:
+    use_sim_time: False
+    
+    # Frame IDs
+    base_frame_id: base_footprint
     odom_frame_id: odom
-    base_frame_id: base_link
-    pose_covariance_diagonal : [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
-    twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
-
-    open_loop: true
-    position_feedback: false  
     enable_odom_tf: true
 
-    cmd_vel_timeout: 0.5
-    #publish_limited_velocity: true
-    #velocity_rolling_window_size: 10
+    # Joint Names (must match URDF)
+    left_wheel_names: ["left_wheel_joint"]
+    right_wheel_names: ["right_wheel_joint"]
+    
+    # Kinematics
+    wheel_separation: 0.136
+    wheel_radius: 0.032
 
-    # Velocity and acceleration limits
-    # Whenever a min_* is unspecified, default to -max_*
-    linear.x.has_velocity_limits: true
-    linear.x.has_acceleration_limits: true
-    linear.x.has_jerk_limits: false
-    linear.x.max_velocity: 0.016
-    linear.x.min_velocity: -0.016
-    linear.x.max_acceleration: 0.07
-    linear.x.max_jerk: 0.0
-    linear.x.min_jerk: 0.0
+    # Command interface
+    use_stamped_vel: true 
 
-    angular.z.has_velocity_limits: true
-    angular.z.has_acceleration_limits: true
-    angular.z.has_jerk_limits: false
-    angular.z.max_velocity: 0.25
-    angular.z.min_velocity: -0.25
-    angular.z.max_acceleration: 1.0
-    angular.z.min_acceleration: -1.0
-    angular.z.max_jerk: 0.0
-    angular.z.min_jerk: 0.0
+    # --- NO-ENCODER SETTINGS (Open Loop) ---
+    position_feedback: false 
+    open_loop: true
+    # ----------------------------------------
+
+    # Velocity Limits
+    linear:
+      x:
+        has_velocity_limits: true
+        max_velocity: 3.0
+        max_acceleration: 1.0
+        max_deceleration: -10.0
+        max_acceleration_reverse: -1.0
+        max_deceleration_reverse: 10.0
+
+    angular:
+      z:
+        has_velocity_limits: true
+        max_velocity: 3.14
+        max_acceleration: 1.0
+        max_deceleration: -1.0
