@@ -88,8 +88,8 @@ def generate_launch_description():
     return LaunchDescription([
         jsp_argument,
         rviz_argument,
-        # rsp_argument,
+        rsp_argument,
         jsp_gui,
         rviz,
-        # rsp,
+        rsp,
     ])

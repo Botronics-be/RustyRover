@@ -1,75 +1,169 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rusty">
+<robot name="rusty" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:property name="package_name" value="rusty_description"/>
-  <xacro:property name="robot_name" value="rusty"/>
+  <material name="silver"><color rgba="0.7 0.7 0.7 1.0"/></material>
+  <material name="black"><color rgba="0.0 0.0 0.0 1.0"/></material>
+  <material name="blue"><color rgba="0.0 0.0 0.8 1.0"/></material>
 
-  <xacro:include filename="$(find ${package_name})/urdf/include/inertial_macros.urdf.xacro" />
+  <link name="base_footprint"/>
 
-  <xacro:include filename="$(find ${package_name})/urdf/include/base.urdf.xacro" />
-  <xacro:include filename="$(find ${package_name})/urdf/include/wheels.urdf.xacro" />
-  <xacro:include filename="$(find ${package_name})/urdf/include/camera.urdf.xacro" />
-  <xacro:include filename="$(find ${package_name})/urdf/include/caster_wheel.urdf.xacro" />
-  <xacro:include filename="$(find ${package_name})/urdf/include/rusty_control.urdf.xacro" />
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.032" rpy="0 0 0"/> 
+  </joint>
 
-  <xacro:arg name="yaml_config_dir" default="$(find ${package_name})/config/rusty" />
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://rusty_description/meshes/base_link_visual.stl" />
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.015" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.12 0.1 0.05" /> 
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.05" />
+      <inertia ixx="0.000042" ixy="0" ixz="0.000001" iyy="0.000083" iyz="0" izz="0.000102" />
+    </inertial>
+  </link>
 
-  <xacro:property name="caster_wheel_yaml" value="$(arg yaml_config_dir)/caster_wheel.yaml" />
-  <xacro:property name="caster_wheel_props" value="${xacro.load_yaml(caster_wheel_yaml)}"/>
-  <xacro:arg name="use_fixed_caster" default="True"/>
+  <xacro:macro name="wheel_link" params="prefix y_reflect">
+    <link name="${prefix}_wheel">
+      <visual>
+        <geometry>
+          <mesh filename="package://rusty_description/meshes/${prefix}_wheel_visual.stl" />
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="0.032" length="0.01"/> 
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.01" />
+        <inertia ixx="0.000002" ixy="0" ixz="0" iyy="0.000004" iyz="0" izz="0.000002" />
+      </inertial>
+    </link>
 
-  <xacro:property name="wheel_yaml" value="$(arg yaml_config_dir)/wheel.yaml" />
-  <xacro:property name="wheel_props" value="${xacro.load_yaml(wheel_yaml)}"/>
+    <joint name="${prefix}_wheel_joint" type="continuous">
+      <origin xyz="0.029641 ${0.05 * y_reflect} -0.003216" rpy="0 0 0" />
+      <parent link="base_link" />
+      <child link="${prefix}_wheel" />
+      <axis xyz="0 1 0" />
+    </joint>
+  </xacro:macro>
 
-  <xacro:property name="base_yaml" value="$(arg yaml_config_dir)/base.yaml" />
-  <xacro:property name="base_props" value="${xacro.load_yaml(base_yaml)}"/>
+  <xacro:wheel_link prefix="left" y_reflect="1" />
+  <xacro:wheel_link prefix="right" y_reflect="-1" />
 
-  <xacro:property name="camera_yaml" value="$(arg yaml_config_dir)/camera.yaml" />
-  <xacro:property name="camera_prop" value="${xacro.load_yaml(camera_yaml)}"/>
+  <link name="caster_shroud_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://rusty_description/meshes/caster_shroud_link_visual.stl" />
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <inertial>
+      <mass value="0.005" />
+      <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001" />
+    </inertial>
+  </link>
 
- <xacro:arg name="sim_mode" default="true"/>
+  <joint name="caster_shroud_link_joint" type="fixed">
+    <origin xyz="-0.0535 0.003633 -0.016" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="caster_shroud_link" />
+  </joint>
 
-  <!-- Footprint link -->
-  <xacro:footprint wheel_props="${wheel_props}" />
+  <link name="caster_ball_link">
+    <visual>
+      <geometry><sphere radius="0.0128"/></geometry> <material name="black"/>
+    </visual>
+    <collision>
+      <geometry><sphere radius="0.0128"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="0.005" />
+      <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001" />
+    </inertial>
+  </link>
 
-  <!-- Base link -->
-  <xacro:base link_name="base_link" base_prop="${base_props}" mesh="${base_props['base']['mesh']}" scale="0.001 0.001 0.001" >
-    <origin xyz="${-base_props['base']['x_size']/2} 0.004 0" rpy="1.5708 0 1.5708" />
-  </xacro:base>
+  <joint name="caster_ball_link_joint" type="fixed">
+    <origin xyz="0 0 -0.0064" rpy="0 0 0" />
+    <parent link="caster_shroud_link" />
+    <child link="caster_ball_link" />
+  </joint>
 
-  <!-- Caster Wheel -->
-  <xacro:caster_wheel use_fixed="$(arg use_fixed_caster)"
-                      wheel_props="${caster_wheel_props}"
-                      scale="0.001 0.001 0.001">
-  </xacro:caster_wheel>
+  <link name="camera_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://rusty_description/meshes/camera_link_visual.stl" />
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <inertial>
+      <mass value="0.003" />
+      <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0" iyz="0" izz="0.000001" />
+    </inertial>
+  </link>
 
-  <!-- Wheels -->
-  <xacro:wheel prefix="right" reflect="-1"
-                      wheel_props="${wheel_props}"
-                      base_props="${base_props}" >
-  </xacro:wheel>
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0.04807 0.006009 0.042372" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="camera_link" />
+  </joint>
 
-  <xacro:wheel prefix="left" reflect="1"
-                      wheel_props="${wheel_props}"
-                      base_props="${base_props}" >
-  </xacro:wheel>
+  <ros2_control name="GazeboSimSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+    <joint name="left_wheel_joint">
+      <command_interface name="velocity" />
+      <state_interface name="position" />
+      <state_interface name="velocity" />
+    </joint>
+    <joint name="right_wheel_joint">
+      <command_interface name="velocity" />
+      <state_interface name="position" />
+      <state_interface name="velocity" />
+    </joint>
+  </ros2_control>
 
-  <!-- Sensors -->
-  <xacro:camera_sensor parent_link="base_link" camera_prop="${camera_prop}">
-  </xacro:camera_sensor>
-
-  <!-- ros2_control -->
-  <xacro:rusty_ros2_control sim_mode="$(arg sim_mode)" />
-
-  <!-- Gazebo plugin for ros2 control -->
   <gazebo>
     <plugin name="gz_ros2_control::GazeboSimROS2ControlPlugin" filename="libgz_ros2_control-system.so">
       <parameters>$(find rusty_control)/config/controller.yaml</parameters>
-      <ros>
-        <use_sim_time>true</use_sim_time>
-      </ros>
     </plugin>
   </gazebo>
 
+  <gazebo reference="caster_ball_link">
+    <mu1 value="0.001"/>
+    <mu2 value="0.001"/>
+    <kp value="1000000.0" />
+    <kd value="1.0" />
+  </gazebo>
+
+  <gazebo reference="camera_link">
+    <sensor name="camera_sensor" type="camera">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <update_rate>30.0</update_rate>
+      <topic>camera/image_raw</topic>
+      <gz_frame_id>camera_link</gz_frame_id>
+      <camera>
+        <horizontal_fov>1.089</horizontal_fov>
+        <image>
+          <width>640</width><height>480</height><format>R8G8B8</format>
+        </image>
+        <clip><near>0.05</near><far>8.0</far></clip>
+      </camera>
+    </sensor>
+  </gazebo>
 
 </robot>
