@@ -30,8 +30,8 @@ diff_cont:
     right_wheel_names: ["right_wheel_joint"]
     
     # Kinematics
-    wheel_separation: 0.136
-    wheel_radius: 0.032
+    wheel_separation: 0.105
+    wheel_radius: 0.03
 
     # Command interface
     use_stamped_vel: true 
