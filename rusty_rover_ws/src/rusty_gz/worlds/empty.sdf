@@ -1,6 +1,11 @@
-<?xml version="1.0"?>
-<sdf version="1.6">
+<?xml version="1.0" ?>
+<sdf version="1.9">
     <world name="empty">
+        <physics name="1ms" type="ignored">
+            <max_step_size>0.001</max_step_size>
+            <real_time_factor>1.0</real_time_factor>
+        </physics>
+
         <plugin
             filename="gz-sim-physics-system"
             name="gz::sim::systems::Physics">
@@ -13,24 +18,12 @@
             filename="gz-sim-scene-broadcaster-system"
             name="gz::sim::systems::SceneBroadcaster">
         </plugin>
+
         <plugin
             filename="gz-sim-sensors-system"
             name="gz::sim::systems::Sensors">
+            <render_engine>ogre2</render_engine>
         </plugin>
-        <plugin
-            filename="ignition-gazebo-navsat-system"
-            name="ignition::gazebo::systems::NavSat">
-        </plugin>
-        <plugin
-            filename="gz-sim-imu-system"
-            name="gz::sim::systems::Imu">
-        </plugin>
-        <spherical_coordinates>
-            <surface_model>EARTH_WGS84</surface_model>
-            <world_frame_orientation>ENU</world_frame_orientation>
-            <latitude_deg>50.553462</latitude_deg>
-            <longitude_deg>4.439694</longitude_deg>
-        </spherical_coordinates>
 
         <light type="directional" name="sun">
             <cast_shadows>true</cast_shadows>
@@ -72,6 +65,5 @@
                 </visual>
             </link>
         </model>
-
     </world>
 </sdf>

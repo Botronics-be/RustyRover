@@ -108,6 +108,9 @@
       </geometry>
       <material name="blue"/>
     </visual>
+    <collision>
+       <geometry><sphere radius="0.0128"/></geometry>
+    </collision>
     <inertial>
       <mass value="0.003" />
       <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0" iyz="0" izz="0.000001" />

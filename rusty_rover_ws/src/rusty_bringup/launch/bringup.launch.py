@@ -27,68 +27,57 @@ def generate_launch_description():
         ' sim_mode:=', sim_mode
     ])
     robot_description = {
-    'robot_description': ParameterValue(robot_description_content, value_type=str)
+        'robot_description': ParameterValue(robot_description_content, value_type=str)
     }
     
-    world_file = LaunchConfiguration('world', default='empty.sdf')
-
-    gz_bridge_params_path = os.path.join(gz_pkg_share, 'config', 'gz_bridge.yaml')
-
-    gazebo_launch = IncludeLaunchDescription(
+    rsp = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
+            [
+                os.path.join(
+                    get_package_share_directory('rusty_description'),
+                    'launch',
+                    'rsp.launch.py',
+                )
+            ]
         ),
-        launch_arguments={'gz_args': [f'-r -v 4 ', world_file]}.items()
+        launch_arguments={
+            'sim_mode': sim_mode,
+        }.items(),
     )
 
-    spawn_model = Node(
-        package='ros_gz_sim',
-        executable='create',
-        arguments=['-name', 'rusty', '-topic', 'robot_description'],
-        output='screen',
+    gz_bringup = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [
+                os.path.join(
+                    get_package_share_directory('rusty_gz'),
+                    'launch',
+                    'gz_bringup.launch.py',
+                )
+            ]
+        ),
+        launch_arguments={
+            'sim_mode': sim_mode,
+        }.items(),
     )
 
-    robot_state_publisher = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        parameters=[robot_description, {'use_sim_time': True}],
-        output='screen'
-    )
-
-    gz_bridge = Node(
-        package='ros_gz_bridge',
-        executable='parameter_bridge',
-        arguments=['--ros-args', '-p', f'config_file:={gz_bridge_params_path}'],
-        output='screen'
-    )
-
-    joint_state_broadcaster_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["joint_state_broadcaster"],
-        parameters=[{'use_sim_time': True}]
-    )
-
-    robot_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["diff_cont"],
-        parameters=[{'use_sim_time': True}]
+    control = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [
+                os.path.join(
+                    get_package_share_directory('rusty_control'),
+                    'launch',
+                    'control.launch.py',
+                )
+            ]
+        ),
+        launch_arguments={
+            'sim_mode': sim_mode,
+        }.items(),
     )
 
     return LaunchDescription([
         sim_mode_arg,
-        SetEnvironmentVariable(name='GZ_SIM_RESOURCE_PATH', value=[os.path.join(description_pkg_share, '..')]),
-        gazebo_launch,
-        spawn_model,
-        robot_state_publisher,
-        gz_bridge,
-
-        # This ensures the spawners only start AFTER the robot is created in Gazebo
-        RegisterEventHandler(
-            event_handler=OnProcessExit(
-                target_action=spawn_model,
-                on_exit=[joint_state_broadcaster_spawner, robot_controller_spawner],
-            )
-        ),
+        rsp,
+        gz_bringup,
+        control,
     ])

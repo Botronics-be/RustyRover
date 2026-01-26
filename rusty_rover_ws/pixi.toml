@@ -21,6 +21,7 @@ scripts = [
 build = "colcon build --symlink-install"
 clean = "rm -rf build/ install/ log/"
 source = "source install/setup.bash"
+rviz = "rviz2 -d src/rusty_description/rviz/rusty_realtime.rviz"
 
 [dependencies]
 ros-kilted-desktop = ">=0.12.0,<0.13"
