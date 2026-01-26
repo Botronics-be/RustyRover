@@ -288,7 +288,7 @@ impl Widget for &App {
 
         let art_widget = Paragraph::new(Text::from(art_lines))
             .centered()
-            .block(Block::bordered().title(" Rusty Rover Camera Feed ").border_style(Style::default().fg(Color::DarkGray)));
+            .block(Block::bordered().border_style(Style::default().fg(Color::White)));
 
         art_widget.render(layout[0], buf);
 
@@ -315,7 +315,7 @@ impl Widget for &App {
             .title_bottom(instructions.centered())
             .border_set(border::THICK);
 
-        let counter_text = Text::from(vec![
+        let status_text = Text::from(vec![
             Line::from(""),
             Line::from(vec![
                 "  Linear command:    ".into(),
@@ -331,7 +331,7 @@ impl Widget for &App {
             ]),
         ]);
 
-        Paragraph::new(counter_text)
+        Paragraph::new(status_text)
             .block(block)
             .render(layout[0], buf);
     }
