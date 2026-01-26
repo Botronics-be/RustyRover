@@ -8,14 +8,17 @@ authors = [
 ]
 channels = ["robostack-kilted", "conda-forge"]
 name = "RustyRover"
-platforms = ["linux-64"]
+platforms = ["linux-64", "linux-aarch64"]
 version = "0.1.0"
 
 [activation]
 scripts = [
-    "../rclrs_install_ws/install/setup.bash",
+    "../rclrs_install_ws/install/setup.sh",
     "install/setup.sh"    
 ]
+
+[activation.env]
+DBUS_SYSTEM_BUS_ADDRESS = "unix:path=/var/run/dbus/system_bus_socket" # Needed to access the dbus for ble
 
 [tasks]
 build = "colcon build --symlink-install"
@@ -30,15 +33,25 @@ ros-kilted-xacro = "*"
 ros-kilted-joint-state-publisher = ">=2.4.0,<3"
 ros-kilted-joint-state-publisher-gui = ">=2.4.0,<3"
 ros-kilted-gz-ros2-control = ">=2.0.9,<3"
+ros-kilted-ros2-control = ">=5.2.0,<6"
+ros-kilted-ros2-controllers = ">=5.2.0,<6"
+ros-kilted-controller-manager = ">=5.2.0,<6"
+ros-kilted-gz-ros2-control-demos = ">=2.0.9,<3"
 python = ">=3.12.12,<3.13"
 compilers = ">=1.11.0,<2"
 ffmpeg = "<8"
-ros-kilted-ros2-control = ">=5.2.0,<6"
-ros-kilted-ros2-controllers = ">=5.2.0,<6"
 filelock = ">=3.20.3,<4"
-ros-kilted-controller-manager = ">=5.2.0,<6"
-ros-kilted-gz-ros2-control-demos = ">=2.0.9,<3"
+colcon-common-extensions = ">=0.3.0,<0.4"
+rust-src = ">=1.92.0,<2"
+setuptools = ">=80.9.0,<81"
+rust = ">=1.92.0,<1.93"
+cmake = ">=4.2.2,<5"
+ninja = ">=1.13.2,<2"
+pkg-config = ">=0.29.2,<0.30"
+libcurl = ">=8.18.0,<9"
+filelock = ">=3.20.3,<4"
 
 
-
-
+[pypi-dependencies]
+colcon-cargo = { git = "https://github.com/colcon/colcon-cargo.git" }
+colcon-ros-cargo = { git = "https://github.com/colcon/colcon-ros-cargo.git" }
