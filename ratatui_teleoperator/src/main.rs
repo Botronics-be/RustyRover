@@ -1,3 +1,7 @@
+mod tui;
+mod ble_client;
+use ble_client::{RobotCommand, ToBle, FromBle};
+use tokio::sync::mpsc;
 use std::{ops::Div, time::{Duration, Instant}};
 
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
@@ -11,9 +15,9 @@ use ratatui::{
     Frame,
 };
 use color_eyre::{
-    Result, eyre::{Ok, WrapErr}
+    Result, eyre::{WrapErr}
 };
-mod tui;
+
 
 #[derive(Debug)]
 pub struct App {
@@ -21,26 +25,41 @@ pub struct App {
     angular_command: i8,
     last_linear_cmd_stamp: Instant,
     last_angular_cmd_stamp: Instant,
-    bluetooth_connected: bool,
+    ble_tx: mpsc::UnboundedSender<ToBle>,
+    ble_rx: mpsc::UnboundedReceiver<FromBle>,
+    ble_status: String,
     exit: bool,
 }
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     color_eyre::install()?;
     let mut terminal = tui::init()?;
+
+    let (to_ble_tx, to_ble_rx) = mpsc::unbounded_channel();
+    let (from_ble_tx, from_ble_rx) = mpsc::unbounded_channel();
+
+    tokio::spawn(async move {
+        ble_client::run_ble_worker(to_ble_rx, from_ble_tx).await;
+    });
+
     let mut app = App {
+        exit: false,
+
         linear_command: 0,
         angular_command: 0,
         last_linear_cmd_stamp: Instant::now(),
         last_angular_cmd_stamp: Instant::now(),
-        bluetooth_connected: false,
-        exit: false
+
+        ble_tx: to_ble_tx,
+        ble_rx: from_ble_rx,
+        ble_status: "Disconnected".to_string(),        
     };
-    let app_result = app.run(&mut terminal);
+
+    let app_result = app.run(&mut terminal).await;
+
     if let Err(err) = tui::restore() {
-        eprintln!(
-            "failed to restore terminal. Run `reset` or restart your terminal to recover: {err}"
-        );
+        eprintln!("failed to restore terminal: {err}");
     }
     app_result
 }
@@ -48,9 +67,17 @@ fn main() -> Result<()> {
 
 impl App {
 
-    pub fn run(&mut self, terminal: &mut tui::Tui) -> Result<()> {
+    pub async fn run(&mut self, terminal: &mut tui::Tui) -> Result<()> {
         while !self.exit {
             terminal.draw(|frame| self.render_frame(frame))?;
+
+            while let Ok(msg) = self.ble_rx.try_recv() {
+                match msg {
+                    FromBle::StatusChange(s) => self.ble_status = s,
+                    FromBle::DataReceived(d) => self.ble_status = format!("Data: {}", d),
+                }
+            }
+
             if event::poll(Duration::from_millis(16))? {
                 self.handle_events().wrap_err("handle events failed")?;
             }
@@ -84,6 +111,7 @@ impl App {
             match key_event.code {
                 KeyCode::Char('q') => self.exit()?,
                 KeyCode::Char(' ') => self.stop_robot()?,
+                KeyCode::Char('c') => self.connect_server()?,
                 KeyCode::Up => self.increment_linear()?,
                 KeyCode::Down => self.decrement_linear()?,
                 KeyCode::Left => self.increment_angular()?,
@@ -103,6 +131,16 @@ impl App {
         Ok(())
     }
 
+    fn connect_server(&mut self) -> Result<()> {
+        match self.ble_tx.send(ToBle::Connect){
+            Ok(()) => Ok(()),
+            Err(e) =>{
+                eprintln!("Error while connecting : {}", e);
+                Err(e.into())
+            }
+        }
+    }
+
     fn stop_robot(&mut self) -> Result<()> {
         self.linear_command = 0;
         self.angular_command = 0;
@@ -115,8 +153,11 @@ impl App {
         } else {
             self.linear_command = (self.linear_command + 5).clamp(-100, 100);
         }
+
         self.last_linear_cmd_stamp = Instant::now();
-        Ok(())
+
+        let data = self.format_teleop_cmd();
+        return self.send_command("TELEOP".to_string(), data);
     }
 
     fn decrement_linear(&mut self) -> Result<()> {        
@@ -125,8 +166,11 @@ impl App {
         } else {
             self.linear_command = (self.linear_command - 5).clamp(-100, 100);
         }
+
         self.last_linear_cmd_stamp = Instant::now();
-        Ok(())
+
+        let data = self.format_teleop_cmd();
+        return self.send_command("TELEOP".to_string(), data);
     }
 
 
@@ -136,8 +180,11 @@ impl App {
         } else {
             self.angular_command = (self.angular_command + 10).clamp(-100, 100);
         }
+
         self.last_angular_cmd_stamp = Instant::now();
-        Ok(())
+
+        let data = self.format_teleop_cmd();
+        return self.send_command("TELEOP".to_string(), data);
     }
 
 
@@ -149,7 +196,9 @@ impl App {
         }
         
         self.last_angular_cmd_stamp = Instant::now();
-        Ok(())
+        let data = self.format_teleop_cmd();
+
+        return self.send_command("TELEOP".to_string(), data);
     }
 
     fn reset_linear(&mut self) -> Result<()> {
@@ -158,7 +207,9 @@ impl App {
         } else {
             self.linear_command = (self.linear_command + 5).clamp(-100, 100);
         }
-        Ok(())
+
+        let data = self.format_teleop_cmd();
+        return self.send_command("TELEOP".to_string(), data);
     }
 
     fn reset_angular(&mut self) -> Result<()> {
@@ -167,11 +218,26 @@ impl App {
         } else {
             self.angular_command = (self.angular_command + 5).clamp(-100, 100);
         }
-        Ok(())
+
+        let data = self.format_teleop_cmd();
+        return self.send_command("TELEOP".to_string(), data);
     }
 
     fn exit(&mut self) -> Result<()>{
         self.exit = true;
+        Ok(())
+    }
+
+    fn format_teleop_cmd(&mut self) -> String {
+        format!("{{linear_x: {}, angular_z: {}}}", self.linear_command, self.angular_command)
+    }
+
+    fn send_command(&mut self, cmd: String, data: String) -> Result<()>{
+        let ble_msg = RobotCommand {
+            cmd_type: cmd,
+            data: data,
+        };
+        let _ = self.ble_tx.send(ToBle::SendJson(ble_msg));
         Ok(())
     }
 }
@@ -240,6 +306,8 @@ impl Widget for &App {
             "<Right>".blue().bold(),            
             " Quit ".into(),
             "<Q> ".blue().bold(),
+            " Connect ".into(),
+            "<C> ".blue().bold(),
         ]);
         
         let block = Block::bordered()
@@ -259,11 +327,7 @@ impl Widget for &App {
             ]),
             Line::from(vec![
                 "  Bluetooth status: ".into(),
-                if self.bluetooth_connected {
-                    " Connected".green()
-                } else {
-                    " Disconnected".red()
-                },           
+                self.ble_status.to_string().yellow(), 
             ]),
         ]);
 
