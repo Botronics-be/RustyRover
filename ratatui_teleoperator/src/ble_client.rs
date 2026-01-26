@@ -187,10 +187,9 @@ async fn comm_loop(
                         if let Ok(json_str) = serde_json::to_string(&data_struct) {
 
                             let data_bytes = json_str.as_bytes();
-                            let _ = event_tx.send(FromBle::DataReceived(format!("Sent: {}", json_str)));
                             match write_char.write(data_bytes).await {
                                 Ok(_) => {
-                                    let _ = event_tx.send(FromBle::DataReceived(format!("Sent: {}", json_str)));
+                                    // Msg sent correctly
                                 }
                                 Err(e) => {
                                     let _ = event_tx.send(FromBle::StatusChange(format!("Write Failed: {}", e)));
