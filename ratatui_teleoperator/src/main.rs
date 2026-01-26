@@ -326,7 +326,7 @@ impl Widget for &App {
                 (self.angular_command as f32).div(10.0).to_string().yellow(),            
             ]),
             Line::from(vec![
-                "  Bluetooth status: ".into(),
+                "  Bluetooth status:  ".into(),
                 self.ble_status.to_string().yellow(), 
             ]),
         ]);
