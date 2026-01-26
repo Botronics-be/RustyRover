@@ -154,7 +154,7 @@
 
   <gazebo reference="camera_link">
     <sensor name="camera_sensor" type="camera">
-      <pose>0 0 0 0 0 0</pose>
+      <pose>0.0 0 0.05 0 0.2617 0</pose>
       <visualize>true</visualize>
       <update_rate>30.0</update_rate>
       <topic>camera/image_raw</topic>
