@@ -18,6 +18,8 @@ use color_eyre::{
     Result, eyre::{WrapErr}
 };
 
+use std::env;
+
 
 #[derive(Debug)]
 pub struct App {
@@ -53,7 +55,7 @@ async fn main() -> Result<()> {
 
         ble_tx: to_ble_tx,
         ble_rx: from_ble_rx,
-        ble_status: "Disconnected".to_string(),        
+        ble_status: "Disconnected".to_string(),
     };
 
     let app_result = app.run(&mut terminal).await;
@@ -73,7 +75,7 @@ impl App {
 
             while let Ok(msg) = self.ble_rx.try_recv() {
                 match msg {
-                    FromBle::StatusChange(s) => self.ble_status = s,
+                    FromBle::StatusChange(s) => self.handle_ble_status(s),
                     FromBle::DataReceived(d) => self.ble_status = format!("Data: {}", d),
                 }
             }
@@ -129,6 +131,20 @@ impl App {
         }
         
         Ok(())
+    }
+
+    fn handle_ble_status(&mut self, status: String){
+        self.ble_status = status;
+        if self.ble_status == "CONNECTED"{
+            if let Some(user) = env::var_os("USER") {
+                match self.send_command("CONNECTED".to_string(), user.into_string().unwrap()) {
+                    Ok(_) => (),
+                    Err(e) => {
+                        eprintln!("Error sending connected command: {}", e);
+                    }
+                };
+            }            
+        }
     }
 
     fn connect_server(&mut self) -> Result<()> {

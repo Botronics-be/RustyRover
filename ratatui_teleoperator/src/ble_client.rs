@@ -68,9 +68,8 @@ pub async fn run_ble_worker(
                     
                     match find_and_connect(&adapter, &event_tx).await {
                         Ok(device) => {
-                            let _ = event_tx.send(FromBle::StatusChange("Connected".into()));
                             if let Some(my_char) = find_target_characteristic(&device).await {
-                                let _ = event_tx.send(FromBle::StatusChange("Ready.".into()));
+                                let _ = event_tx.send(FromBle::StatusChange("CONNECTED".into()));
                                 
                                 // START THE LOOP, passing the characteristic
                                 comm_loop(&mut cmd_rx, &event_tx, my_char).await;

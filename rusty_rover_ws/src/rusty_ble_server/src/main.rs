@@ -30,13 +30,12 @@ const CHARACTERISTIC_UUID: Uuid = Uuid::from_u128(0x9dd2899d_f3c9_47ee_992a_aad1
 #[serde(tag = "type", content = "data")] 
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 enum BleCommand {
-    Hello(String),
+    Connected(String),
     Teleop(String),
 }
 
 struct RosBridge {
     node: Node,
-    hello_publisher: Publisher<StringMsg>,
     cmd_vel_publisher: Publisher<TwistStamped>,
 }
 
@@ -44,26 +43,24 @@ impl RosBridge {
     fn new(node: &Node) -> Result<Self, RclrsError> {
         Ok(Self {
             node: node.clone(),
-            hello_publisher: node.create_publisher::<StringMsg>("hello")?,
             cmd_vel_publisher: node.create_publisher::<TwistStamped>("cmd_vel")?,
         })
     }
 
     fn dispatch(&self, cmd: BleCommand) {
         match cmd {
-            BleCommand::Hello(data) => {Self::handle_hello_cmd(&self, data);}
+            BleCommand::Connected(data) => {Self::handle_connected_cmd(&self, data);}
             BleCommand::Teleop(data) => {Self::handle_teleop_cmd(&self, data);}
         }
     }
 
-    fn handle_hello_cmd(&self, data: String){
-        log_info!(self.node.logger(), "Processing Hello: {}", data);
-        let _ = self.hello_publisher.publish(StringMsg { data });
+    fn handle_connected_cmd(&self, data: String){
+        log_info!(self.node.logger(), "Received CONNECTED from : {}", data);
     }
 
     fn handle_teleop_cmd(&self, data: String){
         let data_cmd: TeleopCmd = serde_json::from_str(&data).unwrap();
-        log_info!(self.node.logger(), "Processing Cmd_vel: x:{}, z:{}", data_cmd.linear_x, data_cmd.angular_z);
+        log_info!(self.node.logger(), "Received TELEOP from client: x:{}, z:{}", data_cmd.linear_x, data_cmd.angular_z);
 
         let now = self.node.get_clock().now();
 
