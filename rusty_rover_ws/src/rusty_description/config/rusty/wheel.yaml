@@ -1,8 +1,0 @@
-mass: 0.01        # Wheel mass in Kg
-radius: 0.03    # Wheel radius in m
-length: 0.007     # Wheel length in m, considering is as a cylinder
-mesh: 'wheel.stl'  # Leave it empty ('') to have a red wheel
-scale: '0.001 0.001 0.001'
-x_offset: 0.033 # "3.5 CM OF THE MIDDLE"
-y_offset: 0.001
-z_offset: -0.01  # 1.5 cm 

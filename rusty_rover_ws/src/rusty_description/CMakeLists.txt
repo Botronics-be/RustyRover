@@ -6,7 +6,6 @@ project(rusty_description)
 find_package(ament_cmake REQUIRED)
 
 install(DIRECTORY
-  config
   launch
   meshes
   urdf
