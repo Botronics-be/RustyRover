@@ -186,7 +186,7 @@
       <visualize>true</visualize>
       <update_rate>30.0</update_rate>
       <topic>camera/image_raw</topic>
-      <gz_frame_id>camera_link</gz_frame_id>
+      <frame_id>camera_link</frame_id>
       <camera>
         <horizontal_fov>1.089</horizontal_fov>
         <image>
