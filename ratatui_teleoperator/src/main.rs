@@ -229,7 +229,7 @@ impl App {
     }
 
     fn format_teleop_cmd(&mut self) -> String {
-        format!("{{linear_x: {}, angular_z: {}}}", self.linear_command, self.angular_command)
+        format!("{{\"linear_x\": {}, \"angular_z\": {}}}", (self.linear_command as f64).div(10.0), (self.angular_command as f64).div(10.0))
     }
 
     fn send_command(&mut self, cmd: String, data: String) -> Result<()>{

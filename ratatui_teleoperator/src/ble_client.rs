@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::time::Duration;
 use tokio::time::sleep;
 use tokio::sync::mpsc;
+use bluer::gatt::remote::Characteristic;
 
 const TARGET_DEVICE_NAME: &str = "RustyRover"; 
 const SERVICE_UUID: Uuid = Uuid::from_u128(0x1deaebe7_ce65_4d57_8933_1bdc2065f37b);
@@ -66,9 +67,17 @@ pub async fn run_ble_worker(
                     let _ = event_tx.send(FromBle::StatusChange("Scanning...".into()));
                     
                     match find_and_connect(&adapter, &event_tx).await {
-                        Ok(_device) => {
-                             let _ = event_tx.send(FromBle::StatusChange("Connected!".into()));
-                             comm_loop(&mut cmd_rx, &event_tx).await;
+                        Ok(device) => {
+                            let _ = event_tx.send(FromBle::StatusChange("Connected".into()));
+                            if let Some(my_char) = find_target_characteristic(&device).await {
+                                let _ = event_tx.send(FromBle::StatusChange("Ready.".into()));
+                                
+                                // START THE LOOP, passing the characteristic
+                                comm_loop(&mut cmd_rx, &event_tx, my_char).await;
+                                
+                            } else {
+                                let _ = event_tx.send(FromBle::StatusChange("Error: Target Service/Char not found".into()));
+                            }
                         }
                         Err(e) => {
                             let _ = event_tx.send(FromBle::StatusChange(format!("Connection Failed: {}", e)));
@@ -139,10 +148,36 @@ async fn find_and_connect(
     }
 }
 
+async fn find_target_characteristic(device: &bluer::Device) -> Option<Characteristic> {
+    // 1. Get all services
+    if let Ok(services) = device.services().await {
+        for service in services {
+            // 2. Check Service UUID
+            if let Ok(uuid) = service.uuid().await {
+                if uuid == SERVICE_UUID {
+                    // 3. Get characteristics for this service
+                    if let Ok(chars) = service.characteristics().await {
+                        for char in chars {
+                            // 4. Check Characteristic UUID
+                            if let Ok(char_uuid) = char.uuid().await {
+                                if char_uuid == CHARACTERISTIC_UUID {
+                                    return Some(char); // FOUND IT!
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    None
+}
+
 // Main Read/Write loop
 async fn comm_loop(
     cmd_rx: &mut mpsc::UnboundedReceiver<ToBle>,
-    event_tx: &mpsc::UnboundedSender<FromBle>
+    event_tx: &mpsc::UnboundedSender<FromBle>,
+    write_char: Characteristic
 ) {    
     loop {
         tokio::select! {
@@ -150,7 +185,18 @@ async fn comm_loop(
                 match cmd {
                     Some(ToBle::SendJson(data_struct)) => {
                         if let Ok(json_str) = serde_json::to_string(&data_struct) {
+
+                            let data_bytes = json_str.as_bytes();
                             let _ = event_tx.send(FromBle::DataReceived(format!("Sent: {}", json_str)));
+                            match write_char.write(data_bytes).await {
+                                Ok(_) => {
+                                    let _ = event_tx.send(FromBle::DataReceived(format!("Sent: {}", json_str)));
+                                }
+                                Err(e) => {
+                                    let _ = event_tx.send(FromBle::StatusChange(format!("Write Failed: {}", e)));
+                                    break; 
+                                }
+                            }
                         }
                     }
                     _ => {}
