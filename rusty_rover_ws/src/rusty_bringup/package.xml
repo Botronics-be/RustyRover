@@ -4,7 +4,11 @@
   <name>rusty_bringup</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
+  <maintainer email="antoine.vanmalleghem@botronics.be">avanmalleghem</maintainer>
+  <maintainer email="christophe.simon@botronics.be">csimon-be</maintainer>
   <maintainer email="david.moli@botronics.be">davidmoli-botronics</maintainer>
+  <maintainer email="enzo.ghisoni@botronics.be">EnzoGhisoni</maintainer>
+  <maintainer email="nicolas.daube@botronics.be">Nicodaube</maintainer>   
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
