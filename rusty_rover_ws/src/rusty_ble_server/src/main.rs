@@ -17,6 +17,12 @@ use bluer::{
 use serde::Deserialize;
 use tokio::sync::mpsc;
 
+#[derive(Debug, Deserialize)]
+struct TeleopCmd {
+    linear_x: f64,
+    angular_z: f64,
+}
+
 const SERVICE_UUID: Uuid = Uuid::from_u128(0x1deaebe7_ce65_4d57_8933_1bdc2065f37b);
 const CHARACTERISTIC_UUID: Uuid = Uuid::from_u128(0x9dd2899d_f3c9_47ee_992a_aad14b2cdaaf);
 
@@ -25,7 +31,7 @@ const CHARACTERISTIC_UUID: Uuid = Uuid::from_u128(0x9dd2899d_f3c9_47ee_992a_aad1
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 enum BleCommand {
     Hello(String),
-    CmdVel { linear_x: f64, angular_z: f64 },
+    Teleop(String),
 }
 
 struct RosBridge {
@@ -46,7 +52,7 @@ impl RosBridge {
     fn dispatch(&self, cmd: BleCommand) {
         match cmd {
             BleCommand::Hello(data) => {Self::handle_hello_cmd(&self, data);}
-            BleCommand::CmdVel { linear_x, angular_z } => {Self::handle_cmd_vel(&self, linear_x, angular_z);}
+            BleCommand::Teleop(data) => {Self::handle_teleop_cmd(&self, data);}
         }
     }
 
@@ -55,8 +61,9 @@ impl RosBridge {
         let _ = self.hello_publisher.publish(StringMsg { data });
     }
 
-    fn handle_cmd_vel(&self, linear_x: f64, angular_z:f64){
-        log_info!(self.node.logger(), "Processing Cmd_vel: x:{}, z:{}", linear_x, angular_z);
+    fn handle_teleop_cmd(&self, data: String){
+        let data_cmd: TeleopCmd = serde_json::from_str(&data).unwrap();
+        log_info!(self.node.logger(), "Processing Cmd_vel: x:{}, z:{}", data_cmd.linear_x, data_cmd.angular_z);
 
         let now = self.node.get_clock().now();
 
@@ -73,14 +80,14 @@ impl RosBridge {
             },
             twist: Twist {
                 linear: Vector3 {
-                    x: linear_x,
+                    x: data_cmd.linear_x,
                     y: 0.0,
                     z: 0.0,
                 },
                 angular: Vector3 {
                     x: 0.0,
                     y: 0.0,
-                    z: angular_z,
+                    z: data_cmd.angular_z,
                 },
             },
         };
