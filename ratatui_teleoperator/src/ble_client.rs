@@ -58,7 +58,7 @@ pub async fn run_ble_worker(
     };
 
     let _ = adapter.set_powered(true).await;
-    let _ = event_tx.send(FromBle::StatusChange("Ready to Connect".into()));
+    let _ = event_tx.send(FromBle::StatusChange("Waiting".into()));
 
     loop {
         if let Some(cmd) = cmd_rx.recv().await {
@@ -148,19 +148,15 @@ async fn find_and_connect(
 }
 
 async fn find_target_characteristic(device: &bluer::Device) -> Option<Characteristic> {
-    // 1. Get all services
     if let Ok(services) = device.services().await {
         for service in services {
-            // 2. Check Service UUID
             if let Ok(uuid) = service.uuid().await {
                 if uuid == SERVICE_UUID {
-                    // 3. Get characteristics for this service
                     if let Ok(chars) = service.characteristics().await {
                         for char in chars {
-                            // 4. Check Characteristic UUID
                             if let Ok(char_uuid) = char.uuid().await {
                                 if char_uuid == CHARACTERISTIC_UUID {
-                                    return Some(char); // FOUND IT!
+                                    return Some(char);
                                 }
                             }
                         }

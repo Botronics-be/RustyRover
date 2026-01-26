@@ -1,5 +1,5 @@
 use rclrs::*;
-use std::{thread, sync::Arc};
+use std::{thread, sync::{Arc, M}};
 use std_msgs::msg::String as StringMsg;
 use geometry_msgs::msg::TwistStamped as TwistStamped;
 use std_msgs::msg::Header;
@@ -9,7 +9,7 @@ use builtin_interfaces::msg::Time;
 use bluer::{
     adv::Advertisement,
     gatt::local::{
-        Application, Characteristic,
+        Application, Characteristic, CharacteristicRead,
         CharacteristicWrite, Service, CharacteristicWriteMethod
     },
     Uuid,
@@ -37,28 +37,31 @@ enum BleCommand {
 struct RosBridge {
     node: Node,
     cmd_vel_publisher: Publisher<TwistStamped>,
+    status: String,
 }
 
 impl RosBridge {
     fn new(node: &Node) -> Result<Self, RclrsError> {
         Ok(Self {
             node: node.clone(),
+            status: "Idle".to_string(),
             cmd_vel_publisher: node.create_publisher::<TwistStamped>("cmd_vel")?,
         })
     }
 
-    fn dispatch(&self, cmd: BleCommand) {
+    fn dispatch(&mut self, cmd: BleCommand) {
         match cmd {
-            BleCommand::Connected(data) => {Self::handle_connected_cmd(&self, data);}
-            BleCommand::Teleop(data) => {Self::handle_teleop_cmd(&self, data);}
+            BleCommand::Connected(data) => {self.handle_connected_cmd(data);}
+            BleCommand::Teleop(data) => {self.handle_teleop_cmd(data);}
         }
     }
 
-    fn handle_connected_cmd(&self, data: String){
+    fn handle_connected_cmd(&mut self, data: String){
         log_info!(self.node.logger(), "Received CONNECTED from : {}", data);
     }
 
-    fn handle_teleop_cmd(&self, data: String){
+    fn handle_teleop_cmd(&mut self, data: String){
+        self.status = "Teleoperating".to_string();
         let data_cmd: TeleopCmd = serde_json::from_str(&data).unwrap();
         log_info!(self.node.logger(), "Received TELEOP from client: x:{}, z:{}", data_cmd.linear_x, data_cmd.angular_z);
 
@@ -130,6 +133,17 @@ async fn run_bluetooth_server(node: Node, tx: mpsc::Sender<BleCommand>) -> bluer
             })),
             ..Default::default()
         }),
+        read: Some(CharacteristicRead {
+            read: true,
+            fun: Box::new(move |_req| {
+                Box::pin(async move {
+                    let value = "Hello from Rust!".as_bytes().to_vec();
+                    println!("Read request received, sending: {:?}", value);
+                    Ok(value)
+                })
+            }),
+            ..Default::default()
+        }),
         ..Default::default()
     };
 
@@ -155,7 +169,7 @@ fn main() -> Result<(), RclrsError> {
     let node = executor.create_node("bluetooth_server_node")?;
     log_info!(node.logger(), "Bluetooth server node starting ...");
 
-    let bridge = Arc::new(RosBridge::new(&node)?);
+    let bridge = Arc::new(Mutex::new(RosBridge::new(&node)?));
 
     // Works like a UART channel a tx sends to a rx receiver
     let (tx, mut rx) = mpsc::channel::<BleCommand>(32);
@@ -175,7 +189,9 @@ fn main() -> Result<(), RclrsError> {
             let bridge_clone = bridge.clone();
             let dispatcher_handle = tokio::spawn(async move {
                 while let Some(cmd) = rx.recv().await {
-                    bridge_clone.dispatch(cmd);
+                    if let Ok(mut bridge_guard) = bridge_clone.lock() {
+                        bridge_guard.dispatch(cmd);
+                    }
                 }
             });
 
