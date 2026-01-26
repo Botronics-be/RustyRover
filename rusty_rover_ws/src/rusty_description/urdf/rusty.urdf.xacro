@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <robot name="rusty" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+  <xacro:arg name="sim_mode" default="true"/>
+
   <material name="silver"><color rgba="0.7 0.7 0.7 1.0"/></material>
   <material name="black"><color rgba="0.0 0.0 0.0 1.0"/></material>
   <material name="blue"><color rgba="0.0 0.0 0.8 1.0"/></material>
@@ -123,21 +125,47 @@
     <child link="camera_link" />
   </joint>
 
-  <ros2_control name="GazeboSimSystem" type="system">
-    <hardware>
-      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
-    </hardware>
-    <joint name="left_wheel_joint">
-      <command_interface name="velocity" />
-      <state_interface name="position" />
-      <state_interface name="velocity" />
-    </joint>
-    <joint name="right_wheel_joint">
-      <command_interface name="velocity" />
-      <state_interface name="position" />
-      <state_interface name="velocity" />
-    </joint>
-  </ros2_control>
+  <xacro:if value="$(arg sim_mode)">
+    <ros2_control name="GazeboSimSystem" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+      <joint name="left_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="position" />
+        <state_interface name="velocity" />
+      </joint>
+      <joint name="right_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="position" />
+        <state_interface name="velocity" />
+      </joint>
+    </ros2_control>
+  </xacro:if>
+  
+  <xacro:unless value="$(arg sim_mode)">
+    <ros2_control name="RealRobot" type="system">
+      <hardware>
+        <plugin>rusty_control/RustySystemHardware</plugin>
+        <param name="pin_enable_0">8</param>
+        <param name="pin_pos_0">9</param>
+        <param name="pin_neg_0">10</param>
+        <param name="pin_enable_1">13</param>
+        <param name="pin_pos_1">12</param>
+        <param name="pin_neg_1">11</param>
+      </hardware>
+      <joint name="left_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="position" />
+        <state_interface name="velocity" />
+      </joint>
+      <joint name="right_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="position" />
+        <state_interface name="velocity" />
+      </joint>
+    </ros2_control>
+  </xacro:unless>
 
   <gazebo>
     <plugin name="gz_ros2_control::GazeboSimROS2ControlPlugin" filename="libgz_ros2_control-system.so">

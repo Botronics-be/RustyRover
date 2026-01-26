@@ -53,8 +53,7 @@ def generate_launch_description():
     pkg_rusty_description = get_package_share_directory('rusty_description')
 
     # Obtain urdf from xacro files.
-    arguments = {'yaml_config_dir': os.path.join(pkg_rusty_description, 'config', 'rusty')}
-    doc = xacro.process_file(os.path.join(pkg_rusty_description, 'urdf', 'rusty.urdf.xacro'), mappings = arguments)
+    doc = xacro.process_file(os.path.join(pkg_rusty_description, 'urdf', 'rusty.urdf.xacro'))
     robot_desc = doc.toprettyxml(indent='  ')
     params = {'robot_description': robot_desc,
               'publish_frequency': 30.0}
