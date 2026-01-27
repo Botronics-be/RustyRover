@@ -902,11 +902,19 @@ dependencies = [
  "futures",
  "geometry_msgs",
  "rclrs",
+ "rusty_msgs",
  "serde",
  "serde_json",
  "std_msgs",
  "tokio",
  "uuid",
+]
+
+[[package]]
+name = "rusty_msgs"
+version = "0.0.0"
+dependencies = [
+ "rosidl_runtime_rs",
 ]
 
 [[package]]
@@ -1466,6 +1474,10 @@ version = "0.5.0"
 
 [[patch.unused]]
 name = "rusty_ble_server"
+version = "0.1.0"
+
+[[patch.unused]]
+name = "rusty_command_dispatcher"
 version = "0.1.0"
 
 [[patch.unused]]

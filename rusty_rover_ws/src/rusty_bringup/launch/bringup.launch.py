@@ -37,7 +37,7 @@ def generate_launch_description():
 
     bluetooth = Node(
         package='rusty_ble_server',
-        executable='rusty_ble_server',
+        executable='bluetooth_server',
         name='bluetooth_server_node',
         respawn=True,
         respawn_delay=2,
