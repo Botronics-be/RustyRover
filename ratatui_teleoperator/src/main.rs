@@ -30,6 +30,7 @@ pub struct App {
     ble_tx: mpsc::UnboundedSender<ToBle>,
     ble_rx: mpsc::UnboundedReceiver<FromBle>,
     ble_status: String,
+    robot_status: String,
     exit: bool,
 }
 
@@ -55,7 +56,9 @@ async fn main() -> Result<()> {
 
         ble_tx: to_ble_tx,
         ble_rx: from_ble_rx,
+
         ble_status: "Disconnected".to_string(),
+        robot_status: "...".to_string(),
     };
 
     let app_result = app.run(&mut terminal).await;
@@ -72,11 +75,12 @@ impl App {
     pub async fn run(&mut self, terminal: &mut tui::Tui) -> Result<()> {
         while !self.exit {
             terminal.draw(|frame| self.render_frame(frame))?;
+            let _ = self.send_read_status_cmd();
 
             while let Ok(msg) = self.ble_rx.try_recv() {
                 match msg {
                     FromBle::StatusChange(s) => self.handle_ble_status(s),
-                    FromBle::DataReceived(d) => self.ble_status = format!("Data: {}", d),
+                    FromBle::DataReceived(d) => self.robot_status = d,
                 }
             }
 
@@ -248,6 +252,11 @@ impl App {
         format!("{{\"linear_x\": {}, \"angular_z\": {}}}", (self.linear_command as f64).div(10.0), (self.angular_command as f64).div(10.0))
     }
 
+    fn send_read_status_cmd(&mut self) -> Result<()> {
+        let _ = self.ble_tx.send(ToBle::ReadStatus);
+        Ok(())
+    }
+
     fn send_command(&mut self, cmd: String, data: String) -> Result<()>{
         let ble_msg = RobotCommand {
             cmd_type: cmd,
@@ -344,6 +353,10 @@ impl Widget for &App {
             Line::from(vec![
                 "  Bluetooth status:  ".into(),
                 self.ble_status.to_string().yellow(), 
+            ]),
+            Line::from(vec![
+                "  Robot state:  ".into(),
+                self.robot_status.to_string().yellow(), 
             ]),
         ]);
 

@@ -21,6 +21,7 @@ pub struct RobotCommand {
 #[derive(Debug)]
 pub enum ToBle {
     Connect,
+    ReadStatus,
     SendJson(RobotCommand),
 }
 
@@ -172,7 +173,7 @@ async fn find_target_characteristic(device: &bluer::Device) -> Option<Characteri
 async fn comm_loop(
     cmd_rx: &mut mpsc::UnboundedReceiver<ToBle>,
     event_tx: &mpsc::UnboundedSender<FromBle>,
-    write_char: Characteristic
+    char: Characteristic
 ) {    
     loop {
         tokio::select! {
@@ -182,16 +183,27 @@ async fn comm_loop(
                         if let Ok(json_str) = serde_json::to_string(&data_struct) {
 
                             let data_bytes = json_str.as_bytes();
-                            match write_char.write(data_bytes).await {
+                            match char.write(data_bytes).await {
                                 Ok(_) => {
                                     // Msg sent correctly
                                 }
-                                Err(e) => {
-                                    let _ = event_tx.send(FromBle::StatusChange(format!("Write Failed: {}", e)));
+                                Err(_e) => {
+                                    let _ = event_tx.send(FromBle::StatusChange("ERROR".to_string()));
                                     break; 
                                 }
                             }
                         }
+                    }
+                    Some(ToBle::ReadStatus) => {
+                        match char.read().await {
+                            Ok(s) => {
+                                let status: &str = std::str::from_utf8(&s).unwrap_or("");
+                                let _ = event_tx.send(FromBle::DataReceived(status.to_string()));
+                            },
+                            Err(_) => {
+                                let _ = event_tx.send(FromBle::StatusChange("ERROR".to_string()));
+                            },
+                        };
                     }
                     _ => {}
                 }
