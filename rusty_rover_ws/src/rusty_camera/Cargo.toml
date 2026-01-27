@@ -1,0 +1,16 @@
+[package]
+name = "rusty_camera"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "toggle_publication"
+path = "src/toggle_publication.rs"
+
+[dependencies]
+rclrs = "0.7"
+std_msgs = "*"
+sensor_msgs = "*"
+std_srvs = "*"
+anyhow = {version = "1", features = ["backtrace"]}
+builtin_interfaces = "*"
