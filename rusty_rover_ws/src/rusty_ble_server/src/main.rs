@@ -100,7 +100,11 @@ impl RosBridge {
     }
 }
 
-async fn run_bluetooth_server(node: Node, tx: mpsc::Sender<BleCommand>) -> bluer::Result<()> {
+async fn run_bluetooth_server(
+    node: Node,
+    tx: mpsc::Sender<BleCommand>,
+    bridge: Arc<Mutex<RosBridge>>
+) -> bluer::Result<()> {
     // Receives the command via ble and sends them through the mpsc channel to the dispatcher
     let session = bluer::Session::new().await?;
     let adapter = session.default_adapter().await?;
@@ -113,6 +117,8 @@ async fn run_bluetooth_server(node: Node, tx: mpsc::Sender<BleCommand>) -> bluer
         ..Default::default()
     };
     let _adv_handle = adapter.advertise(le_advertisement).await?;
+
+    let bridge_clone = bridge.clone();
 
     let char_handle = Characteristic {
         uuid: CHARACTERISTIC_UUID,
@@ -140,10 +146,13 @@ async fn run_bluetooth_server(node: Node, tx: mpsc::Sender<BleCommand>) -> bluer
         read: Some(CharacteristicRead {
             read: true,
             fun: Box::new(move |_req| {
+                let bridge = bridge_clone.clone();
                 Box::pin(async move {
-                    let value = "Hello from Rust!".as_bytes().to_vec();
-                    println!("Read request received, sending: {:?}", value);
-                    Ok(value)
+                    let status_msg = match bridge.lock() {
+                        Ok(guard) => guard.status.clone(),
+                        Err(_) => "Internal Error: Lock Poisoned".to_string(),
+                    };
+                    Ok(status_msg.into_bytes())
                 })
             }),
             ..Default::default()
@@ -179,13 +188,15 @@ fn main() -> Result<(), RclrsError> {
     let (tx, mut rx) = mpsc::channel::<BleCommand>(32);
 
     let node_clone = node.clone();
+    let ble_bridge = bridge.clone();
+    
     thread::spawn(move || {
         let rt = tokio::runtime::Runtime::new().unwrap();
         rt.block_on(async {
             
             let ble_handle = tokio::spawn(async move {
                 let ble_node_clone = node_clone.clone();
-                if let Err(e) = run_bluetooth_server(node_clone, tx).await {
+                if let Err(e) = run_bluetooth_server(node_clone, tx, ble_bridge).await {
                     log_error!(ble_node_clone.logger(), "BLE Server Error: {}", e);
                 }
             });
