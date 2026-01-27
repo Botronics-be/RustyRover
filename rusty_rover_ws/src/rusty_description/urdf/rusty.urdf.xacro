@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<robot name="rusty" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="sim_mode" default="true"/>
+
+  <material name="silver"><color rgba="0.7 0.7 0.7 1.0"/></material>
+  <material name="black"><color rgba="0.0 0.0 0.0 1.0"/></material>
+  <material name="blue"><color rgba="0.0 0.0 0.8 1.0"/></material>
+
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.032" rpy="0 0 0"/> 
+  </joint>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://rusty_description/meshes/base_link_visual.stl" />
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.015" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.12 0.1 0.05" /> 
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.05" />
+      <inertia ixx="0.000042" ixy="0" ixz="0.000001" iyy="0.000083" iyz="0" izz="0.000102" />
+    </inertial>
+  </link>
+
+  <xacro:macro name="wheel_link" params="prefix y_reflect">
+    <link name="${prefix}_wheel">
+      <visual>
+        <geometry>
+          <mesh filename="package://rusty_description/meshes/${prefix}_wheel_visual.stl" />
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="0.032" length="0.01"/> 
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.01" />
+        <inertia ixx="0.000002" ixy="0" ixz="0" iyy="0.000004" iyz="0" izz="0.000002" />
+      </inertial>
+    </link>
+
+    <joint name="${prefix}_wheel_joint" type="continuous">
+      <origin xyz="0.029641 ${0.05 * y_reflect} -0.003216" rpy="0 0 0" />
+      <parent link="base_link" />
+      <child link="${prefix}_wheel" />
+      <axis xyz="0 1 0" />
+    </joint>
+  </xacro:macro>
+
+  <xacro:wheel_link prefix="left" y_reflect="1" />
+  <xacro:wheel_link prefix="right" y_reflect="-1" />
+
+  <link name="caster_shroud_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://rusty_description/meshes/caster_shroud_link_visual.stl" />
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <inertial>
+      <mass value="0.005" />
+      <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001" />
+    </inertial>
+  </link>
+
+  <joint name="caster_shroud_link_joint" type="fixed">
+    <origin xyz="-0.0535 0.003633 -0.016" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="caster_shroud_link" />
+  </joint>
+
+  <link name="caster_ball_link">
+    <visual>
+      <geometry><sphere radius="0.0128"/></geometry> <material name="black"/>
+    </visual>
+    <collision>
+      <geometry><sphere radius="0.0128"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="0.005" />
+      <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001" />
+    </inertial>
+  </link>
+
+  <joint name="caster_ball_link_joint" type="fixed">
+    <origin xyz="0 0 -0.0064" rpy="0 0 0" />
+    <parent link="caster_shroud_link" />
+    <child link="caster_ball_link" />
+  </joint>
+
+  <link name="camera_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://rusty_description/meshes/camera_link_visual.stl" />
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+       <geometry><sphere radius="0.0128"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="0.003" />
+      <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0" iyz="0" izz="0.000001" />
+    </inertial>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0.04807 0.006009 0.042372" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="camera_link" />
+  </joint>
+
+  <xacro:if value="$(arg sim_mode)">
+    <ros2_control name="GazeboSimSystem" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+      <joint name="left_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="velocity" />
+      </joint>
+      <joint name="right_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="velocity" />
+      </joint>
+    </ros2_control>
+  </xacro:if>
+  
+  <xacro:unless value="$(arg sim_mode)">
+    <ros2_control name="RealRobot" type="system">
+      <hardware>
+        <plugin>rusty_control/RustySystemHardware</plugin>
+        <param name="pin_enable_0">8</param>
+        <param name="pin_pos_0">9</param>
+        <param name="pin_neg_0">10</param>
+        <param name="pin_enable_1">13</param>
+        <param name="pin_pos_1">12</param>
+        <param name="pin_neg_1">11</param>
+      </hardware>
+      <joint name="left_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="velocity" />
+      </joint>
+      <joint name="right_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="velocity" />
+      </joint>
+    </ros2_control>
+  </xacro:unless>
+
+  <gazebo>
+    <plugin name="gz_ros2_control::GazeboSimROS2ControlPlugin" filename="libgz_ros2_control-system.so">
+      <parameters>$(find rusty_control)/config/controller.yaml</parameters>
+    </plugin>
+  </gazebo>
+
+  <gazebo reference="caster_ball_link">
+    <mu1 value="0.001"/>
+    <mu2 value="0.001"/>
+    <kp value="1000000.0" />
+    <kd value="1.0" />
+  </gazebo>
+
+  <gazebo reference="camera_link">
+    <sensor name="camera_sensor" type="camera">
+      <pose>0.0 0 0.05 0 0.2617 0</pose>
+      <visualize>true</visualize>
+      <update_rate>30.0</update_rate>
+      <topic>camera/image_raw</topic>
+      <frame_id>camera_link</frame_id>
+      <camera>
+        <horizontal_fov>1.089</horizontal_fov>
+        <image>
+          <width>640</width><height>480</height><format>R8G8B8</format>
+        </image>
+        <clip><near>0.05</near><far>8.0</far></clip>
+      </camera>
+    </sensor>
+  </gazebo>
+
+</robot>
