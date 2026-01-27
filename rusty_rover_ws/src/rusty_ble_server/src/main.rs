@@ -44,7 +44,7 @@ impl RosBridge {
         Ok(Self {
             node: node.clone(),
             status: "Idle".to_string(),
-            cmd_vel_publisher: node.create_publisher::<TwistStamped>("cmd_vel")?,
+            cmd_vel_publisher: node.create_publisher::<TwistStamped>("diff_cont/cmd_vel")?,
         })
     }
 
