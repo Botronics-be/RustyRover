@@ -4,6 +4,7 @@ from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
+from launch_ros.actions import Node
 
 def generate_launch_description():
 
@@ -27,14 +28,6 @@ def generate_launch_description():
         launch_arguments={'sim_mode': sim_mode}.items(),
     )
 
-    gz_bringup = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            PathJoinSubstitution([pkg_gz, 'launch', 'gz_bringup.launch.py'])
-        ]),
-        launch_arguments={'sim_mode': sim_mode}.items(),
-        condition=IfCondition(sim_mode)  
-    )
-
     control = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([pkg_control, 'launch', 'control.launch.py'])
@@ -42,10 +35,18 @@ def generate_launch_description():
         launch_arguments={'sim_mode': sim_mode}.items(),
     )
 
+    bluetooth = Node(
+        package='rusty_ble_server',
+        executable='rusty_ble_server',
+        name='bluetooth_server_node',
+        respawn=True,
+        respawn_delay=2,
+    )
+
     return LaunchDescription([
         sim_mode_arg,
         rsp,
-        gz_bringup,
+        bluetooth,
         # Small delay to ensure we have our robot set before our controllers
         TimerAction(
             period=2.0,
