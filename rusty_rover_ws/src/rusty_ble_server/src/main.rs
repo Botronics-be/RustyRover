@@ -1,6 +1,5 @@
 use rclrs::*;
-use std::{thread, sync::Arc};
-use std_msgs::msg::String as StringMsg;
+use std::{thread, sync::{Arc, Mutex}, time::Duration};
 use geometry_msgs::msg::TwistStamped as TwistStamped;
 use std_msgs::msg::Header;
 use geometry_msgs::msg::Twist;
@@ -9,13 +8,19 @@ use builtin_interfaces::msg::Time;
 use bluer::{
     adv::Advertisement,
     gatt::local::{
-        Application, Characteristic,
+        Application, Characteristic, CharacteristicRead,
         CharacteristicWrite, Service, CharacteristicWriteMethod
     },
     Uuid,
 };
 use serde::Deserialize;
 use tokio::sync::mpsc;
+
+#[derive(Debug, Deserialize)]
+struct TeleopCmd {
+    linear_x: f64,
+    angular_z: f64,
+}
 
 const SERVICE_UUID: Uuid = Uuid::from_u128(0x1deaebe7_ce65_4d57_8933_1bdc2065f37b);
 const CHARACTERISTIC_UUID: Uuid = Uuid::from_u128(0x9dd2899d_f3c9_47ee_992a_aad14b2cdaaf);
@@ -24,39 +29,45 @@ const CHARACTERISTIC_UUID: Uuid = Uuid::from_u128(0x9dd2899d_f3c9_47ee_992a_aad1
 #[serde(tag = "type", content = "data")] 
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 enum BleCommand {
-    Hello(String),
-    CmdVel { linear_x: f64, angular_z: f64 },
+    Connected(String),
+    Teleop(String),
 }
 
 struct RosBridge {
     node: Node,
-    hello_publisher: Publisher<StringMsg>,
     cmd_vel_publisher: Publisher<TwistStamped>,
+    status: String,
 }
 
 impl RosBridge {
     fn new(node: &Node) -> Result<Self, RclrsError> {
         Ok(Self {
             node: node.clone(),
-            hello_publisher: node.create_publisher::<StringMsg>("hello")?,
+            status: "Idle".to_string(),
             cmd_vel_publisher: node.create_publisher::<TwistStamped>("cmd_vel")?,
         })
     }
 
-    fn dispatch(&self, cmd: BleCommand) {
+    fn dispatch(&mut self, cmd: BleCommand) {
         match cmd {
-            BleCommand::Hello(data) => {Self::handle_hello_cmd(&self, data);}
-            BleCommand::CmdVel { linear_x, angular_z } => {Self::handle_cmd_vel(&self, linear_x, angular_z);}
+            BleCommand::Connected(data) => {self.handle_connected_cmd(data);}
+            BleCommand::Teleop(data) => {self.handle_teleop_cmd(data);}
         }
     }
 
-    fn handle_hello_cmd(&self, data: String){
-        log_info!(self.node.logger(), "Processing Hello: {}", data);
-        let _ = self.hello_publisher.publish(StringMsg { data });
+    fn handle_connected_cmd(&mut self, data: String){
+        log_info!(self.node.logger(), "Received CONNECTED from : {}", data);
     }
 
-    fn handle_cmd_vel(&self, linear_x: f64, angular_z:f64){
-        log_info!(self.node.logger(), "Processing Cmd_vel: x:{}, z:{}", linear_x, angular_z);
+    fn handle_teleop_cmd(&mut self, data: String){
+        self.status = "Teleoperating".to_string();
+        let data_cmd: TeleopCmd = serde_json::from_str(&data).unwrap();
+        log_info!(
+            self.node.logger().throttle(Duration::from_secs(1)), 
+            "Received TELEOP from client: x:{}, z:{}",
+            data_cmd.linear_x,
+            data_cmd.angular_z
+        );
 
         let now = self.node.get_clock().now();
 
@@ -73,14 +84,14 @@ impl RosBridge {
             },
             twist: Twist {
                 linear: Vector3 {
-                    x: linear_x,
+                    x: data_cmd.linear_x,
                     y: 0.0,
                     z: 0.0,
                 },
                 angular: Vector3 {
                     x: 0.0,
                     y: 0.0,
-                    z: angular_z,
+                    z: data_cmd.angular_z,
                 },
             },
         };
@@ -89,7 +100,11 @@ impl RosBridge {
     }
 }
 
-async fn run_bluetooth_server(node: Node, tx: mpsc::Sender<BleCommand>) -> bluer::Result<()> {
+async fn run_bluetooth_server(
+    node: Node,
+    tx: mpsc::Sender<BleCommand>,
+    bridge: Arc<Mutex<RosBridge>>
+) -> bluer::Result<()> {
     // Receives the command via ble and sends them through the mpsc channel to the dispatcher
     let session = bluer::Session::new().await?;
     let adapter = session.default_adapter().await?;
@@ -102,6 +117,8 @@ async fn run_bluetooth_server(node: Node, tx: mpsc::Sender<BleCommand>) -> bluer
         ..Default::default()
     };
     let _adv_handle = adapter.advertise(le_advertisement).await?;
+
+    let bridge_clone = bridge.clone();
 
     let char_handle = Characteristic {
         uuid: CHARACTERISTIC_UUID,
@@ -124,6 +141,20 @@ async fn run_bluetooth_server(node: Node, tx: mpsc::Sender<BleCommand>) -> bluer
                     Ok(())
                 })
             })),
+            ..Default::default()
+        }),
+        read: Some(CharacteristicRead {
+            read: true,
+            fun: Box::new(move |_req| {
+                let bridge = bridge_clone.clone();
+                Box::pin(async move {
+                    let status_msg = match bridge.lock() {
+                        Ok(guard) => guard.status.clone(),
+                        Err(_) => "Internal Error: Lock Poisoned".to_string(),
+                    };
+                    Ok(status_msg.into_bytes())
+                })
+            }),
             ..Default::default()
         }),
         ..Default::default()
@@ -151,19 +182,21 @@ fn main() -> Result<(), RclrsError> {
     let node = executor.create_node("bluetooth_server_node")?;
     log_info!(node.logger(), "Bluetooth server node starting ...");
 
-    let bridge = Arc::new(RosBridge::new(&node)?);
+    let bridge = Arc::new(Mutex::new(RosBridge::new(&node)?));
 
     // Works like a UART channel a tx sends to a rx receiver
     let (tx, mut rx) = mpsc::channel::<BleCommand>(32);
 
     let node_clone = node.clone();
+    let ble_bridge = bridge.clone();
+    
     thread::spawn(move || {
         let rt = tokio::runtime::Runtime::new().unwrap();
         rt.block_on(async {
             
             let ble_handle = tokio::spawn(async move {
                 let ble_node_clone = node_clone.clone();
-                if let Err(e) = run_bluetooth_server(node_clone, tx).await {
+                if let Err(e) = run_bluetooth_server(node_clone, tx, ble_bridge).await {
                     log_error!(ble_node_clone.logger(), "BLE Server Error: {}", e);
                 }
             });
@@ -171,7 +204,9 @@ fn main() -> Result<(), RclrsError> {
             let bridge_clone = bridge.clone();
             let dispatcher_handle = tokio::spawn(async move {
                 while let Some(cmd) = rx.recv().await {
-                    bridge_clone.dispatch(cmd);
+                    if let Ok(mut bridge_guard) = bridge_clone.lock() {
+                        bridge_guard.dispatch(cmd);
+                    }
                 }
             });
 
