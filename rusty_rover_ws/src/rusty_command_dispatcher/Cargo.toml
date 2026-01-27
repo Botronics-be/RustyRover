@@ -8,6 +8,7 @@ name = "command_dispatcher"
 path = "src/command_dispatcher.rs"
 
 [dependencies]
+anyhow = {version = "1", features = ["backtrace"]}
 rclrs = "0.7"
 std_msgs = "*"
 geometry_msgs = "*"

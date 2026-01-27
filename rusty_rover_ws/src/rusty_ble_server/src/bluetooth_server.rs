@@ -40,7 +40,7 @@ impl RosBridge {
         Ok(Self {
             node: node.clone(),
             status: "Idle".to_string(),
-            teleop_publisher: node.create_publisher::<TeleopMsg>("teleop_command")?,
+            teleop_publisher: node.create_publisher::<TeleopMsg>("cmd/teleop")?,
         })
     }
 
@@ -69,33 +69,6 @@ impl RosBridge {
             linear_x: (data_cmd.linear_x as f64)/5.0,
             angular_z: (data_cmd.angular_z as f64)/5.0,
         };
-
-        // let now = self.node.get_clock().now();
-
-        // let nanoseconds = now.nsec;
-        // let seconds = nanoseconds / 1_000_000_000;
-
-        // let msg: TwistStamped = TwistStamped {
-        //     header: Header {
-        //         frame_id: "base_link".to_string(),
-        //         stamp: Time {
-        //             sec: seconds as i32,
-        //             nanosec: nanoseconds as u32,
-        //         },
-        //     },
-        //     twist: Twist {
-        //         linear: Vector3 {
-        //             x: data_cmd.linear_x,
-        //             y: 0.0,
-        //             z: 0.0,
-        //         },
-        //         angular: Vector3 {
-        //             x: 0.0,
-        //             y: 0.0,
-        //             z: data_cmd.angular_z,
-        //         },
-        //     },
-        // };
 
         let _ = self.teleop_publisher.publish(msg);
     }

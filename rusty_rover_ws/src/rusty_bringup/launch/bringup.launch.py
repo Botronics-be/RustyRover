@@ -43,10 +43,19 @@ def generate_launch_description():
         respawn_delay=2,
     )
 
+    command_dispatcher = Node(
+        package='rusty_command_dispatcher',
+        executable='command_dispatcher',
+        name='command_dispatcher',
+        respawn=True,
+        respawn_delay=2,
+    )
+
     return LaunchDescription([
         sim_mode_arg,
         rsp,
         bluetooth,
+        command_dispatcher,
         # Small delay to ensure we have our robot set before our controllers
         TimerAction(
             period=2.0,
