@@ -31,6 +31,7 @@ pub struct App {
     ble_rx: mpsc::UnboundedReceiver<FromBle>,
     ble_status: String,
     robot_status: String,
+    last_robot_status_stamped: Instant,
     exit: bool,
 }
 
@@ -58,7 +59,9 @@ async fn main() -> Result<()> {
         ble_rx: from_ble_rx,
 
         ble_status: "Disconnected".to_string(),
+
         robot_status: "...".to_string(),
+        last_robot_status_stamped: Instant::now(),
     };
 
     let app_result = app.run(&mut terminal).await;
@@ -75,8 +78,11 @@ impl App {
     pub async fn run(&mut self, terminal: &mut tui::Tui) -> Result<()> {
         while !self.exit {
             terminal.draw(|frame| self.render_frame(frame))?;
-            let _ = self.send_read_status_cmd();
 
+            if self.last_robot_status_stamped.elapsed() > Duration::from_millis(500) {
+                let _ = self.send_read_status_cmd();
+            }
+            
             while let Ok(msg) = self.ble_rx.try_recv() {
                 match msg {
                     FromBle::StatusChange(s) => self.handle_ble_status(s),
@@ -253,6 +259,7 @@ impl App {
     }
 
     fn send_read_status_cmd(&mut self) -> Result<()> {
+        self.last_robot_status_stamped = Instant::now();
         let _ = self.ble_tx.send(ToBle::ReadStatus);
         Ok(())
     }
