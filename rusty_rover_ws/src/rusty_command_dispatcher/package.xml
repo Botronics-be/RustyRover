@@ -1,0 +1,21 @@
+<package format="3">
+  <name>rusty_command_dispatcher</name>
+  <version>0.0.0</version>
+  <description>ROS2 rust package receiving commands and interpreting them.</description>
+  <maintainer email="antoine.vanmalleghem@botronics.be">avanmalleghem</maintainer>
+  <maintainer email="christophe.simon@botronics.be">csimon-be</maintainer>
+  <maintainer email="david.moli@botronics.be">davidmoli-botronics</maintainer>
+  <maintainer email="enzo.ghisoni@botronics.be">EnzoGhisoni</maintainer>
+  <maintainer email="nicolas.daube@botronics.be">Nicodaube</maintainer>   
+  <license>MIT</license>
+
+  <depend>rclrs</depend>
+  <depend>std_msgs</depend>
+  <depend>rusty_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>builtin_interfaces</depend>
+
+  <export>
+    <build_type>ament_cargo</build_type>
+  </export>
+</package>
