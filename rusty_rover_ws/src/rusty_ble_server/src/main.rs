@@ -1,6 +1,5 @@
 use rclrs::*;
-use std::{thread, sync::{Arc, M}};
-use std_msgs::msg::String as StringMsg;
+use std::{thread, sync::{Arc, Mutex}, time::Duration};
 use geometry_msgs::msg::TwistStamped as TwistStamped;
 use std_msgs::msg::Header;
 use geometry_msgs::msg::Twist;
@@ -63,7 +62,12 @@ impl RosBridge {
     fn handle_teleop_cmd(&mut self, data: String){
         self.status = "Teleoperating".to_string();
         let data_cmd: TeleopCmd = serde_json::from_str(&data).unwrap();
-        log_info!(self.node.logger(), "Received TELEOP from client: x:{}, z:{}", data_cmd.linear_x, data_cmd.angular_z);
+        log_info!(
+            self.node.logger().throttle(Duration::from_secs(1)), 
+            "Received TELEOP from client: x:{}, z:{}",
+            data_cmd.linear_x,
+            data_cmd.angular_z
+        );
 
         let now = self.node.get_clock().now();
 
