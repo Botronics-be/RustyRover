@@ -1,10 +1,6 @@
 use rclrs::*;
 use std::{thread, sync::{Arc, Mutex}, time::Duration};
-use geometry_msgs::msg::TwistStamped as TwistStamped;
-use std_msgs::msg::Header;
-use geometry_msgs::msg::Twist;
-use geometry_msgs::msg::Vector3;
-use builtin_interfaces::msg::Time;
+use rusty_msgs::msg::Teleop as TeleopMsg;
 use bluer::{
     adv::Advertisement,
     gatt::local::{
@@ -35,7 +31,7 @@ enum BleCommand {
 
 struct RosBridge {
     node: Node,
-    cmd_vel_publisher: Publisher<TwistStamped>,
+    teleop_publisher: Publisher<TeleopMsg>,
     status: String,
 }
 
@@ -44,7 +40,7 @@ impl RosBridge {
         Ok(Self {
             node: node.clone(),
             status: "Idle".to_string(),
-            cmd_vel_publisher: node.create_publisher::<TwistStamped>("cmd_vel")?,
+            teleop_publisher: node.create_publisher::<TeleopMsg>("cmd/teleop")?,
         })
     }
 
@@ -69,34 +65,12 @@ impl RosBridge {
             data_cmd.angular_z
         );
 
-        let now = self.node.get_clock().now();
-
-        let nanoseconds = now.nsec;
-        let seconds = nanoseconds / 1_000_000_000;
-
-        let msg: TwistStamped = TwistStamped {
-            header: Header {
-                frame_id: "base_link".to_string(),
-                stamp: Time {
-                    sec: seconds as i32,
-                    nanosec: nanoseconds as u32,
-                },
-            },
-            twist: Twist {
-                linear: Vector3 {
-                    x: data_cmd.linear_x,
-                    y: 0.0,
-                    z: 0.0,
-                },
-                angular: Vector3 {
-                    x: 0.0,
-                    y: 0.0,
-                    z: data_cmd.angular_z,
-                },
-            },
+        let msg: TeleopMsg = TeleopMsg {
+            linear_x: (data_cmd.linear_x as f64)/5.0,
+            angular_z: (data_cmd.angular_z as f64)/5.0,
         };
 
-        let _ = self.cmd_vel_publisher.publish(msg);
+        let _ = self.teleop_publisher.publish(msg);
     }
 }
 

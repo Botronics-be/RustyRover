@@ -1,7 +1,7 @@
 <package format="3">
-  <name>rusty_ble_server</name>
+  <name>rusty_command_dispatcher</name>
   <version>0.0.0</version>
-  <description>ROS2 rust package creating a bluetooth low energy server.</description>
+  <description>ROS2 rust package receiving commands and interpreting them.</description>
   <maintainer email="antoine.vanmalleghem@botronics.be">avanmalleghem</maintainer>
   <maintainer email="christophe.simon@botronics.be">csimon-be</maintainer>
   <maintainer email="david.moli@botronics.be">davidmoli-botronics</maintainer>
