@@ -1,6 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 50
+    update_rate: 30
 
     use_sim_time: False 
 
@@ -26,25 +26,9 @@ diff_cont:
     right_wheel_names: ["right_wheel_joint"]
     
     wheel_separation: 0.10
-    wheel_radius: 0.033
+    wheel_radius: 0.03
 
     use_stamped_vel: true 
 
     position_feedback: false 
     open_loop: true
-
-    linear:
-      x:
-        has_velocity_limits: true
-        max_velocity: 3.0
-        max_acceleration: 1.0
-        max_deceleration: -10.0
-        max_acceleration_reverse: -1.0
-        max_deceleration_reverse: 10.0
-
-    angular:
-      z:
-        has_velocity_limits: true
-        max_velocity: 3.14
-        max_acceleration: 1.0
-        max_deceleration: -1.0

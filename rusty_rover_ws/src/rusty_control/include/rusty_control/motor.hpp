@@ -18,7 +18,7 @@ class Motor {
   Motor() = default;
   Motor(I2CDevicePtr i2c, MotorPins pins, std::string name);
   ~Motor();
-  bool trySetVelocity(double velocity);
+  bool setVelocity(double velocity);
 
  private:
   I2CDevicePtr i2c_;

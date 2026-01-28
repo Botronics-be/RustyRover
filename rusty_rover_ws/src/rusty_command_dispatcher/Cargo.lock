@@ -946,10 +946,6 @@ name = "rusty_ble_server"
 version = "0.1.0"
 
 [[patch.unused]]
-name = "rusty_command_dispatcher"
-version = "0.1.0"
-
-[[patch.unused]]
 name = "sensor_msgs"
 version = "5.5.1"
 
