@@ -14,6 +14,7 @@ path = "src/spinner_node.rs"
 [dependencies]
 anyhow = {version = "1", features = ["backtrace"]}
 tokio = "*"
+futures = "*"
 rclrs = "0.7"
 std_msgs = "*"
 geometry_msgs = "*"

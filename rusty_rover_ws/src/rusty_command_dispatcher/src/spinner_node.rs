@@ -110,7 +110,7 @@ fn main() -> Result<(), Error> {
 
     let action_node = node.clone();
     let _action = node.create_action_server(
-    &"action_name",
+    &"spin",
     move |handle| {
         spinner_action(action_node.clone(), handle)
     }).unwrap();

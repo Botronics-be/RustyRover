@@ -1,6 +1,6 @@
 use rclrs::*;
 use std::{thread, sync::{Arc, Mutex}, time::Duration};
-use rusty_msgs::msg::Teleop as TeleopMsg;
+use rusty_msgs::msg::{Teleop as TeleopMsg, SpinCmd as SpinCmdMsg};
 use bluer::{
     adv::Advertisement,
     gatt::local::{
@@ -27,11 +27,13 @@ const CHARACTERISTIC_UUID: Uuid = Uuid::from_u128(0x9dd2899d_f3c9_47ee_992a_aad1
 enum BleCommand {
     Connected(String),
     Teleop(String),
+    Spin(String),
 }
 
 struct RosBridge {
     node: Node,
     teleop_publisher: Publisher<TeleopMsg>,
+    spin_publisher: Publisher<SpinCmdMsg>,
     status: String,
 }
 
@@ -41,6 +43,7 @@ impl RosBridge {
             node: node.clone(),
             status: "Idle".to_string(),
             teleop_publisher: node.create_publisher::<TeleopMsg>("cmd/teleop")?,
+            spin_publisher: node.create_publisher::<SpinCmdMsg>("cmd/spin")?,
         })
     }
 
@@ -48,6 +51,7 @@ impl RosBridge {
         match cmd {
             BleCommand::Connected(data) => {self.handle_connected_cmd(data);}
             BleCommand::Teleop(data) => {self.handle_teleop_cmd(data);}
+            BleCommand::Spin(data) => {self.handle_spin_cmd(data);}
         }
     }
 
@@ -71,6 +75,23 @@ impl RosBridge {
         };
 
         let _ = self.teleop_publisher.publish(msg);
+    }
+
+    fn handle_spin_cmd(&mut self, data: String){
+        log_info!(self.node.logger(), "Received SPIN from client with spin time : {}", data);
+        self.status = "Spinning".to_string();
+        let spin_time: i64 = match data.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                log_error!(self.node.logger(), "Invalid number format: '{}'", data);
+                return; // Exit early if parsing fails
+            }
+        };
+        let msg: SpinCmdMsg = SpinCmdMsg {
+            spinning_time: spin_time
+        };
+
+        let _ = self.spin_publisher.publish(msg);
     }
 }
 

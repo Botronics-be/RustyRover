@@ -675,6 +675,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "builtin_interfaces",
+ "futures",
  "geometry_msgs",
  "rclrs",
  "rusty_msgs",
