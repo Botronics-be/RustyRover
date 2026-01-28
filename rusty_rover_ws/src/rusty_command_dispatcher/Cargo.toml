@@ -7,8 +7,13 @@ edition = "2024"
 name = "command_dispatcher"
 path = "src/command_dispatcher.rs"
 
+[[bin]]
+name = "spinner_node"
+path = "src/spinner_node.rs"
+
 [dependencies]
 anyhow = {version = "1", features = ["backtrace"]}
+tokio = "*"
 rclrs = "0.7"
 std_msgs = "*"
 geometry_msgs = "*"

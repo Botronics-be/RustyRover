@@ -5,8 +5,7 @@ use std_msgs::msg::Header;
 use geometry_msgs::msg::Twist;
 use geometry_msgs::msg::Vector3;
 use builtin_interfaces::msg::Time;
-use std::sync::Arc;
-use anyhow::{Error, Result};
+use anyhow::Result;
 
 struct TeleopData {node: Node, cmd_vel_publisher: Publisher<TwistStamped>}
 
@@ -71,7 +70,7 @@ impl CommandDispatcher {
 
 fn main() -> Result<(), RclrsError> {
     let mut executor = Context::default_from_env().unwrap().create_basic_executor();
-    let _dispatcher =CommandDispatcher::new(&executor).unwrap();
+    let _dispatcher = CommandDispatcher::new(&executor).unwrap();
 
     executor.spin(SpinOptions::default()).first_error()
 }
