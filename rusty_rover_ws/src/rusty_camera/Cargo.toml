@@ -7,10 +7,15 @@ edition = "2024"
 name = "toggle_publication"
 path = "src/toggle_publication.rs"
 
+[[bin]]
+name = "rpi_camera_node"
+path = "src/rpi_camera_node.rs"
+
 [dependencies]
 rclrs = "0.7"
 std_msgs = "*"
 sensor_msgs = "*"
 std_srvs = "*"
 anyhow = {version = "1", features = ["backtrace"]}
-builtin_interfaces = "*"
+opencv = { version = "0.92", default-features = false, features = ["videoio", "imgproc", "clang-runtime"] }
+example_interfaces = "*"
