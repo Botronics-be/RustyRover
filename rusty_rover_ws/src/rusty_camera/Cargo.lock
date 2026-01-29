@@ -1250,6 +1250,10 @@ name = "rusty_camera"
 version = "0.1.0"
 
 [[patch.unused]]
+name = "rusty_msgs"
+version = "0.0.0"
+
+[[patch.unused]]
 name = "shape_msgs"
 version = "5.5.1"
 

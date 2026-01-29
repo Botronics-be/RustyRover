@@ -969,11 +969,7 @@ name = "rust_pubsub"
 version = "0.5.0"
 
 [[patch.unused]]
-name = "rusty_ble_server"
-version = "0.1.0"
-
-[[patch.unused]]
-name = "rusty_command_dispatcher"
+name = "rusty_camera"
 version = "0.1.0"
 
 [[patch.unused]]
