@@ -4,7 +4,9 @@ use sensor_msgs::msg::Image;
 use std_srvs::srv::{SetBool, SetBool_Request, SetBool_Response, Trigger, Trigger_Request, Trigger_Response};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
-use std::path::Path; 
+use std::path::{Path, PathBuf};
+use std::fs; 
+
 
 static SHOULD_REPUBLISH: AtomicBool = AtomicBool::new(false);
 
@@ -13,6 +15,9 @@ struct ToggleImageApp {
     _subscription: Subscription<Image>,
     _toggle_service: Service<SetBool>,
     _capture_service: Service<Trigger>,
+    
+    storage_path: PathBuf,
+    
     last_frame: Arc<Mutex<Option<Image>>>,
 }
 
@@ -20,10 +25,22 @@ impl ToggleImageApp {
     fn new(node: &Node) -> Result<Self, RclrsError> {
         let publisher = node.create_publisher::<Image>("/image_viewer")?;
         
+        let home_dir = std::env::var("HOME").unwrap_or_else(|_| ".".to_string());
+        
+        let storage_path = Path::new(&home_dir).join("rusty_images");
+        
+        if let Err(e) = fs::create_dir_all(&storage_path) {
+            eprintln!("Warning: Could not create directory {:?}: {}", storage_path, e);
+        } else {
+            println!("Storage ready: Images will be saved to {:?}", storage_path);
+        }
+
         let last_frame: Arc<Mutex<Option<Image>>> = Arc::new(Mutex::new(None));
         
         let last_frame_for_sub = Arc::clone(&last_frame);
         let last_frame_for_srv = Arc::clone(&last_frame);
+        
+        let storage_path_for_srv = storage_path.clone();
 
         let capture_service = node.create_service::<Trigger, _>(
             "capture_frame",
@@ -31,16 +48,22 @@ impl ToggleImageApp {
                 let frame_lock = last_frame_for_srv.lock().unwrap();
                 
                 if let Some(frame) = &*frame_lock {
-
-                    let file_path = "/home/david/Documents/Project/Otto/RustyRover/rusty_rover_ws/captured_frame.png";
+                   
+                    let filename = format!(
+                        "frame_{}_{:09}.png", 
+                        frame.header.stamp.sec, 
+                        frame.header.stamp.nanosec
+                    );
                     
-                    println!("Service: Processing frame {}x{} (Encoding: {})", frame.width, frame.height, frame.encoding);
+                    
+                    let file_path = storage_path_for_srv.join(&filename);
+                    
+                    println!("Service: Saving to {:?}", file_path);
 
-                    // Determine how to save based on encoding
                     let save_result = match frame.encoding.as_str() {
                         "rgb8" => {
                             image::save_buffer(
-                                &Path::new(file_path),
+                                &file_path,
                                 &frame.data,
                                 frame.width,
                                 frame.height,
@@ -50,10 +73,10 @@ impl ToggleImageApp {
                         "bgr8" => {
                             let mut rgb_data = frame.data.clone();
                             for chunk in rgb_data.chunks_exact_mut(3) {
-                                chunk.swap(0, 2); // Swap Blue (0) and Red (2)
+                                chunk.swap(0, 2); 
                             }
                             image::save_buffer(
-                                &Path::new(file_path),
+                                &file_path,
                                 &rgb_data,
                                 frame.width,
                                 frame.height,
@@ -62,7 +85,7 @@ impl ToggleImageApp {
                         },
                         "mono8" => {
                             image::save_buffer(
-                                &Path::new(file_path),
+                                &file_path,
                                 &frame.data,
                                 frame.width,
                                 frame.height,
@@ -70,9 +93,8 @@ impl ToggleImageApp {
                             )
                         },
                         _ => {
-                            // Fallback: try saving as RGB and hope for the best
                             image::save_buffer(
-                                &Path::new(file_path),
+                                &file_path,
                                 &frame.data,
                                 frame.width,
                                 frame.height,
@@ -84,11 +106,11 @@ impl ToggleImageApp {
                     match save_result {
                         Ok(_) => Trigger_Response {
                             success: true,
-                            message: format!("Saved to {}", file_path),
+                            message: format!("Saved to {}", file_path.display()),
                         },
                         Err(e) => Trigger_Response {
                             success: false,
-                            message: format!("Failed to save image: {}", e),
+                            message: format!("Failed to save: {}", e),
                         },
                     }
                 } else {
@@ -112,7 +134,6 @@ impl ToggleImageApp {
             },
         )?;
 
-
         let publisher_clone = publisher.clone();
         let subscription = node.create_subscription::<Image, _>(
             "/camera/image_raw",
@@ -132,6 +153,7 @@ impl ToggleImageApp {
             _toggle_service: toggle_service,
             _capture_service: capture_service,
             last_frame,
+            storage_path,
         })
     }
 }
@@ -142,7 +164,8 @@ fn main() -> Result<(), Error> {
     let _app = ToggleImageApp::new(&node)?;
 
     println!("Node running.");
-    println!(" - Call /capture_frame to save 'captured_frame.png' to your workspace root.");
+    println!(" - Photos will be saved to: ~/rusty_images/");
+    println!(" - Service: /capture_frame (std_srvs/srv/Trigger)");
     
     executor.spin(SpinOptions::default()).first_error()?;
     Ok(())
