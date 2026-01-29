@@ -1,7 +1,7 @@
 use rclrs::*;
 use std::{thread, sync::{Arc, Mutex}, time::Duration};
 use rusty_msgs::msg::{Teleop as TeleopMsg, SpinCmd as SpinCmdMsg};
-use std_msgs::msg::String as StringMsg;
+use std_msgs::msg::{Empty, String as StringMsg};
 use bluer::{
     adv::Advertisement,
     gatt::local::{
@@ -29,12 +29,14 @@ enum BleCommand {
     Connected(String),
     Teleop(String),
     Spin(String),
+    CaptureImage(String),
 }
 
 struct RosBridge {
     node: Node,
     teleop_publisher: Publisher<TeleopMsg>,
     spin_publisher: Publisher<SpinCmdMsg>,
+    capture_image_publisher: Publisher<Empty>,
     _status_subscriber: Subscription<StringMsg>,
     status: SharedStatus,
 }
@@ -62,6 +64,7 @@ impl RosBridge {
             node: node.clone(),
             teleop_publisher: node.create_publisher::<TeleopMsg>("cmd/teleop")?,
             spin_publisher: node.create_publisher::<SpinCmdMsg>("cmd/spin")?,
+            capture_image_publisher: node.create_publisher::<Empty>("/cmd/capture_image")?,
 
             _status_subscriber,
             status,
@@ -73,6 +76,7 @@ impl RosBridge {
             BleCommand::Connected(data) => {self.handle_connected_cmd(data);}
             BleCommand::Teleop(data) => {self.handle_teleop_cmd(data);}
             BleCommand::Spin(data) => {self.handle_spin_cmd(data);}
+            BleCommand::CaptureImage(data) => {self.handle_capture_image_cmd(data);}
         }
     }
 
@@ -95,6 +99,10 @@ impl RosBridge {
         };
 
         let _ = self.teleop_publisher.publish(msg);
+    }
+
+    fn handle_capture_image_cmd(&mut self, _data: String){
+        let _ = self.capture_image_publisher.publish(Empty {structure_needs_at_least_one_member: 0});
     }
 
     fn handle_spin_cmd(&mut self, data: String){
