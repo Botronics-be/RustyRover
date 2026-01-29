@@ -1,6 +1,6 @@
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, TimerAction
-from launch.conditions import IfCondition
+from launch.conditions import UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
@@ -14,11 +14,10 @@ def generate_launch_description():
         'sim_mode',
         default_value='true',
         choices=['true', 'false'],
-        description='Set to "true" to launch Gazebo. Set to "false" for physical hardware.'
+        description='Set to "true" to launch simulation. Set to "false" for physical hardware.'
     )
 
     pkg_description = FindPackageShare('rusty_description')
-    pkg_gz          = FindPackageShare('rusty_gz')
     pkg_control     = FindPackageShare('rusty_control')
     
     rsp = IncludeLaunchDescription(
@@ -33,6 +32,21 @@ def generate_launch_description():
             PathJoinSubstitution([pkg_control, 'launch', 'control.launch.py'])
         ]),
         launch_arguments={'sim_mode': sim_mode}.items(),
+    )
+
+    v4l2_camera_node = Node(
+        package="v4l2_camera",
+        executable="v4l2_camera_node",
+        remappings=[
+            ("/image_raw", "/camera/image_raw")
+        ],
+        condition=UnlessCondition(sim_mode) 
+    )
+
+    camera_capture_node = Node(
+        package="rusty_camera",
+        executable="toggle_publication",
+        condition=UnlessCondition(sim_mode) 
     )
 
     bluetooth = Node(
@@ -70,13 +84,11 @@ def generate_launch_description():
     return LaunchDescription([
         sim_mode_arg,
         rsp,
+        control,
+        v4l2_camera_node,
+        camera_capture_node,
         bluetooth,
         command_dispatcher,
         spinner_node,
         pilot_node,
-        # Small delay to ensure we have our robot set before our controllers
-        TimerAction(
-            period=2.0,
-            actions=[control]
-        )
     ])
