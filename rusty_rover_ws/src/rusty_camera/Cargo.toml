@@ -19,3 +19,4 @@ std_srvs = "*"
 anyhow = {version = "1", features = ["backtrace"]}
 opencv = { version = "0.92", default-features = false, features = ["videoio", "imgproc", "clang-runtime"] }
 example_interfaces = "*"
+image = "0.24"
