@@ -125,6 +125,7 @@ impl App {
                 KeyCode::Char(' ') => self.stop_robot()?,
                 KeyCode::Char('c') => self.connect_server()?,
                 KeyCode::Char('s') => self.send_spin()?,
+                KeyCode::Char('p') => self.send_capture_image()?,
                 KeyCode::Up => self.increment_linear()?,
                 KeyCode::Down => self.decrement_linear()?,
                 KeyCode::Left => self.increment_angular()?,
@@ -170,6 +171,10 @@ impl App {
 
     fn send_spin(&mut self) -> Result<()> {
         return self.send_command("SPIN".to_string(), "10000".to_string());
+    }
+
+    fn send_capture_image(&mut self) -> Result<()> {
+        return self.send_command("CAPTURE_IMAGE".to_string(), "".to_string());
     }
 
     fn stop_robot(&mut self) -> Result<()> {
@@ -342,11 +347,13 @@ impl Widget for &App {
             " Turn Right ".into(),
             "<Right>".blue().bold(), 
             " Spin ".into(),
-            "<S> ".blue().bold(),           
-            " Quit ".into(),
-            "<Q> ".blue().bold(),
+            "<S> ".blue().bold(),
+            " Capture image ".into(),
+            "<P> ".blue().bold(),            
             " Connect ".into(),
             "<C> ".blue().bold(),
+            " Quit ".into(),
+            "<Q> ".blue().bold(),
         ]);
         
         let block = Block::bordered()
