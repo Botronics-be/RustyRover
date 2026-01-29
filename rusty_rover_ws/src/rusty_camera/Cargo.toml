@@ -7,10 +7,6 @@ edition = "2024"
 name = "toggle_publication"
 path = "src/toggle_publication.rs"
 
-[[bin]]
-name = "rpi_camera_node"
-path = "src/rpi_camera_node.rs"
-
 [dependencies]
 rclrs = "0.7"
 std_msgs = "*"
