@@ -14,6 +14,8 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Teleop.msg"
+  "msg/SpinCmd.msg"
+  "action/SpinAction.action"
 )
 
 if(BUILD_TESTING)

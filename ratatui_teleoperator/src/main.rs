@@ -124,6 +124,7 @@ impl App {
                 KeyCode::Char('q') => self.exit()?,
                 KeyCode::Char(' ') => self.stop_robot()?,
                 KeyCode::Char('c') => self.connect_server()?,
+                KeyCode::Char('s') => self.send_spin()?,
                 KeyCode::Up => self.increment_linear()?,
                 KeyCode::Down => self.decrement_linear()?,
                 KeyCode::Left => self.increment_angular()?,
@@ -165,6 +166,10 @@ impl App {
                 Err(e.into())
             }
         }
+    }
+
+    fn send_spin(&mut self) -> Result<()> {
+        return self.send_command("SPIN".to_string(), "10000".to_string());
     }
 
     fn stop_robot(&mut self) -> Result<()> {
@@ -335,7 +340,9 @@ impl Widget for &App {
             " Turn Left ".into(),
             "<Left>".blue().bold(),
             " Turn Right ".into(),
-            "<Right>".blue().bold(),            
+            "<Right>".blue().bold(), 
+            " Spin ".into(),
+            "<S> ".blue().bold(),           
             " Quit ".into(),
             "<Q> ".blue().bold(),
             " Connect ".into(),

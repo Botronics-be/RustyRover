@@ -1,0 +1,8 @@
+# Goal
+int64 spinning_time # time to spin in milliseconds
+---
+# Result
+bool is_succeeded # Just for demonstration purpose
+---
+# Feedback
+int64 elapsed_time # Time elapsed since start of spin in milliseconds
