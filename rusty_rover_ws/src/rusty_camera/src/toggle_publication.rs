@@ -44,7 +44,7 @@ impl CaptureServiceNode {
                 if let Some(frame) = &*frame_lock {
 
                     let filename = format!(
-                        "frame_{}_{:09}.png", 
+                        "frame_{}.png", 
                         frame.header.stamp.sec
                     );
                     
