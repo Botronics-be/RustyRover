@@ -109,7 +109,7 @@ impl CommandDispatcher {
         let worker = node.create_worker(String::new());
 
         let _status_timer = worker.create_timer_repeating(
-            Duration::from_secs(1), 
+            Duration::from_millis(500), 
             move || {
                 let mut state = timer_state.lock().unwrap();
 
