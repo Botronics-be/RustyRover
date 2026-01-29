@@ -2,7 +2,8 @@ use rclrs::*;
 use rusty_msgs::msg::{SpinCmd as SpinCmdMsg, Teleop as TeleopMsg};
 use rusty_msgs::action::{SpinAction_Goal, SpinAction};
 use std::sync::{Arc, Mutex};
-use std_msgs::msg::String as StringMsg;
+use std_srvs::srv::{Trigger, Trigger_Request, Trigger_Response};
+use std_msgs::msg::{Empty as EmptyMsg, String as StringMsg};
 use std::time::{Duration, Instant};
 use futures::StreamExt;
 use anyhow::Result;
@@ -12,6 +13,7 @@ pub struct CommandDispatcher {
     _state: Arc<Mutex<RobotState>>,
     _teleop_command_subscriber: Subscription<TeleopMsg>,
     _spin_command_subscriber: Subscription<SpinCmdMsg>,
+    _capture_image_subscriber: Subscription<EmptyMsg>,
     _status_publisher: Publisher<StringMsg>,
     _status_timer: Arc<TimerState<Arc<WorkerState<std::string::String>>>>,
 }
@@ -34,6 +36,7 @@ impl CommandDispatcher {
 
         let pilot_cmd_publisher = node.create_publisher::<TeleopMsg>("/pilot/teleop")?;
         let spin_client = node.create_action_client::<SpinAction>(&"spin").unwrap();
+        let capture_image_client = node.create_client::<Trigger>(&"capture_frame").unwrap();
         let status_publisher = node.create_publisher::<StringMsg>("/status")?;
 
         let pilot_cmd_pub_clone = pilot_cmd_publisher.clone();
@@ -48,6 +51,31 @@ impl CommandDispatcher {
                 drop(state);
                    
                 let _ = pilot_cmd_pub_clone.publish(msg);
+            }
+        )?;
+
+        let capture_image_node = node.clone();
+        let capture_image_client_clone = capture_image_client.clone();
+        let _capture_image_subscriber = node.create_subscription::<EmptyMsg, _>(
+            "/cmd/capture_image",
+            move |msg: EmptyMsg| {
+                
+                let client = capture_image_client_clone.clone();
+                let log_node = capture_image_node.clone();
+
+                std::thread::spawn(move || {
+                    futures::executor::block_on(async {
+                        log_info!(log_node.logger(), "Check for service...");
+                        client.notify_on_service_ready().await.unwrap();
+
+                        let request = Trigger_Request { 
+                            structure_needs_at_least_one_member: 0 
+                        };
+                        
+                        let response: Trigger_Response = client.call(&request).unwrap().await.unwrap();
+                    });
+                });
+                
             }
         )?;
 
@@ -125,6 +153,7 @@ impl CommandDispatcher {
             _node: node,
             _state: shared_state,
             _spin_command_subscriber,
+            _capture_image_subscriber,
             _teleop_command_subscriber,
             _status_publisher: status_publisher,
             _status_timer,

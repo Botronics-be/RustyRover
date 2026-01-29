@@ -546,6 +546,8 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-backward-ros-1.0.7-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-bicycle-steering-controller-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-builtin-interfaces-2.3.0-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-camera-calibration-parsers-6.1.2-np126py312he556185_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-camera-info-manager-6.1.2-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-class-loader-2.8.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-common-interfaces-5.5.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-composition-0.36.1-np126py312he556185_10.conda
@@ -871,6 +873,7 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-urdf-parser-plugin-2.12.2-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-urdfdom-4.0.1-py312h24bf083_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-urdfdom-headers-1.1.2-py312h24bf083_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-v4l2-camera-0.7.1-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-velocity-controllers-5.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-vision-msgs-4.2.0-np126py312he556185_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-visualization-msgs-5.5.0-np126py312he556185_10.conda
@@ -1508,6 +1511,8 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-backward-ros-1.0.7-np126py312h306876e_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-bicycle-steering-controller-5.2.0-np126py312h306876e_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-builtin-interfaces-2.3.0-np126py312h306876e_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-camera-calibration-parsers-6.1.2-np126py312h306876e_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-camera-info-manager-6.1.2-np126py312h306876e_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-class-loader-2.8.0-np126py312h306876e_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-common-interfaces-5.5.0-np126py312h306876e_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-composition-0.36.1-np126py312h306876e_10.conda
@@ -1833,6 +1838,7 @@ environments:
       - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-urdf-parser-plugin-2.12.2-np126py312h306876e_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-urdfdom-4.0.1-py312h9804fc4_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-urdfdom-headers-1.1.2-py312h9804fc4_10.conda
+      - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-v4l2-camera-0.7.1-np126py312h306876e_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-velocity-controllers-5.2.0-np126py312h306876e_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-vision-msgs-4.2.0-np126py312h306876e_10.conda
       - conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-visualization-msgs-5.5.0-np126py312h306876e_10.conda
@@ -3823,6 +3829,7 @@ packages:
   - python_abi 3.12.* *_cp312
   - tomli
   license: Apache-2.0
+  license_family: APACHE
   purls:
   - pkg:pypi/coverage?source=hash-mapping
   size: 386708
@@ -3836,6 +3843,7 @@ packages:
   - python_abi 3.12.* *_cp312
   - tomli
   license: Apache-2.0
+  license_family: APACHE
   purls:
   - pkg:pypi/coverage?source=hash-mapping
   size: 387208
@@ -16614,6 +16622,88 @@ packages:
   license: BSD-3-Clause
   size: 82011
   timestamp: 1751034037874
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-camera-calibration-parsers-6.1.2-np126py312he556185_10.conda
+  sha256: 15d66c53428b9c6e5713343cbf8888881ff85f0953b25e3b007078357f9edb0b
+  md5: 29533f83b5d225ddb2aece21cec980f9
+  depends:
+  - python
+  - ros-kilted-rclcpp
+  - ros-kilted-ros-workspace
+  - ros-kilted-sensor-msgs
+  - ros-kilted-yaml-cpp-vendor
+  - ros2-distro-mutex 0.10.* kilted_*
+  - __glibc >=2.17,<3.0.a0
+  - libstdcxx >=13
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  license: BSD-3-Clause
+  size: 110727
+  timestamp: 1751036191276
+- conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-camera-calibration-parsers-6.1.2-np126py312h306876e_10.conda
+  sha256: a324075a527aaa8217e8fb7f1d1bea209902bc33f1d494518983196f64afb229
+  md5: cdff1b2eea80fd10d45554420ae9e33c
+  depends:
+  - python
+  - ros-kilted-rclcpp
+  - ros-kilted-ros-workspace
+  - ros-kilted-sensor-msgs
+  - ros-kilted-yaml-cpp-vendor
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libgcc >=13
+  - libstdcxx >=13
+  - libgcc >=13
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  license: BSD-3-Clause
+  size: 108651
+  timestamp: 1751036180222
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-camera-info-manager-6.1.2-np126py312he556185_10.conda
+  sha256: dac699e4b329fc8fb86b9a9b120a1e3582faf2adc05db3332cbc2f2f68b09071
+  md5: 4ed88401e1d96f629d1edcd56db482ef
+  depends:
+  - python
+  - ros-kilted-ament-index-cpp
+  - ros-kilted-camera-calibration-parsers
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-rcpputils
+  - ros-kilted-ros-workspace
+  - ros-kilted-sensor-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=13
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  license: BSD-3-Clause
+  size: 80598
+  timestamp: 1751036821117
+- conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-camera-info-manager-6.1.2-np126py312h306876e_10.conda
+  sha256: 2b88bcd8a1292c4aba395896312efb9367cfa914afd6c028394516b45198b203
+  md5: e24e1533a2303ce45512d0b2c6e1c196
+  depends:
+  - python
+  - ros-kilted-ament-index-cpp
+  - ros-kilted-camera-calibration-parsers
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-lifecycle
+  - ros-kilted-rcpputils
+  - ros-kilted-ros-workspace
+  - ros-kilted-sensor-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - numpy >=1.26.4,<2.0a0
+  - python_abi 3.12.* *_cp312
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  license: BSD-3-Clause
+  size: 80526
+  timestamp: 1751036625268
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-class-loader-2.8.0-np126py312he556185_10.conda
   sha256: a0379a6da937a6d74a165da097ba845fa6db41914bffab61513af2f66c2ef87b
   md5: 836a024516993f40de6b65eda5ccd57b
@@ -31570,6 +31660,49 @@ packages:
   license: BSD-3-Clause
   size: 7264
   timestamp: 1751031911748
+- conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-v4l2-camera-0.7.1-np126py312he556185_10.conda
+  sha256: b09956a28ac685ade43d12e7ea179b3eacd9cad87f21451a3dd04ecb30b0cc87
+  md5: 179b5a22f8bae9b08b588a7fb7fa4675
+  depends:
+  - python
+  - ros-kilted-camera-info-manager
+  - ros-kilted-cv-bridge
+  - ros-kilted-image-transport
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-components
+  - ros-kilted-ros-workspace
+  - ros-kilted-sensor-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - __glibc >=2.17,<3.0.a0
+  - python_abi 3.12.* *_cp312
+  - numpy >=1.26.4,<2.0a0
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  license: BSD-3-Clause
+  size: 335773
+  timestamp: 1751390783503
+- conda: https://conda.anaconda.org/robostack-kilted/linux-aarch64/ros-kilted-v4l2-camera-0.7.1-np126py312h306876e_10.conda
+  sha256: 43d78284f298d8490288605047849dc3f752f34ffd5ba5c1e7119e1f528a9509
+  md5: ba7ad16bd7b6863967d93ce40e0a708f
+  depends:
+  - python
+  - ros-kilted-camera-info-manager
+  - ros-kilted-cv-bridge
+  - ros-kilted-image-transport
+  - ros-kilted-rclcpp
+  - ros-kilted-rclcpp-components
+  - ros-kilted-ros-workspace
+  - ros-kilted-sensor-msgs
+  - ros2-distro-mutex 0.10.* kilted_*
+  - libstdcxx >=13
+  - libgcc >=13
+  - python_abi 3.12.* *_cp312
+  - numpy >=1.26.4,<2.0a0
+  - ros2-distro-mutex >=0.10.0,<0.11.0a0
+  license: BSD-3-Clause
+  size: 331908
+  timestamp: 1751390887273
 - conda: https://conda.anaconda.org/robostack-kilted/linux-64/ros-kilted-velocity-controllers-5.2.0-np126py312he556185_10.conda
   sha256: e220b21ef4cb06f996ddc6017b668d49c1ac9afb8a21253356f4b381eb840838
   md5: c46f569d0d01c2c8b944258884165d36

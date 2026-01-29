@@ -94,8 +94,8 @@ impl RosBridge {
         );
 
         let msg: TeleopMsg = TeleopMsg {
-            linear_x: (data_cmd.linear_x as f64)/5.0,
-            angular_z: (data_cmd.angular_z as f64)/5.0,
+            linear_x: (data_cmd.linear_x as f64)/10.0,
+            angular_z: (data_cmd.angular_z as f64)/10.0,
         };
 
         let _ = self.teleop_publisher.publish(msg);
