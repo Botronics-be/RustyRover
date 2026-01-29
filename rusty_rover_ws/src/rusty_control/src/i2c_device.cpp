@@ -29,24 +29,24 @@ I2CDevice::I2CDevice() {
   }
 
   // Select the PWM device
-  if (!trySelectDevice())
+  if (!selectDevice())
     std::__throw_runtime_error("Failed to select PWM device!");
 
   // Reset the PWM device
-  if (!tryReset()) std::__throw_runtime_error("Failed to reset PWM device!");
+  if (!reset()) std::__throw_runtime_error("Failed to reset PWM device!");
 
   // Set the PWM device clock
-  if (!trySetClock()) std::__throw_runtime_error("Failed to set PWM clock!");
+  if (!setClock()) std::__throw_runtime_error("Failed to set PWM clock!");
 }
 
 I2CDevice::~I2CDevice() {
-  tryReset();
+  reset();
   if (i2c_fd_) {
     close(i2c_fd_);
   }
 }
 
-bool I2CDevice::tryEnableMotor(uint8_t pin) {
+bool I2CDevice::enableMotor(uint8_t pin) {
   buf_[0] = kPwmReg + 4 * pin;
   buf_[1] = 0x00;
   buf_[2] = 0x10;
@@ -55,7 +55,7 @@ bool I2CDevice::tryEnableMotor(uint8_t pin) {
   return write(i2c_fd_, buf_, 5) == 5;
 }
 
-bool I2CDevice::trySetDutyCycle(uint8_t pin, uint16_t duty_cycle) {
+bool I2CDevice::setDutyCycle(uint8_t pin, uint16_t duty_cycle) {
   buf_[0] = kPwmReg + 4 * pin;
 
   if (duty_cycle == 0xFFFF) {
@@ -82,12 +82,12 @@ bool I2CDevice::trySetDutyCycle(uint8_t pin, uint16_t duty_cycle) {
   return write(i2c_fd_, buf_, 5) == 5;
 }
 
-bool I2CDevice::tryWriteReg(uint8_t reg, uint8_t data) {
+bool I2CDevice::writeReg(uint8_t reg, uint8_t data) {
   buf_[0] = reg;
   buf_[1] = data;
   return write(i2c_fd_, buf_, 2) == 2;
 }
-std::optional<uint8_t> I2CDevice::tryReadReg(uint8_t reg) {
+std::optional<uint8_t> I2CDevice::readReg(uint8_t reg) {
   buf_[0] = reg;
   if (write(i2c_fd_, buf_, 1) != 1) {
     return std::nullopt;
@@ -98,32 +98,32 @@ std::optional<uint8_t> I2CDevice::tryReadReg(uint8_t reg) {
   return buf_[0];
 }
 
-bool I2CDevice::trySetClock() {
+bool I2CDevice::setClock() {
   const uint8_t prescale =
       (kReferenceClockSpeed / 4096.0 / kPwmFrequency + 0.5) - 1;
   if (prescale < 3) return false;
 
   // Read old mode
-  const auto old_mode_op = tryReadReg(kMode1Reg);
+  const auto old_mode_op = readReg(kMode1Reg);
   if (!old_mode_op.has_value()) return false;
   const uint8_t old_mode = *old_mode_op;
 
   // Set a new mode/prescaler, then sleep
   const uint8_t new_mode = (old_mode & 0x7F) | 0x10;
-  if (!tryWriteReg(kMode1Reg, new_mode)) return false;
-  if (!tryWriteReg(kPrescaleReg, prescale)) return false;
-  if (!tryWriteReg(kMode1Reg, old_mode)) return false;
+  if (!writeReg(kMode1Reg, new_mode)) return false;
+  if (!writeReg(kPrescaleReg, prescale)) return false;
+  if (!writeReg(kMode1Reg, old_mode)) return false;
   std::this_thread::sleep_for(5ms);
 
   // Set mode 1 with autoincrement, fix to stop pca9685 from accepting commands
   // at all addresses
-  if (!tryWriteReg(kMode1Reg, old_mode | 0xA0)) return false;
+  if (!writeReg(kMode1Reg, old_mode | 0xA0)) return false;
 
   return true;
 }
 
-bool I2CDevice::tryReset() { return tryWriteReg(kMode1Reg, 0x00); }
+bool I2CDevice::reset() { return writeReg(kMode1Reg, 0x00); }
 
-bool I2CDevice::trySelectDevice() {
+bool I2CDevice::selectDevice() {
   return ioctl(i2c_fd_, I2C_SLAVE, kDefaultDeviceAddress) >= 0;
 }

@@ -139,7 +139,7 @@ hardware_interface::CallbackReturn RustySystemHardware::on_activate(
 
   bool success = true;
   for (auto motor : motors_) {
-    success = success && motor.trySetVelocity(0);
+    success = success && motor.setVelocity(0);
   }
   if (!success) {
     RCLCPP_ERROR(rclcpp::get_logger("RustySystemHardware"),
@@ -156,7 +156,7 @@ hardware_interface::CallbackReturn RustySystemHardware::on_deactivate(
     const rclcpp_lifecycle::State & /*previous_state*/) {
   bool success = true;
   for (auto motor : motors_) {
-    success = success && motor.trySetVelocity(0);
+    success = success && motor.setVelocity(0);
   }
   if (!success) {
     RCLCPP_ERROR(rclcpp::get_logger("RustySystemHardware"),
@@ -178,7 +178,7 @@ hardware_interface::return_type RustySystemHardware::write(
     const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/) {
   bool success = true;
   for (auto i = 0u; i < hw_commands_.size(); i++) {
-    success = success && motors_[i].trySetVelocity(hw_commands_[i]);
+    success = success && motors_[i].setVelocity(hw_commands_[i]);
   }
   if (!success) {
     RCLCPP_ERROR(rclcpp::get_logger("RustySystemHardware"),
