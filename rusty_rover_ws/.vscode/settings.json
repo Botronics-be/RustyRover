@@ -1,0 +1,6 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "./src/rusty_ble_server/Cargo.toml",
+        "./src/rusty_command_dispatcher/Cargo.toml",
+    ],
+}

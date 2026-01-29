@@ -1,10 +1,7 @@
 use rclrs::*;
 use std::{thread, sync::{Arc, Mutex}, time::Duration};
-use geometry_msgs::msg::TwistStamped as TwistStamped;
-use std_msgs::msg::Header;
-use geometry_msgs::msg::Twist;
-use geometry_msgs::msg::Vector3;
-use builtin_interfaces::msg::Time;
+use rusty_msgs::msg::{Teleop as TeleopMsg, SpinCmd as SpinCmdMsg};
+use std_msgs::msg::String as StringMsg;
 use bluer::{
     adv::Advertisement,
     gatt::local::{
@@ -31,20 +28,43 @@ const CHARACTERISTIC_UUID: Uuid = Uuid::from_u128(0x9dd2899d_f3c9_47ee_992a_aad1
 enum BleCommand {
     Connected(String),
     Teleop(String),
+    Spin(String),
 }
 
 struct RosBridge {
     node: Node,
-    cmd_vel_publisher: Publisher<TwistStamped>,
-    status: String,
+    teleop_publisher: Publisher<TeleopMsg>,
+    spin_publisher: Publisher<SpinCmdMsg>,
+    _status_subscriber: Subscription<StringMsg>,
+    status: SharedStatus,
 }
+
+type SharedStatus = Arc<Mutex<String>>;
 
 impl RosBridge {
     fn new(node: &Node) -> Result<Self, RclrsError> {
+
+        let status = Arc::new(Mutex::new(String::new()));
+
+        let status_for_sub = status.clone();
+        
+        let _status_subscriber = node.create_subscription::<StringMsg, _>(
+            "/status",
+            move |msg: StringMsg| {
+                // This callback runs on the ROS thread
+                if let Ok(mut guard) = status_for_sub.lock() {
+                    *guard = msg.data;
+                }
+            }
+        )?;
+
         Ok(Self {
             node: node.clone(),
-            status: "Idle".to_string(),
-            cmd_vel_publisher: node.create_publisher::<TwistStamped>("cmd_vel")?,
+            teleop_publisher: node.create_publisher::<TeleopMsg>("cmd/teleop")?,
+            spin_publisher: node.create_publisher::<SpinCmdMsg>("cmd/spin")?,
+
+            _status_subscriber,
+            status,
         })
     }
 
@@ -52,6 +72,7 @@ impl RosBridge {
         match cmd {
             BleCommand::Connected(data) => {self.handle_connected_cmd(data);}
             BleCommand::Teleop(data) => {self.handle_teleop_cmd(data);}
+            BleCommand::Spin(data) => {self.handle_spin_cmd(data);}
         }
     }
 
@@ -60,7 +81,6 @@ impl RosBridge {
     }
 
     fn handle_teleop_cmd(&mut self, data: String){
-        self.status = "Teleoperating".to_string();
         let data_cmd: TeleopCmd = serde_json::from_str(&data).unwrap();
         log_info!(
             self.node.logger().throttle(Duration::from_secs(1)), 
@@ -69,34 +89,28 @@ impl RosBridge {
             data_cmd.angular_z
         );
 
-        let now = self.node.get_clock().now();
-
-        let nanoseconds = now.nsec;
-        let seconds = nanoseconds / 1_000_000_000;
-
-        let msg: TwistStamped = TwistStamped {
-            header: Header {
-                frame_id: "base_link".to_string(),
-                stamp: Time {
-                    sec: seconds as i32,
-                    nanosec: nanoseconds as u32,
-                },
-            },
-            twist: Twist {
-                linear: Vector3 {
-                    x: data_cmd.linear_x,
-                    y: 0.0,
-                    z: 0.0,
-                },
-                angular: Vector3 {
-                    x: 0.0,
-                    y: 0.0,
-                    z: data_cmd.angular_z,
-                },
-            },
+        let msg: TeleopMsg = TeleopMsg {
+            linear_x: (data_cmd.linear_x as f64)/5.0,
+            angular_z: (data_cmd.angular_z as f64)/5.0,
         };
 
-        let _ = self.cmd_vel_publisher.publish(msg);
+        let _ = self.teleop_publisher.publish(msg);
+    }
+
+    fn handle_spin_cmd(&mut self, data: String){
+        log_info!(self.node.logger(), "Received SPIN from client with spin time : {}", data);
+        let spin_time: i64 = match data.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                log_error!(self.node.logger(), "Invalid number format: '{}'", data);
+                return; // Exit early if parsing fails
+            }
+        };
+        let msg: SpinCmdMsg = SpinCmdMsg {
+            spinning_time: spin_time
+        };
+
+        let _ = self.spin_publisher.publish(msg);
     }
 }
 
@@ -149,8 +163,13 @@ async fn run_bluetooth_server(
                 let bridge = bridge_clone.clone();
                 Box::pin(async move {
                     let status_msg = match bridge.lock() {
-                        Ok(guard) => guard.status.clone(),
-                        Err(_) => "Internal Error: Lock Poisoned".to_string(),
+                        Ok(guard) => {
+                             match guard.status.lock() {
+                                 Ok(s) => s.clone(),
+                                 Err(_) => "Error: Status Poisoned".to_string(),
+                             }
+                        },
+                        Err(_) => "Error: Bridge Poisoned".to_string(),
                     };
                     Ok(status_msg.into_bytes())
                 })

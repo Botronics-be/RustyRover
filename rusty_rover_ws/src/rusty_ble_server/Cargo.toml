@@ -3,11 +3,16 @@ name = "rusty_ble_server"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "bluetooth_server"
+path = "src/bluetooth_server.rs"
+
 [dependencies]
 rclrs = "0.7"
 std_msgs = "*"
 geometry_msgs = "*"
 builtin_interfaces = "*"
+rusty_msgs = "*"
 bluer = { version = "0.17", features = ["bluetoothd"] }
 futures = "0.3.31"
 serde = {version = "1.0.228", features = ["derive"] }
