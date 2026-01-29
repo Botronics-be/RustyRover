@@ -6,16 +6,16 @@ use builtin_interfaces::msg::Time;
 use anyhow::Result;
 
 pub struct PilotNode {
-    node: Node,
+    _node: Node,
     _teleop_command_subscriber: Subscription<TeleopMsg>,
-    cmd_vel_publisher: Publisher<TwistStamped>,
+    _cmd_vel_publisher: Publisher<TwistStamped>,
 }
 
 impl PilotNode {
 
     fn new(executor: &Executor) -> Result<Self>{
         let node = executor.create_node("pilot_node")?;
-
+        log_info!(node.logger(), "Pilot node starting ...");
         let cmd_vel_publisher = node.create_publisher::<TwistStamped>("/diff_cont/cmd_vel")?;
 
         let cmd_vel_pub_clone = cmd_vel_publisher.clone();
@@ -56,9 +56,9 @@ impl PilotNode {
         )?;
 
         Ok(PilotNode {
-            node,
+            _node: node,
             _teleop_command_subscriber,
-            cmd_vel_publisher,
+            _cmd_vel_publisher: cmd_vel_publisher,
         })
     }
 

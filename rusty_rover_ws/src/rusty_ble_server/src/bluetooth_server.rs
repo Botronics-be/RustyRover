@@ -1,6 +1,7 @@
 use rclrs::*;
 use std::{thread, sync::{Arc, Mutex}, time::Duration};
 use rusty_msgs::msg::{Teleop as TeleopMsg, SpinCmd as SpinCmdMsg};
+use std_msgs::msg::String as StringMsg;
 use bluer::{
     adv::Advertisement,
     gatt::local::{
@@ -34,16 +35,36 @@ struct RosBridge {
     node: Node,
     teleop_publisher: Publisher<TeleopMsg>,
     spin_publisher: Publisher<SpinCmdMsg>,
-    status: String,
+    _status_subscriber: Subscription<StringMsg>,
+    status: SharedStatus,
 }
+
+type SharedStatus = Arc<Mutex<String>>;
 
 impl RosBridge {
     fn new(node: &Node) -> Result<Self, RclrsError> {
+
+        let status = Arc::new(Mutex::new(String::new()));
+
+        let status_for_sub = status.clone();
+        
+        let _status_subscriber = node.create_subscription::<StringMsg, _>(
+            "/status",
+            move |msg: StringMsg| {
+                // This callback runs on the ROS thread
+                if let Ok(mut guard) = status_for_sub.lock() {
+                    *guard = msg.data;
+                }
+            }
+        )?;
+
         Ok(Self {
             node: node.clone(),
-            status: "Idle".to_string(),
             teleop_publisher: node.create_publisher::<TeleopMsg>("cmd/teleop")?,
             spin_publisher: node.create_publisher::<SpinCmdMsg>("cmd/spin")?,
+
+            _status_subscriber,
+            status,
         })
     }
 
@@ -60,7 +81,6 @@ impl RosBridge {
     }
 
     fn handle_teleop_cmd(&mut self, data: String){
-        self.status = "Teleoperating".to_string();
         let data_cmd: TeleopCmd = serde_json::from_str(&data).unwrap();
         log_info!(
             self.node.logger().throttle(Duration::from_secs(1)), 
@@ -79,7 +99,6 @@ impl RosBridge {
 
     fn handle_spin_cmd(&mut self, data: String){
         log_info!(self.node.logger(), "Received SPIN from client with spin time : {}", data);
-        self.status = "Spinning".to_string();
         let spin_time: i64 = match data.trim().parse() {
             Ok(num) => num,
             Err(_) => {
@@ -144,8 +163,13 @@ async fn run_bluetooth_server(
                 let bridge = bridge_clone.clone();
                 Box::pin(async move {
                     let status_msg = match bridge.lock() {
-                        Ok(guard) => guard.status.clone(),
-                        Err(_) => "Internal Error: Lock Poisoned".to_string(),
+                        Ok(guard) => {
+                             match guard.status.lock() {
+                                 Ok(s) => s.clone(),
+                                 Err(_) => "Error: Status Poisoned".to_string(),
+                             }
+                        },
+                        Err(_) => "Error: Bridge Poisoned".to_string(),
                     };
                     Ok(status_msg.into_bytes())
                 })
