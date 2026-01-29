@@ -2,7 +2,7 @@ use rclrs::*;
 use rusty_msgs::msg::{SpinCmd as SpinCmdMsg, Teleop as TeleopMsg};
 use rusty_msgs::action::{SpinAction_Goal, SpinAction};
 use std::sync::{Arc, Mutex};
-use std::thread;
+use std_msgs::msg::String as StringMsg;
 use std::time::{Duration, Instant};
 use futures::StreamExt;
 use anyhow::Result;
@@ -12,7 +12,8 @@ pub struct CommandDispatcher {
     _state: Arc<Mutex<RobotState>>,
     _teleop_command_subscriber: Subscription<TeleopMsg>,
     _spin_command_subscriber: Subscription<SpinCmdMsg>,
-    pilot_cmd_publisher: Publisher<TeleopMsg>,
+    _status_publisher: Publisher<StringMsg>,
+    _status_timer: Arc<TimerState<Arc<WorkerState<std::string::String>>>>,
 }
 
 struct RobotState {
@@ -33,6 +34,7 @@ impl CommandDispatcher {
 
         let pilot_cmd_publisher = node.create_publisher::<TeleopMsg>("/pilot/teleop")?;
         let spin_client = node.create_action_client::<SpinAction>(&"spin").unwrap();
+        let status_publisher = node.create_publisher::<StringMsg>("/status")?;
 
         let pilot_cmd_pub_clone = pilot_cmd_publisher.clone();
         let teleop_robot_state = shared_state.clone();
@@ -86,7 +88,7 @@ impl CommandDispatcher {
                                     state.status = "Spinning".to_string();
                                     state.last_command_received = Instant::now();
 
-                                    // drop(state);
+                                    drop(state);
 
                                     log_debug!(log_node.logger(), "Feedback: Elapsed time: {:?}", feedback.elapsed_time);
                                 }
@@ -103,24 +105,29 @@ impl CommandDispatcher {
         )?;
 
         let timer_state = shared_state.clone();
+        let timer_status_publisher = status_publisher.clone();
         let worker = node.create_worker(String::new());
 
-        let _ = worker.create_timer_repeating(
+        let _status_timer = worker.create_timer_repeating(
             Duration::from_secs(1), 
             move || {
                 let mut state = timer_state.lock().unwrap();
 
                 if state.last_command_received.elapsed() > Duration::from_secs(1) {
                     state.status = "Idle".to_string();
+                                        
                 }
-            });
+                let _ = timer_status_publisher.publish(StringMsg{data: state.status.to_string()});
+                drop(state);
+            })?;
 
         Ok(CommandDispatcher {
             node,
             _state: shared_state,
             _spin_command_subscriber,
             _teleop_command_subscriber,
-            pilot_cmd_publisher,
+            _status_publisher: status_publisher,
+            _status_timer,
         })
     }
 

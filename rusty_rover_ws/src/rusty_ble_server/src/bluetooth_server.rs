@@ -41,9 +41,9 @@ impl RosBridge {
     fn new(node: &Node) -> Result<Self, RclrsError> {
         Ok(Self {
             node: node.clone(),
-            status: "Idle".to_string(),
             teleop_publisher: node.create_publisher::<TeleopMsg>("cmd/teleop")?,
             spin_publisher: node.create_publisher::<SpinCmdMsg>("cmd/spin")?,
+            status: "Idle".to_string(),            
         })
     }
 
