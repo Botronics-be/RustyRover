@@ -102,6 +102,7 @@ impl RosBridge {
     }
 
     fn handle_capture_image_cmd(&mut self, _data: String){
+        log_info!(self.node.logger(), "Received CAPTURE_IMAGE from client");
         let _ = self.capture_image_publisher.publish(Empty {structure_needs_at_least_one_member: 0});
     }
 
