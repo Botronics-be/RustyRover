@@ -680,6 +680,7 @@ dependencies = [
  "rclrs",
  "rusty_msgs",
  "std_msgs",
+ "std_srvs",
  "tokio",
 ]
 
@@ -723,6 +724,15 @@ version = "5.5.1"
 dependencies = [
  "builtin_interfaces",
  "rosidl_runtime_rs",
+]
+
+[[package]]
+name = "std_srvs"
+version = "5.5.1"
+dependencies = [
+ "builtin_interfaces",
+ "rosidl_runtime_rs",
+ "service_msgs",
 ]
 
 [[package]]
@@ -969,7 +979,15 @@ name = "rust_pubsub"
 version = "0.5.0"
 
 [[patch.unused]]
+name = "rusty_ble_server"
+version = "0.1.0"
+
+[[patch.unused]]
 name = "rusty_camera"
+version = "0.1.0"
+
+[[patch.unused]]
+name = "rusty_command_dispatcher"
 version = "0.1.0"
 
 [[patch.unused]]
@@ -983,10 +1001,6 @@ version = "5.5.1"
 [[patch.unused]]
 name = "statistics_msgs"
 version = "2.3.0"
-
-[[patch.unused]]
-name = "std_srvs"
-version = "5.5.1"
 
 [[patch.unused]]
 name = "stereo_msgs"

@@ -45,8 +45,7 @@ def generate_launch_description():
 
     camera_capture_node = Node(
         package="rusty_camera",
-        executable="toggle_publication",
-        condition=UnlessCondition(sim_mode) 
+        executable="toggle_publication"
     )
 
     bluetooth = Node(

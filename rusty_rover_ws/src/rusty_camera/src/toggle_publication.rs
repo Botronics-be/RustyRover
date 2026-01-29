@@ -1,7 +1,7 @@
 use anyhow::{Error, Result};
 use rclrs::*;
 use sensor_msgs::msg::Image;
-use std_srvs::srv::{Trigger, Trigger_Request, Trigger_Response}; // Removed SetBool
+use std_srvs::srv::{Trigger, Trigger_Request, Trigger_Response};
 use std::sync::{Arc, Mutex};
 use std::path::{Path, PathBuf};
 use std::fs; 
