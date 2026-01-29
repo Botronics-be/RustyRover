@@ -8,7 +8,7 @@ use futures::StreamExt;
 use anyhow::Result;
 
 pub struct CommandDispatcher {
-    node: Node,
+    _node: Node,
     _state: Arc<Mutex<RobotState>>,
     _teleop_command_subscriber: Subscription<TeleopMsg>,
     _spin_command_subscriber: Subscription<SpinCmdMsg>,
@@ -122,7 +122,7 @@ impl CommandDispatcher {
             })?;
 
         Ok(CommandDispatcher {
-            node,
+            _node: node,
             _state: shared_state,
             _spin_command_subscriber,
             _teleop_command_subscriber,

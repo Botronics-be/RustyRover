@@ -6,9 +6,9 @@ use builtin_interfaces::msg::Time;
 use anyhow::Result;
 
 pub struct PilotNode {
-    node: Node,
+    _node: Node,
     _teleop_command_subscriber: Subscription<TeleopMsg>,
-    cmd_vel_publisher: Publisher<TwistStamped>,
+    _cmd_vel_publisher: Publisher<TwistStamped>,
 }
 
 impl PilotNode {
@@ -56,9 +56,9 @@ impl PilotNode {
         )?;
 
         Ok(PilotNode {
-            node,
+            _node: node,
             _teleop_command_subscriber,
-            cmd_vel_publisher,
+            _cmd_vel_publisher: cmd_vel_publisher,
         })
     }
 
