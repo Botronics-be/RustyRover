@@ -22,9 +22,9 @@ impl CaptureServiceNode {
         let storage_path = Path::new(&home_dir).join("rusty_images");
         
         if let Err(e) = fs::create_dir_all(&storage_path) {
-            eprintln!("Warning: Could not create directory {:?}: {}", storage_path, e);
+            log_error!(node.logger(), "Warning: Could not create directory {:?}: {}", storage_path, e);
         } else {
-            println!("Storage ready: Images will be saved to {:?}", storage_path);
+            log_info!(node.logger(), "Storage ready: Images will be saved to {:?}", storage_path);
         }
 
         
@@ -35,7 +35,7 @@ impl CaptureServiceNode {
         
         let storage_path_for_srv = storage_path.clone();
 
-       
+        let log_node = node.clone();
         let capture_service = node.create_service::<Trigger, _>(
             "capture_frame",
             move |_request: Trigger_Request, _info: ServiceInfo| -> Trigger_Response {
@@ -49,7 +49,7 @@ impl CaptureServiceNode {
                     );
                     
                     let file_path = storage_path_for_srv.join(&filename);
-                    println!("Service: Saving to {:?}", file_path);
+                    log_info!(log_node.logger(), "Service: Saving to {:?}", file_path);
 
                     // Save result depending on encoding
                     let save_result = match frame.encoding.as_str() {
@@ -137,9 +137,9 @@ fn main() -> Result<(), Error> {
     let node = executor.create_node("capture_service_node")?;
     let _app = CaptureServiceNode::new(&node)?;
 
-    println!("Capture Node Running.");
-    println!(" - Saving to: ~/rusty_images/");
-    println!(" - Service: /capture_frame");
+    log_info!(node.logger(), "Capture Node Running.");
+    log_info!(node.logger(), " - Saving to: ~/rusty_images/");
+    log_info!(node.logger(), " - Service: /capture_frame");
     
     executor.spin(SpinOptions::default()).first_error()?;
     Ok(())

@@ -56,7 +56,6 @@ impl CommandDispatcher {
 
         let capture_image_node = node.clone();
         let capture_image_client_clone = capture_image_client.clone();
-        log_info!(node.logger(), " Create the client call");
         let _capture_image_subscriber = node.create_subscription::<EmptyMsg, _>(
             "/cmd/capture_image",
             move |msg: EmptyMsg| {
@@ -64,14 +63,11 @@ impl CommandDispatcher {
                 let client = capture_image_client_clone.clone();
                 let log_node = capture_image_node.clone();
 
-                log_info!(capture_image_node.logger(), "Receive a command");
-
                 std::thread::spawn(move || {
                     futures::executor::block_on(async {
-                        log_info!(log_node.logger(), "Waiting for service...");
-                        // client.notify_on_service_ready().await.unwrap();
+                        log_info!(log_node.logger(), "Check for service...");
+                        client.notify_on_service_ready().await.unwrap();
 
-                        log_info!(log_node.logger(), "Sending capture request...");
                         let request = Trigger_Request { 
                             structure_needs_at_least_one_member: 0 
                         };
