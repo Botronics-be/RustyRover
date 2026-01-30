@@ -22,7 +22,7 @@ DBUS_SYSTEM_BUS_ADDRESS = "unix:path=/var/run/dbus/system_bus_socket" # Needed t
 
 [tasks]
 build = "colcon build --symlink-install"
-clean = "rm -rf build/ install/ log/"
+clean = "rm -rf build/ install/ log/ .cargo/"
 source = "source install/setup.bash"
 rviz = "rviz2 -d /src/rusty_rviz/config/rusty_realtime.rviz"
 start = "ros2 launch rusty_bringup bringup.launch.py sim_mode:=false"
