@@ -58,7 +58,7 @@ impl CommandDispatcher {
         let capture_image_client_clone = capture_image_client.clone();
         let _capture_image_subscriber = node.create_subscription::<EmptyMsg, _>(
             "/cmd/capture_image",
-            move |msg: EmptyMsg| {
+            move |_msg: EmptyMsg| {
                 
                 let client = capture_image_client_clone.clone();
                 let log_node = capture_image_node.clone();
@@ -72,7 +72,7 @@ impl CommandDispatcher {
                             structure_needs_at_least_one_member: 0 
                         };
                         
-                        let response: Trigger_Response = client.call(&request).unwrap().await.unwrap();
+                        let _response: Trigger_Response = client.call(&request).unwrap().await.unwrap();
                     });
                 });
                 
